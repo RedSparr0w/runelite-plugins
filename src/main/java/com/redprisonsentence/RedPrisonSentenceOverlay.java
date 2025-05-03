@@ -103,7 +103,8 @@ public class RedPrisonSentenceOverlay extends Overlay
 		final int zOffset;
 		switch (drawPlayerNamesConfig)
 		{
-			case MODEL_CENTER, MODEL_RIGHT:
+			case MODEL_CENTER:
+			case MODEL_RIGHT:
 				zOffset = actor.getLogicalHeight() / 2;
 				break;
 			default:
