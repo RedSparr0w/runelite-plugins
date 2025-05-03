@@ -37,9 +37,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import javax.inject.Inject;
 
 @PluginDescriptor(
-	name = "Prison Sentence",
-	description = "Show players Corrupted Gauntlet KC in game above them",
-	tags = {"highlight", "gauntlet", "overlay", "players"}
+	name = "Red Prison Sentence",
+	description = "Show players time served within the Corrupted Gauntlet",
+	tags = {"highlight", "corrupted", "gauntlet", "overlay", "players", "killcount", "kc", "prison"}
 )
 @Slf4j
 public class PrisonSentencePlugin extends Plugin

@@ -40,7 +40,6 @@ import net.runelite.client.hiscore.HiscoreResult;
 import net.runelite.client.hiscore.HiscoreSkill;
 import java.time.Duration;
 import java.util.concurrent.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -152,7 +151,7 @@ public class PrisonSentenceOverlay extends Overlay
 		};
 		int tierSize = 100;
 		int tier = Math.min(kc / tierSize, ranks.length - 1);
-		BufferedImage rankImage = chatIconManager.getRankImage(ranks[tier]);
+		BufferedImage rankImage = config.killcountRankIcon() ? chatIconManager.getRankImage(ranks[tier]) : null;
 
 		if (drawPlayerNamesConfig == PlayerNameLocation.MODEL_RIGHT)
 		{

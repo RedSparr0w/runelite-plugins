@@ -98,6 +98,7 @@ public interface PrisonSentenceConfig extends Config
 	{
 		return Color.RED;
 	}
+
 	@ConfigItem(
 		position = 4,
 		keyName = "playerNamePosition",
@@ -107,5 +108,16 @@ public interface PrisonSentenceConfig extends Config
 	default PlayerNameLocation playerNamePosition()
 	{
 		return PlayerNameLocation.ABOVE_HEAD;
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "killcountRankIcon",
+		name = "Show rank icon",
+		description = "Show rank icon next to kill count."
+	)
+	default boolean killcountRankIcon()
+	{
+		return true;
 	}
 }
