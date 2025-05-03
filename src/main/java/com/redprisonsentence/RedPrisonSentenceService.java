@@ -86,7 +86,7 @@ class RedPrisonSentenceService
 				color = config.getOwnPlayerColor();
 			}
 		}
-		else if (!player.isFriendsChatMember() && !player.isClanMember() && isEnabled.test(config.highlightOthers()))
+		else if (isEnabled.test(config.highlightOthers()))
 		{
 			color = config.getOthersColor();
 		}

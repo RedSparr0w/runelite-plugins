@@ -36,6 +36,28 @@ public interface RedPrisonSentenceConfig extends Config
 {
 	String GROUP = "prisonsentence";
 
+	@ConfigItem(
+		position = 0,
+		keyName = "playerNamePosition",
+		name = "Name position",
+		description = "Configures the position of drawn player names, or if they should be disabled."
+	)
+	default PlayerNameLocation playerNamePosition()
+	{
+		return PlayerNameLocation.ABOVE_HEAD;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "killcountRankIcon",
+		name = "Show rank icon",
+		description = "Show rank icon next to kill count."
+	)
+	default boolean killcountRankIcon()
+	{
+		return true;
+	}
+
 	@ConfigSection(
 		name = "Highlight options",
 		description = "Toggle highlighted players by type (self, others) and choose their highlight colors.",
@@ -97,27 +119,5 @@ public interface RedPrisonSentenceConfig extends Config
 	default Color getOthersColor()
 	{
 		return Color.RED;
-	}
-
-	@ConfigItem(
-		position = 4,
-		keyName = "playerNamePosition",
-		name = "Name position",
-		description = "Configures the position of drawn player names, or if they should be disabled."
-	)
-	default PlayerNameLocation playerNamePosition()
-	{
-		return PlayerNameLocation.ABOVE_HEAD;
-	}
-
-	@ConfigItem(
-		position = 5,
-		keyName = "killcountRankIcon",
-		name = "Show rank icon",
-		description = "Show rank icon next to kill count."
-	)
-	default boolean killcountRankIcon()
-	{
-		return true;
 	}
 }
