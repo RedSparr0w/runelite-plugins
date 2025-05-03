@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.prisonsentence;
+package com.redprisonsentence;
 
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
@@ -42,19 +42,19 @@ import javax.inject.Inject;
 	tags = {"highlight", "corrupted", "gauntlet", "overlay", "players", "killcount", "kc", "prison"}
 )
 @Slf4j
-public class PrisonSentencePlugin extends Plugin
+public class RedPrisonSentencePlugin extends Plugin
 {
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
-	private PrisonSentenceConfig config;
+	private RedPrisonSentenceConfig config;
 
 	@Inject
-	private PrisonSentenceOverlay prisonSentenceOverlay;
+	private RedPrisonSentenceOverlay prisonSentenceOverlay;
 
 	@Inject
-	private PrisonSentenceService prisonSentenceService;
+	private RedPrisonSentenceService prisonSentenceService;
 
 	@Inject
 	private Client client;
@@ -71,9 +71,9 @@ public class PrisonSentencePlugin extends Plugin
 	private static final long CACHE_DURATION_MINUTES = 30;
 
 	@Provides
-	PrisonSentenceConfig provideConfig(ConfigManager configManager)
+	RedPrisonSentenceConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(PrisonSentenceConfig.class);
+		return configManager.getConfig(RedPrisonSentenceConfig.class);
 	}
 
 	@Override

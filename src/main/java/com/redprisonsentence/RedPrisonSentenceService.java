@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.prisonsentence;
+package com.redprisonsentence;
 
 import lombok.Value;
 import net.runelite.api.*;
@@ -36,13 +36,13 @@ import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 @Singleton
-class PrisonSentenceService
+class RedPrisonSentenceService
 {
 	private final Client client;
-	private final PrisonSentenceConfig config;
+	private final RedPrisonSentenceConfig config;
 
 	@Inject
-	private PrisonSentenceService(Client client, PrisonSentenceConfig config, PartyService partyService)
+	private RedPrisonSentenceService(Client client, RedPrisonSentenceConfig config, PartyService partyService)
 	{
 		this.config = config;
 		this.client = client;
@@ -75,8 +75,8 @@ class PrisonSentenceService
 		int region = client.getLocalPlayer().getWorldLocation().getRegionID();
 		boolean inGauntletLobby = region == 12127;
 
-		final Predicate<PrisonSentenceConfig.HighlightSetting> isEnabled = (hs) -> hs == PrisonSentenceConfig.HighlightSetting.ENABLED ||
-			(hs == PrisonSentenceConfig.HighlightSetting.GAUNTLET_LOBBY && inGauntletLobby);
+		final Predicate<RedPrisonSentenceConfig.HighlightSetting> isEnabled = (hs) -> hs == RedPrisonSentenceConfig.HighlightSetting.ENABLED ||
+			(hs == RedPrisonSentenceConfig.HighlightSetting.GAUNTLET_LOBBY && inGauntletLobby);
 
 		Color color = null;
 		if (player == client.getLocalPlayer())

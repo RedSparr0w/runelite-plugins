@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.prisonsentence;
+package com.redprisonsentence;
 
 import net.runelite.api.FriendsChatRank;
 import net.runelite.api.Player;
@@ -48,7 +48,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 @Singleton
-public class PrisonSentenceOverlay extends Overlay
+public class RedPrisonSentenceOverlay extends Overlay
 {
 	@Inject
 	private HiscoreClient hiscoreClient;
@@ -56,8 +56,8 @@ public class PrisonSentenceOverlay extends Overlay
 	private static final int ACTOR_OVERHEAD_TEXT_MARGIN = 25;
 	private static final int ACTOR_HORIZONTAL_TEXT_MARGIN = 10;
 
-	private final PrisonSentenceService prisonSentenceService;
-	private final PrisonSentenceConfig config;
+	private final RedPrisonSentenceService prisonSentenceService;
+	private final RedPrisonSentenceConfig config;
 	private final ChatIconManager chatIconManager;
 	private final Map<String, CachedKC> kcCache = new ConcurrentHashMap<>();
 	private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -75,7 +75,7 @@ public class PrisonSentenceOverlay extends Overlay
 	}
 
 	@Inject
-	private PrisonSentenceOverlay(PrisonSentenceConfig config, PrisonSentenceService prisonSentenceService, ChatIconManager chatIconManager)
+	private RedPrisonSentenceOverlay(RedPrisonSentenceConfig config, RedPrisonSentenceService prisonSentenceService, ChatIconManager chatIconManager)
 	{
 		this.config = config;
 		this.prisonSentenceService = prisonSentenceService;
@@ -91,7 +91,7 @@ public class PrisonSentenceOverlay extends Overlay
 		return null;
 	}
 
-	private void renderPlayerOverlay(Graphics2D graphics, Player actor, PrisonSentenceService.Decorations decorations)
+	private void renderPlayerOverlay(Graphics2D graphics, Player actor, RedPrisonSentenceService.Decorations decorations)
 	{
 
 		final PlayerNameLocation drawPlayerNamesConfig = config.playerNamePosition();
@@ -176,7 +176,7 @@ public class PrisonSentenceOverlay extends Overlay
 			final int imageTextMargin;
 			final int imageNegativeMargin;
 
-			if (drawPlayerNamesConfig == com.prisonsentence.PlayerNameLocation.MODEL_RIGHT)
+			if (drawPlayerNamesConfig == com.redprisonsentence.PlayerNameLocation.MODEL_RIGHT)
 			{
 				imageTextMargin = imageWidth;
 				imageNegativeMargin = 0;

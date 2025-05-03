@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.prisonsentence;
+package com.redprisonsentence;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
@@ -31,8 +31,8 @@ import net.runelite.client.config.ConfigSection;
 
 import java.awt.*;
 
-@ConfigGroup(PrisonSentenceConfig.GROUP)
-public interface PrisonSentenceConfig extends Config
+@ConfigGroup(RedPrisonSentenceConfig.GROUP)
+public interface RedPrisonSentenceConfig extends Config
 {
 	String GROUP = "prisonsentence";
 
