@@ -35,6 +35,8 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.Text;
 import java.time.Instant;
 import java.util.Map;
+import java.util.Queue;
+
 import net.runelite.client.hiscore.HiscoreClient;
 import net.runelite.client.hiscore.HiscoreResult;
 import net.runelite.client.hiscore.HiscoreSkill;
@@ -61,6 +63,8 @@ public class RedPrisonSentenceOverlay extends Overlay
 	private final ChatIconManager chatIconManager;
 	private final Map<String, CachedKC> kcCache = new ConcurrentHashMap<>();
 	private final ExecutorService executor = Executors.newSingleThreadExecutor();
+	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+	private final Queue<String> kcLookupQueue = new ConcurrentLinkedQueue<>();
 
 	private static class CachedKC
 	{
@@ -82,7 +86,22 @@ public class RedPrisonSentenceOverlay extends Overlay
 		this.chatIconManager = chatIconManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_MED);
+		scheduler.scheduleAtFixedRate(this::processKcQueue, 0, 5, TimeUnit.SECONDS);
 	}
+
+	private void processKcQueue() {
+		if (kcLookupQueue.isEmpty()) {
+				return;
+		}
+
+		String playerName = kcLookupQueue.poll();
+
+		executor.submit(() ->
+		{
+			int newKc = fetchCorruptedGauntletKC(playerName);
+			kcCache.put(playerName, new CachedKC(newKc, Instant.now()));
+		});
+}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -126,11 +145,7 @@ public class RedPrisonSentenceOverlay extends Overlay
 		{
 			// Log a cached KC now so we don't spam the server
 			kcCache.put(playerName, new CachedKC(kc, Instant.now()));
-			executor.submit(() ->
-			{
-				int newKc = fetchCorruptedGauntletKC(playerName);
-				kcCache.put(playerName, new CachedKC(newKc, Instant.now()));
-			});
+			kcLookupQueue.offer(playerName);
 		}
 
 		String killCount = kc == 0 ? "--": kc + "";
