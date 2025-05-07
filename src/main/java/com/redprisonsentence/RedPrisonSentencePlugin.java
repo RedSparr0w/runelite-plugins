@@ -26,10 +26,7 @@ package com.redprisonsentence;
 
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ChatIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -48,27 +45,7 @@ public class RedPrisonSentencePlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private RedPrisonSentenceConfig config;
-
-	@Inject
 	private RedPrisonSentenceOverlay prisonSentenceOverlay;
-
-	@Inject
-	private RedPrisonSentenceService prisonSentenceService;
-
-	@Inject
-	private Client client;
-
-	@Inject
-	private ChatIconManager chatIconManager;
-
-	@Inject
-	private ClientThread clientThread;
-
-	@Inject
-	private ConfigManager configManager;
-
-	private static final long CACHE_DURATION_MINUTES = 30;
 
 	@Provides
 	RedPrisonSentenceConfig provideConfig(ConfigManager configManager)
