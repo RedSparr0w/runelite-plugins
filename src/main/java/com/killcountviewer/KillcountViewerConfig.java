@@ -87,7 +87,7 @@ public interface KillcountViewerConfig extends Config
 	{
 		DISABLED,
 		LOBBY,
-		LOBBY_AND_FIGHT,
+		ALWAYS,
 	}
 
 	@ConfigItem(
@@ -102,7 +102,6 @@ public interface KillcountViewerConfig extends Config
 		return HighlightSetting.LOBBY;
 	}
 
-	// TODO: Setting for while playing and in lobby
 	@ConfigItem(
 		position = 0,
 		keyName = "bossZalcano",
@@ -111,6 +110,30 @@ public interface KillcountViewerConfig extends Config
 		section = highlightSection
 	)
 	default HighlightAlwaysSetting bossEnabledZalcano()
+	{
+		return HighlightAlwaysSetting.LOBBY;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "bossWintertodt",
+		name = "Wintertodt",
+		description = "Configures whether kill count is displayed within Wintertodt.",
+		section = highlightSection
+	)
+	default HighlightAlwaysSetting bossEnabledWintertodt()
+	{
+		return HighlightAlwaysSetting.LOBBY;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "bossRoyalTitans",
+		name = "Royal Titans",
+		description = "Configures whether kill count is displayed within Royal Titans.",
+		section = highlightSection
+	)
+	default HighlightAlwaysSetting bossEnabledRoyalTitans()
 	{
 		return HighlightAlwaysSetting.LOBBY;
 	}

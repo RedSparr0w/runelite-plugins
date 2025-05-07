@@ -71,7 +71,7 @@ public class KillcountViewerOverlay extends Overlay
 		HiscoreSkill.THE_CORRUPTED_GAUNTLET,
 		HiscoreSkill.THE_ROYAL_TITANS,
 		HiscoreSkill.ZALCANO,
-		HiscoreSkill.ZULRAH,
+		HiscoreSkill.WINTERTODT,
 	};
 
 	private static class CachedKC

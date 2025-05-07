@@ -25,11 +25,18 @@
 package com.killcountviewer;
 
 import net.runelite.api.*;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.CommandExecuted;
 import net.runelite.client.hiscore.HiscoreSkill;
 import net.runelite.client.party.PartyService;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import com.google.common.eventbus.Subscribe;
+import com.killcountviewer.KillcountViewerConfig.HighlightAlwaysSetting;
+import com.killcountviewer.KillcountViewerConfig.HighlightSetting;
+
 import java.awt.*;
 import java.util.function.BiConsumer;
 
@@ -64,17 +71,79 @@ class KillcountViewerService
 		}
 	}
 
+	
+	private boolean isInArea(Player player, int x1, int y1, int x2, int y2) {
+		return isInArea(player, x1, y1, x2, y2, 0);
+	}
+	private boolean isInArea(Player player, int x1, int y1, int x2, int y2, int z)
+	{
+		if (player == null || player.getWorldLocation() == null)
+		{
+			return false;
+		}
+
+		WorldPoint location = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
+
+		int minX = Math.min(x1, x2);
+		int maxX = Math.max(x1, x2);
+		int x = location.getX();
+		int minY = Math.min(y1, y2);
+		int maxY = Math.max(y1, y2);
+		int y = location.getY();
+
+		return x >= minX && x <= maxX && y >= minY && y <= maxY && location.getPlane() == z;
+	}
+
+	Boolean enabledAlways(HighlightAlwaysSetting setting)
+	{
+		return setting == HighlightAlwaysSetting.ALWAYS;
+	}
+
+	Boolean enabledLobby(HighlightAlwaysSetting setting)
+	{
+		return setting == HighlightAlwaysSetting.LOBBY || setting == HighlightAlwaysSetting.ALWAYS;
+	}
+
+	Boolean enabledLobby(HighlightSetting setting)
+	{
+		return setting == HighlightSetting.LOBBY;
+	}
+
 	HiscoreSkill getBossZone(Player player)
 	{
-		if (player == null || player.getName() == null) return null;
-		int region = client.getLocalPlayer().getWorldLocation().getRegionID();
+		if (player == null || player.getWorldLocation() == null) return null;
 
-		if (region == 12127) {
-			return config.bossEnabledCorruptedGauntlet() == KillcountViewerConfig.HighlightSetting.LOBBY ? HiscoreSkill.THE_CORRUPTED_GAUNTLET : null;
+		int region = WorldPoint.fromLocalInstance(client, player.getLocalLocation()).getRegionID();
+
+		// The corrupted gauntlet
+		if (region == 12127) { // Lobby
+			return enabledLobby(config.bossEnabledCorruptedGauntlet()) ? HiscoreSkill.THE_CORRUPTED_GAUNTLET : null;
 		}
-		if (region == 12126) {
-			return config.bossEnabledZalcano() == KillcountViewerConfig.HighlightAlwaysSetting.LOBBY_AND_FIGHT ? HiscoreSkill.ZALCANO : null;
+
+		// Royal titans
+		if (isInArea(player, 2948, 9571, 2958, 9583)) { // Lobby
+			return enabledLobby(config.bossEnabledRoyalTitans()) ? HiscoreSkill.THE_ROYAL_TITANS : null;
 		}
+		if (region == 11669) { // Boss room
+			return enabledAlways(config.bossEnabledRoyalTitans()) ? HiscoreSkill.THE_ROYAL_TITANS : null;
+		}
+
+		// Wintertodt
+		if (region == 6461) { // Lobby
+			return enabledLobby(config.bossEnabledWintertodt()) ? HiscoreSkill.WINTERTODT : null;
+		}
+		if (region == 6462) { // Boss room
+			return enabledAlways(config.bossEnabledWintertodt()) ? HiscoreSkill.WINTERTODT : null;
+		}
+
+		// Zalcano
+		if (isInArea(player, 3028, 6063, 3039, 6071)) { // Lobby
+			return enabledLobby(config.bossEnabledZalcano()) ? HiscoreSkill.ZALCANO : null;
+		}
+		if (region == 12126) { // Lobby + boss room
+			return enabledAlways(config.bossEnabledZalcano()) ? HiscoreSkill.ZALCANO : null;
+		}
+
 
 		return null;
 	}
