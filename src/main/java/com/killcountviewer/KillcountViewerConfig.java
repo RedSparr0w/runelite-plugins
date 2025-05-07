@@ -38,17 +38,29 @@ public interface KillcountViewerConfig extends Config
 
 	@ConfigItem(
 		position = 0,
-		keyName = "playerNamePosition",
-		name = "Name position",
+		keyName = "killcountPosition",
+		name = "Kill count position",
 		description = "Configures the position of drawn player names, or if they should be disabled."
 	)
-	default PlayerNameLocation playerNamePosition()
+	default PlayerNameLocation killcountPosition()
 	{
 		return PlayerNameLocation.ABOVE_HEAD;
 	}
 
+
 	@ConfigItem(
-		position = 1,
+			position = 1,
+			keyName = "killcountColor",
+			name = "Kill count color",
+			description = "Color of the kill count text."
+	)
+	default Color killCountColor()
+	{
+		return Color.RED;
+	}
+
+	@ConfigItem(
+		position = 2,
 		keyName = "killcountRankIcon",
 		name = "Show rank icon",
 		description = "Show rank icon next to kill count."
@@ -59,8 +71,8 @@ public interface KillcountViewerConfig extends Config
 	}
 
 	@ConfigSection(
-		name = "Highlight options",
-		description = "Toggle highlighted players by type (self, others) and choose their highlight colors.",
+		name = "Boss options",
+		description = "Toggle which bosses to show kill count for.",
 		position = 99
 	)
 	String highlightSection = "section";
@@ -73,50 +85,25 @@ public interface KillcountViewerConfig extends Config
 
 	@ConfigItem(
 		position = 0,
-		keyName = "highlightSelf",
-		name = "Highlight own player",
-		description = "Configures whether your own player should be highlighted.",
+		keyName = "bossCorruptedGauntlet",
+		name = "Corrupted Gauntlet",
+		description = "Configures whether kill count is displayed within the Corrupted Gauntlet.",
 		section = highlightSection
 	)
-	default HighlightSetting highlightOwnPlayer()
-	{
-		return HighlightSetting.ENABLED;
-	}
-
-
-	@ConfigItem(
-			position = 1,
-			keyName = "ownNameColor",
-			name = "Own player",
-			description = "Color of your own player.",
-			section = highlightSection
-	)
-	default Color getOwnPlayerColor()
-	{
-		return Color.RED;
-	}
-
-	@ConfigItem(
-		position = 2,
-		keyName = "highlightOthers",
-		name = "Highlight others",
-		description = "Configures whether other players should be highlighted.",
-		section = highlightSection
-	)
-	default HighlightSetting highlightOthers()
+	default HighlightSetting bossEnabledCorruptedGauntlet()
 	{
 		return HighlightSetting.ENABLED;
 	}
 
 	@ConfigItem(
-		position = 3,
-		keyName = "otherPlayerColor",
-		name = "Others",
-		description = "Color of other players names.",
+		position = 0,
+		keyName = "bossZalcano",
+		name = "Zalcano",
+		description = "Configures whether kill count is displayed within Zalcano.",
 		section = highlightSection
 	)
-	default Color getOthersColor()
+	default HighlightSetting bossEnabledZalcano()
 	{
-		return Color.RED;
+		return HighlightSetting.ENABLED;
 	}
 }

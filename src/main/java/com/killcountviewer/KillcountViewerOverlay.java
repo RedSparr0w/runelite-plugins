@@ -114,14 +114,14 @@ public class KillcountViewerOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		prisonSentenceService.forEachPlayer((player, decorations) -> renderPlayerOverlay(graphics, player, decorations));
+		prisonSentenceService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
 		return null;
 	}
 
-	private void renderPlayerOverlay(Graphics2D graphics, Player actor, KillcountViewerService.Decorations decorations)
+	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
 	{
 
-		final PlayerNameLocation drawPlayerNamesConfig = config.playerNamePosition();
+		final PlayerNameLocation drawPlayerNamesConfig = config.killcountPosition();
 		if (drawPlayerNamesConfig == PlayerNameLocation.DISABLED)
 		{
 			return;
@@ -206,7 +206,7 @@ public class KillcountViewerOverlay extends Overlay
 			textLocation = new Point(textLocation.getX() + imageTextMargin, textLocation.getY());
 		}
 
-		OverlayUtil.renderTextLocation(graphics, textLocation, killCountText, decorations.getColor());
+		OverlayUtil.renderTextLocation(graphics, textLocation, killCountText, color);
 	}
 
 	private BufferedImage calculateRankImage(int kc)
@@ -242,7 +242,7 @@ public class KillcountViewerOverlay extends Overlay
 			{
 				if (boss != null)
 				{
-					results.put(boss, result.getSkill(HiscoreSkill.THE_CORRUPTED_GAUNTLET).getLevel());
+					results.put(boss, result.getSkill(boss).getLevel());
 				}
 			}
 		}

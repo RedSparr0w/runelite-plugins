@@ -24,9 +24,7 @@
  */
 package com.killcountviewer;
 
-import lombok.Value;
 import net.runelite.api.*;
-import net.runelite.api.clan.*;
 import net.runelite.client.hiscore.HiscoreSkill;
 import net.runelite.client.party.PartyService;
 
@@ -34,7 +32,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.awt.*;
 import java.util.function.BiConsumer;
-import java.util.function.Predicate;
 
 @Singleton
 class KillcountViewerService
@@ -49,7 +46,7 @@ class KillcountViewerService
 		this.client = client;
 	}
 
-	void forEachPlayer(final BiConsumer<Player, Decorations> consumer)
+	void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
 
 		HiscoreSkill boss = getBossZone(client.getLocalPlayer());
@@ -63,12 +60,7 @@ class KillcountViewerService
 				continue;
 			}
 
-			Decorations decorations = getDecorations(player);
-
-			if (decorations != null && decorations.getColor() != null)
-			{
-				consumer.accept(player, decorations);
-			}
+			consumer.accept(player, config.killCountColor());
 		}
 	}
 
@@ -77,41 +69,14 @@ class KillcountViewerService
 		if (player == null || player.getName() == null) return null;
 		int region = client.getLocalPlayer().getWorldLocation().getRegionID();
 
-		if (region == 12127) return HiscoreSkill.THE_CORRUPTED_GAUNTLET;
+		if (region == 12127) {
+			return config.bossEnabledCorruptedGauntlet() == KillcountViewerConfig.HighlightSetting.ENABLED ? HiscoreSkill.THE_CORRUPTED_GAUNTLET : null;
+		}
 		// TODO: Figure out how to use tile co-ords instead of region ID
-		if (region == 12126) return HiscoreSkill.ZALCANO;
+		if (region == 12126) {
+			return config.bossEnabledZalcano() == KillcountViewerConfig.HighlightSetting.ENABLED ? HiscoreSkill.ZALCANO : null;
+		}
 
 		return null;
-	}
-
-	Decorations getDecorations(Player player)
-	{
-		if (player.getName() == null)
-		{
-			return null;
-		}
-
-		if (player == client.getLocalPlayer())
-		{
-			if (config.highlightOwnPlayer() == KillcountViewerConfig.HighlightSetting.ENABLED)
-			{
-				return new Decorations(null, null, config.getOwnPlayerColor());
-			}
-		}
-		else if (config.highlightOthers() == KillcountViewerConfig.HighlightSetting.ENABLED)
-		{
-			return new Decorations(null, null, config.getOthersColor());
-		}
-
-		
-		return null;
-	}
-
-	@Value
-	static class Decorations
-	{
-		FriendsChatRank friendsChatRank;
-		ClanTitle clanTitle;
-		Color color;
 	}
 }
