@@ -78,7 +78,8 @@ class KillcountViewerService
 		int region = client.getLocalPlayer().getWorldLocation().getRegionID();
 
 		if (region == 12127) return HiscoreSkill.THE_CORRUPTED_GAUNTLET;
-		if (region == 13250) return HiscoreSkill.ZALCANO;
+		// TODO: Figure out how to use tile co-ords instead of region ID
+		if (region == 12126) return HiscoreSkill.ZALCANO;
 
 		return null;
 	}
