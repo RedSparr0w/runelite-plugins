@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.redprisonsentence;
+package com.killcountviewer;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
@@ -31,10 +31,10 @@ import net.runelite.client.config.ConfigSection;
 
 import java.awt.*;
 
-@ConfigGroup(RedPrisonSentenceConfig.GROUP)
-public interface RedPrisonSentenceConfig extends Config
+@ConfigGroup(KillcountViewerConfig.GROUP)
+public interface KillcountViewerConfig extends Config
 {
-	String GROUP = "prisonsentence";
+	String GROUP = "killcountviewer";
 
 	@ConfigItem(
 		position = 0,
@@ -69,7 +69,6 @@ public interface RedPrisonSentenceConfig extends Config
 	{
 		DISABLED,
 		ENABLED,
-		GAUNTLET_LOBBY;
 	}
 
 	@ConfigItem(
@@ -81,7 +80,7 @@ public interface RedPrisonSentenceConfig extends Config
 	)
 	default HighlightSetting highlightOwnPlayer()
 	{
-		return HighlightSetting.GAUNTLET_LOBBY;
+		return HighlightSetting.ENABLED;
 	}
 
 
@@ -106,7 +105,7 @@ public interface RedPrisonSentenceConfig extends Config
 	)
 	default HighlightSetting highlightOthers()
 	{
-		return HighlightSetting.GAUNTLET_LOBBY;
+		return HighlightSetting.ENABLED;
 	}
 
 	@ConfigItem(

@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.redprisonsentence;
+package com.killcountviewer;
 
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
@@ -34,23 +34,23 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import javax.inject.Inject;
 
 @PluginDescriptor(
-	name = "Red Prison Sentence",
+	name = "Kill Count Viewer",
 	description = "Show players time served within the Corrupted Gauntlet",
-	tags = {"highlight", "corrupted", "gauntlet", "overlay", "players", "killcount", "kc", "prison"}
+	tags = {"highlight", "boss", "overlay", "players", "killcount", "kc"}
 )
 @Slf4j
-public class RedPrisonSentencePlugin extends Plugin
+public class KillcountViewerPlugin extends Plugin
 {
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
-	private RedPrisonSentenceOverlay prisonSentenceOverlay;
+	private KillcountViewerOverlay prisonSentenceOverlay;
 
 	@Provides
-	RedPrisonSentenceConfig provideConfig(ConfigManager configManager)
+	KillcountViewerConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(RedPrisonSentenceConfig.class);
+		return configManager.getConfig(KillcountViewerConfig.class);
 	}
 
 	@Override

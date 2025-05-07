@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.redprisonsentence;
+package com.killcountviewer;
 
 import net.runelite.api.FriendsChatRank;
 import net.runelite.api.Player;
@@ -34,6 +34,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.Text;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 
@@ -50,7 +51,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 @Singleton
-public class RedPrisonSentenceOverlay extends Overlay
+public class KillcountViewerOverlay extends Overlay
 {
 	@Inject
 	private HiscoreClient hiscoreClient;
@@ -58,28 +59,35 @@ public class RedPrisonSentenceOverlay extends Overlay
 	private static final int ACTOR_OVERHEAD_TEXT_MARGIN = 25;
 	private static final int ACTOR_HORIZONTAL_TEXT_MARGIN = 10;
 
-	private final RedPrisonSentenceService prisonSentenceService;
-	private final RedPrisonSentenceConfig config;
+	private final KillcountViewerService prisonSentenceService;
+	private final KillcountViewerConfig config;
 	private final ChatIconManager chatIconManager;
 	private final Map<String, CachedKC> kcCache = new ConcurrentHashMap<>();
 	private final ExecutorService executor = Executors.newSingleThreadExecutor();
 	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 	private final Queue<String> kcLookupQueue = new ConcurrentLinkedQueue<>();
 
+	private static final HiscoreSkill[] BOSSES = {
+		HiscoreSkill.THE_CORRUPTED_GAUNTLET,
+		HiscoreSkill.THE_ROYAL_TITANS,
+		HiscoreSkill.ZALCANO,
+		HiscoreSkill.ZULRAH,
+	};
+
 	private static class CachedKC
 	{
-		final int kc;
+		final Map<HiscoreSkill, Integer> kcMap;
 		final Instant fetchedAt;
 
-		CachedKC(int kc, Instant fetchedAt)
+		CachedKC(Map<HiscoreSkill, Integer> kcMap, Instant fetchedAt)
 		{
-			this.kc = kc;
+			this.kcMap = kcMap;
 			this.fetchedAt = fetchedAt;
 		}
 	}
 
 	@Inject
-	private RedPrisonSentenceOverlay(RedPrisonSentenceConfig config, RedPrisonSentenceService prisonSentenceService, ChatIconManager chatIconManager)
+	private KillcountViewerOverlay(KillcountViewerConfig config, KillcountViewerService prisonSentenceService, ChatIconManager chatIconManager)
 	{
 		this.config = config;
 		this.prisonSentenceService = prisonSentenceService;
@@ -98,8 +106,8 @@ public class RedPrisonSentenceOverlay extends Overlay
 
 		executor.submit(() ->
 		{
-			int newKc = fetchCorruptedGauntletKC(playerName);
-			kcCache.put(playerName, new CachedKC(newKc, Instant.now()));
+			Map<HiscoreSkill, Integer> kcMap = fetchPlayerKC(playerName);
+			kcCache.put(playerName, new CachedKC(kcMap, Instant.now()));
 		});
 }
 
@@ -110,7 +118,7 @@ public class RedPrisonSentenceOverlay extends Overlay
 		return null;
 	}
 
-	private void renderPlayerOverlay(Graphics2D graphics, Player actor, RedPrisonSentenceService.Decorations decorations)
+	private void renderPlayerOverlay(Graphics2D graphics, Player actor, KillcountViewerService.Decorations decorations)
 	{
 
 		final PlayerNameLocation drawPlayerNamesConfig = config.playerNamePosition();
@@ -119,6 +127,29 @@ public class RedPrisonSentenceOverlay extends Overlay
 			return;
 		}
 
+		String playerName = Text.removeTags(actor.getName());
+
+		CachedKC cached = kcCache.get(playerName);
+		HiscoreSkill boss = prisonSentenceService.getBossZone(actor);
+		int kc = cached != null && cached.kcMap != null && cached.kcMap.containsKey(boss) ? cached.kcMap.get(boss) : 0;
+
+		// Don't show anything if no KC
+		if (kc < 0) {
+			return;
+		}
+
+		// Re-fetch if it's been more than 30 minutes
+		if (cached == null || Duration.between(cached.fetchedAt, Instant.now()).toMinutes() > 30)
+		{
+			// Log a cached KC now so we don't spam the server
+			kcCache.put(playerName, new CachedKC(null, Instant.now()));
+			kcLookupQueue.offer(playerName);
+		}
+
+		// Caclulate our rank image if enabled
+		BufferedImage rankImage = config.killcountRankIcon() ? this.calculateRankImage(kc) : null;
+
+		// Draw the kill count
 		final int zOffset;
 		switch (drawPlayerNamesConfig)
 		{
@@ -130,44 +161,8 @@ public class RedPrisonSentenceOverlay extends Overlay
 				zOffset = actor.getLogicalHeight() + ACTOR_OVERHEAD_TEXT_MARGIN;
 		}
 
-		String playerName = Text.removeTags(actor.getName());
-
-		CachedKC cached = kcCache.get(playerName);
-		int kc = cached != null ? cached.kc : 0;
-
-		// Don't show anything if no KC
-		if (kc < 0) {
-			return;
-		}
-
-		// Re-fetch if it's been more than 30 minutes
-		if (cached == null || Duration.between(cached.fetchedAt, Instant.now()).toMinutes() > 30)
-		{
-			// Log a cached KC now so we don't spam the server
-			kcCache.put(playerName, new CachedKC(kc, Instant.now()));
-			kcLookupQueue.offer(playerName);
-		}
-
-		String killCount = kc == 0 ? "--": kc + "";
-		Point textLocation = actor.getCanvasTextLocation(graphics, killCount, zOffset);
-
-		// math-based rank
-		FriendsChatRank[] ranks = {
-				FriendsChatRank.RECRUIT, // 0-99
-				FriendsChatRank.CORPORAL, // 100-199
-				FriendsChatRank.SERGEANT, // 200-299
-				FriendsChatRank.LIEUTENANT, // 300-399
-				FriendsChatRank.LIEUTENANT, // 400-499
-				FriendsChatRank.CAPTAIN, // 500-599
-				FriendsChatRank.CAPTAIN, // 600-699
-				FriendsChatRank.GENERAL, // 700-799
-				FriendsChatRank.GENERAL, // 800-899
-				FriendsChatRank.GENERAL, // 900-999
-				FriendsChatRank.JMOD, // 1000+
-		};
-		int tierSize = 100;
-		int tier = Math.min(kc / tierSize, ranks.length - 1);
-		BufferedImage rankImage = config.killcountRankIcon() ? chatIconManager.getRankImage(ranks[tier]) : null;
+		String killCountText = kc == 0 ? "--" : kc + "";
+		Point textLocation = actor.getCanvasTextLocation(graphics, killCountText, zOffset);
 
 		if (drawPlayerNamesConfig == PlayerNameLocation.MODEL_RIGHT)
 		{
@@ -192,7 +187,7 @@ public class RedPrisonSentenceOverlay extends Overlay
 			final int imageTextMargin;
 			final int imageNegativeMargin;
 
-			if (drawPlayerNamesConfig == com.redprisonsentence.PlayerNameLocation.MODEL_RIGHT)
+			if (drawPlayerNamesConfig == com.killcountviewer.PlayerNameLocation.MODEL_RIGHT)
 			{
 				imageTextMargin = imageWidth;
 				imageNegativeMargin = 0;
@@ -211,20 +206,50 @@ public class RedPrisonSentenceOverlay extends Overlay
 			textLocation = new Point(textLocation.getX() + imageTextMargin, textLocation.getY());
 		}
 
-		OverlayUtil.renderTextLocation(graphics, textLocation, killCount, decorations.getColor());
+		OverlayUtil.renderTextLocation(graphics, textLocation, killCountText, decorations.getColor());
 	}
 
-	private int fetchCorruptedGauntletKC(String playerName)
+	private BufferedImage calculateRankImage(int kc)
 	{
+		
+		// math-based rank
+		FriendsChatRank[] ranks = {
+			FriendsChatRank.RECRUIT, // 0-99
+			FriendsChatRank.CORPORAL, // 100-199
+			FriendsChatRank.SERGEANT, // 200-299
+			FriendsChatRank.LIEUTENANT, // 300-399
+			FriendsChatRank.LIEUTENANT, // 400-499
+			FriendsChatRank.CAPTAIN, // 500-599
+			FriendsChatRank.CAPTAIN, // 600-699
+			FriendsChatRank.GENERAL, // 700-799
+			FriendsChatRank.GENERAL, // 800-899
+			FriendsChatRank.GENERAL, // 900-999
+			FriendsChatRank.JMOD, // 1000+
+		};
+		int tierSize = 100;
+		int tier = Math.min(kc / tierSize, ranks.length - 1);
+		return chatIconManager.getRankImage(ranks[tier]);
+	}
+
+	private Map<HiscoreSkill, Integer> fetchPlayerKC(String playerName)
+	{
+		Map<HiscoreSkill, Integer> results = new HashMap<>();
+
 		try
 		{
 			HiscoreResult result = hiscoreClient.lookup(playerName);
-			return result.getSkill(HiscoreSkill.THE_CORRUPTED_GAUNTLET).getLevel();
+			for (HiscoreSkill boss : BOSSES)
+			{
+				if (boss != null)
+				{
+					results.put(boss, result.getSkill(HiscoreSkill.THE_CORRUPTED_GAUNTLET).getLevel());
+				}
+			}
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
-		return 0;
+		return results;
 	}
 }
