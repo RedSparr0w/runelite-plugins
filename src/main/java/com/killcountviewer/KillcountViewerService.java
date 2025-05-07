@@ -70,11 +70,10 @@ class KillcountViewerService
 		int region = client.getLocalPlayer().getWorldLocation().getRegionID();
 
 		if (region == 12127) {
-			return config.bossEnabledCorruptedGauntlet() == KillcountViewerConfig.HighlightSetting.ENABLED ? HiscoreSkill.THE_CORRUPTED_GAUNTLET : null;
+			return config.bossEnabledCorruptedGauntlet() == KillcountViewerConfig.HighlightSetting.LOBBY ? HiscoreSkill.THE_CORRUPTED_GAUNTLET : null;
 		}
-		// TODO: Figure out how to use tile co-ords instead of region ID
 		if (region == 12126) {
-			return config.bossEnabledZalcano() == KillcountViewerConfig.HighlightSetting.ENABLED ? HiscoreSkill.ZALCANO : null;
+			return config.bossEnabledZalcano() == KillcountViewerConfig.HighlightAlwaysSetting.LOBBY_AND_FIGHT ? HiscoreSkill.ZALCANO : null;
 		}
 
 		return null;

@@ -80,7 +80,14 @@ public interface KillcountViewerConfig extends Config
 	enum HighlightSetting
 	{
 		DISABLED,
-		ENABLED,
+		LOBBY,
+	}
+
+	enum HighlightAlwaysSetting
+	{
+		DISABLED,
+		LOBBY,
+		LOBBY_AND_FIGHT,
 	}
 
 	@ConfigItem(
@@ -92,9 +99,10 @@ public interface KillcountViewerConfig extends Config
 	)
 	default HighlightSetting bossEnabledCorruptedGauntlet()
 	{
-		return HighlightSetting.ENABLED;
+		return HighlightSetting.LOBBY;
 	}
 
+	// TODO: Setting for while playing and in lobby
 	@ConfigItem(
 		position = 0,
 		keyName = "bossZalcano",
@@ -102,8 +110,8 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Zalcano.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledZalcano()
+	default HighlightAlwaysSetting bossEnabledZalcano()
 	{
-		return HighlightSetting.ENABLED;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 }
