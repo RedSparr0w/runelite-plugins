@@ -73,11 +73,11 @@ public class KillcountViewerOverlay extends Overlay
 		HiscoreSkill.RIFTS_CLOSED, // Done
 		HiscoreSkill.ABYSSAL_SIRE, // Done
 		HiscoreSkill.ALCHEMICAL_HYDRA,
-		HiscoreSkill.AMOXLIATL,
+		HiscoreSkill.AMOXLIATL, // Done
 		HiscoreSkill.ARAXXOR,
 		HiscoreSkill.ARTIO,
-		HiscoreSkill.BARROWS_CHESTS,
-		HiscoreSkill.BRYOPHYTA,
+		HiscoreSkill.BARROWS_CHESTS, // Done
+		HiscoreSkill.BRYOPHYTA, // Done
 		HiscoreSkill.CALLISTO,
 		HiscoreSkill.CALVARION,
 		HiscoreSkill.CERBERUS,
@@ -94,7 +94,7 @@ public class KillcountViewerOverlay extends Overlay
 		HiscoreSkill.DERANGED_ARCHAEOLOGIST,
 		HiscoreSkill.DUKE_SUCELLUS,
 		HiscoreSkill.GENERAL_GRAARDOR,
-		HiscoreSkill.GIANT_MOLE,
+		HiscoreSkill.GIANT_MOLE, // Done
 		HiscoreSkill.GROTESQUE_GUARDIANS,
 		HiscoreSkill.HESPORI,
 		HiscoreSkill.KALPHITE_QUEEN,
@@ -107,12 +107,12 @@ public class KillcountViewerOverlay extends Overlay
 		HiscoreSkill.NEX,
 		HiscoreSkill.NIGHTMARE,
 		HiscoreSkill.PHOSANIS_NIGHTMARE,
-		HiscoreSkill.OBOR,
+		HiscoreSkill.OBOR, // Done
 		HiscoreSkill.PHANTOM_MUSPAH,
 		HiscoreSkill.SARACHNIS,
 		HiscoreSkill.SCORPIA,
 		HiscoreSkill.SCURRIUS,
-		HiscoreSkill.SKOTIZO,
+		HiscoreSkill.SKOTIZO, // Done
 		HiscoreSkill.SOL_HEREDIT,
 		HiscoreSkill.TEMPOROSS,
 		HiscoreSkill.THE_CORRUPTED_GAUNTLET, // Done

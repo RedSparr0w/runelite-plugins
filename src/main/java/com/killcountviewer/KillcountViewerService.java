@@ -202,13 +202,15 @@ class KillcountViewerService
 
 	private boolean isRiftsClosed(Player player, int region)
 	{
-		return isInArea(player, 3601, 9483, 3629, 9458) && enabledLobby(config.bossEnabledRiftsClosed()) ||
+		return
+			(isInArea(player, 3601, 9483, 3629, 9458) && enabledLobby(config.bossEnabledRiftsClosed())) ||
 			(region == 14484 && enabledAlways(config.bossEnabledRiftsClosed()));
 	}
 
 	private boolean isAbyssalSire(Player player, int region)
 	{
-		return (region == 12106 && enabledLobby(config.bossEnabledAbyssalSire())) ||
+		return
+			(region == 12106 && enabledLobby(config.bossEnabledAbyssalSire())) ||
 			((region == 11851 || region == 11850 || region == 12363 || region == 12362) && enabledAlways(config.bossEnabledAbyssalSire()));
 	}
 
@@ -219,7 +221,7 @@ class KillcountViewerService
 
 	private boolean isAmoxliatl(Player player, int region)
 	{
-		return false;
+		return isInArea(player, 1620, 9621, 1601, 9644) && enabledLobby(config.bossEnabledAmoxliatl());
 	}
 
 	private boolean isAraxxor(Player player, int region)
@@ -234,12 +236,14 @@ class KillcountViewerService
 
 	private boolean isBarrowsChests(Player player, int region)
 	{
-		return false;
+		return
+			(region == 14131 && enabledLobby(config.bossEnabledBarrowsChests())) ||
+			(region == 14231 && enabledAlways(config.bossEnabledBarrowsChests())) ;
 	}
 
 	private boolean isBryophyta(Player player, int region)
 	{
-		return false;
+		return isInArea(player, 3166, 9902, 9180, 9894) && enabledLobby(config.bossEnabledBryophyta());
 	}
 
 	private boolean isCallisto(Player player, int region)
@@ -324,7 +328,9 @@ class KillcountViewerService
 
 	private boolean isGiantMole(Player player, int region)
 	{
-		return false;
+		return
+			(isInArea(player, 2983, 3389, 3006, 3380) && enabledLobby(config.bossEnabledGiantMole())) ||
+			((region == 6993 || region == 6992) && enabledAlways(config.bossEnabledGiantMole()));
 	}
 
 	private boolean isGrotesqueGuardians(Player player, int region)
@@ -389,7 +395,7 @@ class KillcountViewerService
 
 	private boolean isObor(Player player, int region)
 	{
-		return false;
+		return isInArea(player, 3094, 9822, 3105, 9841) && enabledLobby(config.bossEnabledObor());
 	}
 
 	private boolean isPhantomMuspah(Player player, int region)
@@ -414,7 +420,7 @@ class KillcountViewerService
 
 	private boolean isSkotizo(Player player, int region)
 	{
-		return false;
+		return isInArea(player, 1667, 10051, 1660, 10044) && enabledLobby(config.bossEnabledSkotizo());
 	}
 
 	private boolean isSolHeredit(Player player, int region)
@@ -490,12 +496,12 @@ class KillcountViewerService
 
 	private boolean isTzKalZuk(Player player, int region)
 	{
-		return (isInArea(player, 2482, 5124, 2509, 5090) && enabledLobby(config.bossEnabledTzKalZuk()));
+		return isInArea(player, 2482, 5124, 2509, 5090) && enabledLobby(config.bossEnabledTzKalZuk());
 	}
 
 	private boolean isTzTokJad(Player player, int region)
 	{
-		return (isInArea(player, 2457, 5162, 2417, 5183) && enabledLobby(config.bossEnabledTzTokJad()));
+		return isInArea(player, 2457, 5162, 2417, 5183) && enabledLobby(config.bossEnabledTzTokJad());
 	}
 
 	private boolean isVardorvis(Player player, int region)
@@ -505,8 +511,7 @@ class KillcountViewerService
 
 	private boolean isVorkath(Player player, int region)
 	{
-		return
-			(region == 9023 && !isInArea(player, 2261, 4054, 2283, 4076) && enabledLobby(config.bossEnabledVorkath()));
+		return(region == 9023 && !isInArea(player, 2261, 4054, 2283, 4076) && enabledLobby(config.bossEnabledVorkath()));
 	}
 
 	private boolean isWintertodt(Player player, int region)
