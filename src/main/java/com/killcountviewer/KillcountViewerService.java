@@ -94,17 +94,17 @@ class KillcountViewerService
 		return x >= minX && x <= maxX && y >= minY && y <= maxY && location.getPlane() == z;
 	}
 
-	Boolean enabledAlways(HighlightAlwaysSetting setting)
+	boolean enabledAlways(HighlightAlwaysSetting setting)
 	{
 		return setting == HighlightAlwaysSetting.ALWAYS;
 	}
 
-	Boolean enabledLobby(HighlightAlwaysSetting setting)
+	boolean enabledLobby(HighlightAlwaysSetting setting)
 	{
 		return setting == HighlightAlwaysSetting.LOBBY || setting == HighlightAlwaysSetting.ALWAYS;
 	}
 
-	Boolean enabledLobby(HighlightSetting setting)
+	boolean enabledLobby(HighlightSetting setting)
 	{
 		return setting == HighlightSetting.LOBBY;
 	}
