@@ -68,9 +68,9 @@ public class KillcountViewerOverlay extends Overlay
 	private final Queue<String> kcLookupQueue = new ConcurrentLinkedQueue<>();
 
 	private static final HiscoreSkill[] SCORES = {
-		HiscoreSkill.SOUL_WARS_ZEAL,
-		HiscoreSkill.LAST_MAN_STANDING,
-		HiscoreSkill.RIFTS_CLOSED,
+		HiscoreSkill.SOUL_WARS_ZEAL, // Done (test in matchmaking)
+		HiscoreSkill.LAST_MAN_STANDING, // Done (not in matchmaking)
+		HiscoreSkill.RIFTS_CLOSED, // Done
 		HiscoreSkill.ABYSSAL_SIRE,
 		HiscoreSkill.ALCHEMICAL_HYDRA,
 		HiscoreSkill.AMOXLIATL,
@@ -163,7 +163,8 @@ public class KillcountViewerOverlay extends Overlay
 		if (kcLookupQueue.isEmpty()) {
 				return;
 		}
-		if (prisonSentenceService.getBossZone() == null) {
+		// TODO: Clear kcCache if we haven't run this players HS yet, so they will be re-added to the queue next time they are seen
+		if (prisonSentenceService.CurrentBoss == null) {
 			// If we don't have a boss zone, clear the queue and return
 			kcLookupQueue.clear();
 			return;
@@ -181,6 +182,7 @@ public class KillcountViewerOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		prisonSentenceService.CurrentBoss = prisonSentenceService.getBossZone();
 		prisonSentenceService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
 		return null;
 	}
@@ -197,7 +199,7 @@ public class KillcountViewerOverlay extends Overlay
 		String playerName = Text.removeTags(player.getName());
 
 		CachedKC cached = kcCache.get(playerName);
-		HiscoreSkill boss = prisonSentenceService.getBossZone(player);
+		HiscoreSkill boss = prisonSentenceService.getBossZone();
 		int kc = cached != null && cached.kcMap != null && cached.kcMap.containsKey(boss) ? cached.kcMap.get(boss) : 0;
 
 		// Don't show anything if no KC

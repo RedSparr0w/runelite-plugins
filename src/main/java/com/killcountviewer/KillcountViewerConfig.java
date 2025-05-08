@@ -115,9 +115,9 @@ public interface KillcountViewerConfig extends Config
 
 	@ConfigItem(
 		position = 0,
-		keyName = "bossRiftsClosed",
-		name = "Rifts Closed",
-		description = "Configures whether kill count is displayed within Rifts Closed.",
+		keyName = "bossGuardiansoftheRift",
+		name = "Guardians of the Rift",
+		description = "Configures whether kill count is displayed within Guardian of the Guardians of the Rift.",
 		section = highlightSection
 	)
 	default HighlightAlwaysSetting bossEnabledRiftsClosed()
