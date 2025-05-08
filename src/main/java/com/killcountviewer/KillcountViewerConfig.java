@@ -96,9 +96,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Soul Wars Zeal.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledSoulWarsZeal()
+	default HighlightAlwaysSetting bossEnabledSoulWarsZeal()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -108,9 +108,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Last Man Standing.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledLastManStanding()
+	default HighlightAlwaysSetting bossEnabledLastManStanding()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -120,9 +120,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Rifts Closed.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledRiftsClosed()
+	default HighlightAlwaysSetting bossEnabledRiftsClosed()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -132,9 +132,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Phosani's Nightmare.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledPhosanisNightmare()
+	default HighlightAlwaysSetting bossEnabledPhosanisNightmare()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -144,9 +144,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Scurrius.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledScurrius()
+	default HighlightAlwaysSetting bossEnabledScurrius()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -264,9 +264,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Abyssal Sire.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledAbyssalSire()
+	default HighlightAlwaysSetting bossEnabledAbyssalSire()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -312,9 +312,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Artio.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledArtio()
+	default HighlightAlwaysSetting bossEnabledArtio()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -324,9 +324,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Barrows Chests.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledBarrowsChests()
+	default HighlightAlwaysSetting bossEnabledBarrowsChests()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -348,9 +348,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Callisto.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledCallisto()
+	default HighlightAlwaysSetting bossEnabledCallisto()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -360,9 +360,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Calvarion.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledCalvarion()
+	default HighlightAlwaysSetting bossEnabledCalvarion()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -384,9 +384,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Chambers of Xeric.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledChambersOfXeric()
+	default HighlightAlwaysSetting bossEnabledChambersOfXeric()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -396,9 +396,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Chambers of Xeric (Challenge Mode).",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledChambersOfXericChallengeMode()
+	default HighlightAlwaysSetting bossEnabledChambersOfXericChallengeMode()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -432,9 +432,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Commander Zilyana.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledCommanderZilyana()
+	default HighlightAlwaysSetting bossEnabledCommanderZilyana()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -444,9 +444,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Corporeal Beast.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledCorporealBeast()
+	default HighlightAlwaysSetting bossEnabledCorporealBeast()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -468,9 +468,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Dagannoth Prime.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledDagannothPrime()
+	default HighlightAlwaysSetting bossEnabledDagannothPrime()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -480,9 +480,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Dagannoth Rex.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledDagannothRex()
+	default HighlightAlwaysSetting bossEnabledDagannothRex()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -492,9 +492,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Dagannoth Supreme.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledDagannothSupreme()
+	default HighlightAlwaysSetting bossEnabledDagannothSupreme()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -504,9 +504,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Deranged Archaeologist.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledDerangedArchaeologist()
+	default HighlightAlwaysSetting bossEnabledDerangedArchaeologist()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -528,9 +528,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within General Graardor.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledGeneralGraardor()
+	default HighlightAlwaysSetting bossEnabledGeneralGraardor()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -540,9 +540,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Giant Mole.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledGiantMole()
+	default HighlightAlwaysSetting bossEnabledGiantMole()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -576,9 +576,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Kalphite Queen.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledKalphiteQueen()
+	default HighlightAlwaysSetting bossEnabledKalphiteQueen()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -588,9 +588,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within King Black Dragon.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledKingBlackDragon()
+	default HighlightAlwaysSetting bossEnabledKingBlackDragon()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -600,9 +600,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Kraken.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledKraken()
+	default HighlightAlwaysSetting bossEnabledKraken()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -612,9 +612,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Kree'arra.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledKreeArra()
+	default HighlightAlwaysSetting bossEnabledKreeArra()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -624,9 +624,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within K'ril Tsutsaroth.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledKrilTsutsaroth()
+	default HighlightAlwaysSetting bossEnabledKrilTsutsaroth()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -636,9 +636,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Lunar Chests.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledLunarChests()
+	default HighlightAlwaysSetting bossEnabledLunarChests()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -660,9 +660,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Nex.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledNex()
+	default HighlightAlwaysSetting bossEnabledNex()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -672,9 +672,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Nightmare.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledNightmare()
+	default HighlightAlwaysSetting bossEnabledNightmare()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -708,9 +708,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Sarachnis.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledSarachnis()
+	default HighlightAlwaysSetting bossEnabledSarachnis()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -720,9 +720,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Scorpia.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledScorpia()
+	default HighlightAlwaysSetting bossEnabledScorpia()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -756,9 +756,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Tempoross.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledTempoross()
+	default HighlightAlwaysSetting bossEnabledTempoross()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -768,9 +768,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within The Hueycoatl.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledTheHueycoatl()
+	default HighlightAlwaysSetting bossEnabledTheHueycoatl()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -804,9 +804,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Theatre of Blood.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledTheatreOfBlood()
+	default HighlightAlwaysSetting bossEnabledTheatreOfBlood()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -816,9 +816,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Theatre of Blood (Hard Mode).",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledTheatreOfBloodHardMode()
+	default HighlightAlwaysSetting bossEnabledTheatreOfBloodHardMode()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -840,9 +840,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Tombs of Amascut.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledTombsOfAmascut()
+	default HighlightAlwaysSetting bossEnabledTombsOfAmascut()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -852,9 +852,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Tombs of Amascut (Expert).",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledTombsOfAmascutExpert()
+	default HighlightAlwaysSetting bossEnabledTombsOfAmascutExpert()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -864,9 +864,9 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Venenatis.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledVenenatis()
+	default HighlightAlwaysSetting bossEnabledVenenatis()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
@@ -876,8 +876,8 @@ public interface KillcountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Vet'ion.",
 		section = highlightSection
 	)
-	default HighlightSetting bossEnabledVetion()
+	default HighlightAlwaysSetting bossEnabledVetion()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 }

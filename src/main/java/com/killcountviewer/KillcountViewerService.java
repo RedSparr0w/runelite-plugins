@@ -184,7 +184,9 @@ class KillcountViewerService
 	}
 	private boolean isSoulWarsZeal(Player player, int region)
 	{
-		return (region == 8748 && enabledLobby(config.bossEnabledSoulWarsZeal()));
+		return
+			(region == 8748 && enabledLobby(config.bossEnabledSoulWarsZeal())) ||
+			((region == 8493  || region == 8749 || region == 9005) && enabledAlways(config.bossEnabledSoulWarsZeal()));
 	}
 
 	private boolean isLastManStanding(Player player, int region)
