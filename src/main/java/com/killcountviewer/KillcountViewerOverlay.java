@@ -163,6 +163,11 @@ public class KillcountViewerOverlay extends Overlay
 		if (kcLookupQueue.isEmpty()) {
 				return;
 		}
+		if (prisonSentenceService.getBossZone() == null) {
+			// If we don't have a boss zone, clear the queue and return
+			kcLookupQueue.clear();
+			return;
+		}
 
 		String playerName = kcLookupQueue.poll();
 
@@ -180,7 +185,7 @@ public class KillcountViewerOverlay extends Overlay
 		return null;
 	}
 
-	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
+	private void renderPlayerOverlay(Graphics2D graphics, Player player, Color color)
 	{
 
 		final PlayerNameLocation drawPlayerNamesConfig = config.killcountPosition();
@@ -189,10 +194,10 @@ public class KillcountViewerOverlay extends Overlay
 			return;
 		}
 
-		String playerName = Text.removeTags(actor.getName());
+		String playerName = Text.removeTags(player.getName());
 
 		CachedKC cached = kcCache.get(playerName);
-		HiscoreSkill boss = prisonSentenceService.getBossZone(actor);
+		HiscoreSkill boss = prisonSentenceService.getBossZone(player);
 		int kc = cached != null && cached.kcMap != null && cached.kcMap.containsKey(boss) ? cached.kcMap.get(boss) : 0;
 
 		// Don't show anything if no KC
@@ -217,18 +222,18 @@ public class KillcountViewerOverlay extends Overlay
 		{
 			case MODEL_CENTER:
 			case MODEL_RIGHT:
-				zOffset = actor.getLogicalHeight() / 2;
+				zOffset = player.getLogicalHeight() / 2;
 				break;
 			default:
-				zOffset = actor.getLogicalHeight() + ACTOR_OVERHEAD_TEXT_MARGIN;
+				zOffset = player.getLogicalHeight() + ACTOR_OVERHEAD_TEXT_MARGIN;
 		}
 
 		String killCountText = kc == 0 ? "--" : kc + "";
-		Point textLocation = actor.getCanvasTextLocation(graphics, killCountText, zOffset);
+		Point textLocation = player.getCanvasTextLocation(graphics, killCountText, zOffset);
 
 		if (drawPlayerNamesConfig == PlayerNameLocation.MODEL_RIGHT)
 		{
-			textLocation = actor.getCanvasTextLocation(graphics, "", zOffset);
+			textLocation = player.getCanvasTextLocation(graphics, "", zOffset);
 
 			if (textLocation == null)
 			{

@@ -106,8 +106,9 @@ class KillcountViewerService
 	}
 
 	// Check if the player is in a boss zone and return the corresponding HiscoreSkill
-	HiscoreSkill getBossZone(Player player)
+	HiscoreSkill getBossZone()
 	{
+		Player player = client.getLocalPlayer();
 		if (player == null || player.getWorldLocation() == null) return null;
 
 		int region = WorldPoint.fromLocalInstance(client, player.getLocalLocation()).getRegionID();
