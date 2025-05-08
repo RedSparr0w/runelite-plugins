@@ -89,6 +89,65 @@ public interface KillcountViewerConfig extends Config
 		LOBBY,
 		ALWAYS,
 	}
+	@ConfigItem(
+		position = 0,
+		keyName = "bossSoulWarsZeal",
+		name = "Soul Wars Zeal",
+		description = "Configures whether kill count is displayed within Soul Wars Zeal.",
+		section = highlightSection
+	)
+	default HighlightSetting bossEnabledSoulWarsZeal()
+	{
+		return HighlightSetting.LOBBY;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "bossLastManStanding",
+		name = "Last Man Standing",
+		description = "Configures whether kill count is displayed within Last Man Standing.",
+		section = highlightSection
+	)
+	default HighlightSetting bossEnabledLastManStanding()
+	{
+		return HighlightSetting.LOBBY;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "bossRiftsClosed",
+		name = "Rifts Closed",
+		description = "Configures whether kill count is displayed within Rifts Closed.",
+		section = highlightSection
+	)
+	default HighlightSetting bossEnabledRiftsClosed()
+	{
+		return HighlightSetting.LOBBY;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "bossPhosanisNightmare",
+		name = "Phosani's Nightmare",
+		description = "Configures whether kill count is displayed within Phosani's Nightmare.",
+		section = highlightSection
+	)
+	default HighlightSetting bossEnabledPhosanisNightmare()
+	{
+		return HighlightSetting.LOBBY;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "bossScurrius",
+		name = "Scurrius",
+		description = "Configures whether kill count is displayed within Scurrius.",
+		section = highlightSection
+	)
+	default HighlightSetting bossEnabledScurrius()
+	{
+		return HighlightSetting.LOBBY;
+	}
 
 	@ConfigItem(
 		position = 0,
