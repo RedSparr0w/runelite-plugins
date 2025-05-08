@@ -67,11 +67,73 @@ public class KillcountViewerOverlay extends Overlay
 	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 	private final Queue<String> kcLookupQueue = new ConcurrentLinkedQueue<>();
 
-	private static final HiscoreSkill[] BOSSES = {
-		HiscoreSkill.THE_CORRUPTED_GAUNTLET,
-		HiscoreSkill.THE_ROYAL_TITANS,
-		HiscoreSkill.ZALCANO,
-		HiscoreSkill.WINTERTODT,
+	private static final HiscoreSkill[] SCORES = {
+		HiscoreSkill.SOUL_WARS_ZEAL,
+		HiscoreSkill.LAST_MAN_STANDING,
+		HiscoreSkill.RIFTS_CLOSED,
+		HiscoreSkill.ABYSSAL_SIRE,
+		HiscoreSkill.ALCHEMICAL_HYDRA,
+		HiscoreSkill.AMOXLIATL,
+		HiscoreSkill.ARAXXOR,
+		HiscoreSkill.ARTIO,
+		HiscoreSkill.BARROWS_CHESTS,
+		HiscoreSkill.BRYOPHYTA,
+		HiscoreSkill.CALLISTO,
+		HiscoreSkill.CALVARION,
+		HiscoreSkill.CERBERUS,
+		HiscoreSkill.CHAMBERS_OF_XERIC,
+		HiscoreSkill.CHAMBERS_OF_XERIC_CHALLENGE_MODE,
+		HiscoreSkill.CHAOS_ELEMENTAL,
+		HiscoreSkill.CHAOS_FANATIC,
+		HiscoreSkill.COMMANDER_ZILYANA,
+		HiscoreSkill.CORPOREAL_BEAST,
+		HiscoreSkill.CRAZY_ARCHAEOLOGIST,
+		HiscoreSkill.DAGANNOTH_PRIME,
+		HiscoreSkill.DAGANNOTH_REX,
+		HiscoreSkill.DAGANNOTH_SUPREME,
+		HiscoreSkill.DERANGED_ARCHAEOLOGIST,
+		HiscoreSkill.DUKE_SUCELLUS,
+		HiscoreSkill.GENERAL_GRAARDOR,
+		HiscoreSkill.GIANT_MOLE,
+		HiscoreSkill.GROTESQUE_GUARDIANS,
+		HiscoreSkill.HESPORI,
+		HiscoreSkill.KALPHITE_QUEEN,
+		HiscoreSkill.KING_BLACK_DRAGON,
+		HiscoreSkill.KRAKEN,
+		HiscoreSkill.KREEARRA,
+		HiscoreSkill.KRIL_TSUTSAROTH,
+		HiscoreSkill.LUNAR_CHESTS,
+		HiscoreSkill.MIMIC,
+		HiscoreSkill.NEX,
+		HiscoreSkill.NIGHTMARE,
+		HiscoreSkill.PHOSANIS_NIGHTMARE,
+		HiscoreSkill.OBOR,
+		HiscoreSkill.PHANTOM_MUSPAH,
+		HiscoreSkill.SARACHNIS,
+		HiscoreSkill.SCORPIA,
+		HiscoreSkill.SCURRIUS,
+		HiscoreSkill.SKOTIZO,
+		HiscoreSkill.SOL_HEREDIT,
+		HiscoreSkill.TEMPOROSS,
+		HiscoreSkill.THE_CORRUPTED_GAUNTLET, // Done
+		HiscoreSkill.THE_HUEYCOATL,
+		HiscoreSkill.THE_LEVIATHAN,
+		HiscoreSkill.THE_ROYAL_TITANS, // Done
+		HiscoreSkill.THE_WHISPERER,
+		HiscoreSkill.THEATRE_OF_BLOOD,
+		HiscoreSkill.THEATRE_OF_BLOOD_HARD_MODE,
+		HiscoreSkill.THERMONUCLEAR_SMOKE_DEVIL,
+		HiscoreSkill.TOMBS_OF_AMASCUT,
+		HiscoreSkill.TOMBS_OF_AMASCUT_EXPERT,
+		HiscoreSkill.TZKAL_ZUK, // Done
+		HiscoreSkill.TZTOK_JAD, // Done
+		HiscoreSkill.VARDORVIS,
+		HiscoreSkill.VENENATIS,
+		HiscoreSkill.VETION,
+		HiscoreSkill.VORKATH, // Done
+		HiscoreSkill.WINTERTODT, // Done
+		HiscoreSkill.ZALCANO, // Done
+		HiscoreSkill.ZULRAH, // Done
 	};
 
 	private static class CachedKC
@@ -238,7 +300,7 @@ public class KillcountViewerOverlay extends Overlay
 		try
 		{
 			HiscoreResult result = hiscoreClient.lookup(playerName);
-			for (HiscoreSkill boss : BOSSES)
+			for (HiscoreSkill boss : SCORES)
 			{
 				if (boss != null)
 				{

@@ -26,19 +26,14 @@ package com.killcountviewer;
 
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.CommandExecuted;
 import net.runelite.client.hiscore.HiscoreSkill;
 import net.runelite.client.party.PartyService;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import com.google.common.eventbus.Subscribe;
 import com.killcountviewer.KillcountViewerConfig.HighlightAlwaysSetting;
 import com.killcountviewer.KillcountViewerConfig.HighlightSetting;
-
 import java.awt.*;
 import java.util.function.BiConsumer;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 @Singleton
 class KillcountViewerService
@@ -94,6 +89,7 @@ class KillcountViewerService
 		return x >= minX && x <= maxX && y >= minY && y <= maxY && location.getPlane() == z;
 	}
 
+	// Check if the setting is enabled for the given boss zone
 	boolean enabledAlways(HighlightAlwaysSetting setting)
 	{
 		return setting == HighlightAlwaysSetting.ALWAYS;
@@ -109,42 +105,415 @@ class KillcountViewerService
 		return setting == HighlightSetting.LOBBY;
 	}
 
+	// Check if the player is in a boss zone and return the corresponding HiscoreSkill
 	HiscoreSkill getBossZone(Player player)
 	{
 		if (player == null || player.getWorldLocation() == null) return null;
 
 		int region = WorldPoint.fromLocalInstance(client, player.getLocalLocation()).getRegionID();
-
-		// The corrupted gauntlet
-		if (region == 12127) { // Lobby
-			return enabledLobby(config.bossEnabledCorruptedGauntlet()) ? HiscoreSkill.THE_CORRUPTED_GAUNTLET : null;
-		}
-
-		// Royal titans
-		if (isInArea(player, 2948, 9571, 2958, 9583)) { // Lobby
-			return enabledLobby(config.bossEnabledRoyalTitans()) ? HiscoreSkill.THE_ROYAL_TITANS : null;
-		}
-		if (region == 11669) { // Boss room
-			return enabledAlways(config.bossEnabledRoyalTitans()) ? HiscoreSkill.THE_ROYAL_TITANS : null;
-		}
-
-		// Wintertodt
-		if (region == 6461) { // Lobby
-			return enabledLobby(config.bossEnabledWintertodt()) ? HiscoreSkill.WINTERTODT : null;
-		}
-		if (region == 6462) { // Boss room
-			return enabledAlways(config.bossEnabledWintertodt()) ? HiscoreSkill.WINTERTODT : null;
-		}
-
-		// Zalcano
-		if (isInArea(player, 3028, 6063, 3039, 6071)) { // Lobby
-			return enabledLobby(config.bossEnabledZalcano()) ? HiscoreSkill.ZALCANO : null;
-		}
-		if (region == 12126) { // Lobby + boss room
-			return enabledAlways(config.bossEnabledZalcano()) ? HiscoreSkill.ZALCANO : null;
-		}
-
+		
+		if (isSoulWarsZeal(player, region)) return HiscoreSkill.SOUL_WARS_ZEAL;
+		if (isLastManStanding(player, region)) return HiscoreSkill.LAST_MAN_STANDING;
+		if (isRiftsClosed(player, region)) return HiscoreSkill.RIFTS_CLOSED;
+		if (isAbyssalSire(player, region)) return HiscoreSkill.ABYSSAL_SIRE;
+		if (isAlchemicalHydra(player, region)) return HiscoreSkill.ALCHEMICAL_HYDRA;
+		if (isAmoxliatl(player, region)) return HiscoreSkill.AMOXLIATL;
+		if (isAraxxor(player, region)) return HiscoreSkill.ARAXXOR;
+		if (isArtio(player, region)) return HiscoreSkill.ARTIO;
+		if (isBarrowsChests(player, region)) return HiscoreSkill.BARROWS_CHESTS;
+		if (isBryophyta(player, region)) return HiscoreSkill.BRYOPHYTA;
+		if (isCallisto(player, region)) return HiscoreSkill.CALLISTO;
+		if (isCalvarion(player, region)) return HiscoreSkill.CALVARION;
+		if (isCerberus(player, region)) return HiscoreSkill.CERBERUS;
+		if (isChambersOfXeric(player, region)) return HiscoreSkill.CHAMBERS_OF_XERIC;
+		if (isChambersOfXericChallengeMode(player, region)) return HiscoreSkill.CHAMBERS_OF_XERIC_CHALLENGE_MODE;
+		if (isChaosElemental(player, region)) return HiscoreSkill.CHAOS_ELEMENTAL;
+		if (isChaosFanatic(player, region)) return HiscoreSkill.CHAOS_FANATIC;
+		if (isCommanderZilyana(player, region)) return HiscoreSkill.COMMANDER_ZILYANA;
+		if (isCorporealBeast(player, region)) return HiscoreSkill.CORPOREAL_BEAST;
+		if (isCrazyArchaeologist(player, region)) return HiscoreSkill.CRAZY_ARCHAEOLOGIST;
+		if (isDagannothPrime(player, region)) return HiscoreSkill.DAGANNOTH_PRIME;
+		if (isDagannothRex(player, region)) return HiscoreSkill.DAGANNOTH_REX;
+		if (isDagannothSupreme(player, region)) return HiscoreSkill.DAGANNOTH_SUPREME;
+		if (isDerangedArchaeologist(player, region)) return HiscoreSkill.DERANGED_ARCHAEOLOGIST;
+		if (isDukeSucellus(player, region)) return HiscoreSkill.DUKE_SUCELLUS;
+		if (isGeneralGraardor(player, region)) return HiscoreSkill.GENERAL_GRAARDOR;
+		if (isGiantMole(player, region)) return HiscoreSkill.GIANT_MOLE;
+		if (isGrotesqueGuardians(player, region)) return HiscoreSkill.GROTESQUE_GUARDIANS;
+		if (isHespori(player, region)) return HiscoreSkill.HESPORI;
+		if (isKalphiteQueen(player, region)) return HiscoreSkill.KALPHITE_QUEEN;
+		if (isKingBlackDragon(player, region)) return HiscoreSkill.KING_BLACK_DRAGON;
+		if (isKraken(player, region)) return HiscoreSkill.KRAKEN;
+		if (isKreeArra(player, region)) return HiscoreSkill.KREEARRA;
+		if (isKrilTsutsaroth(player, region)) return HiscoreSkill.KRIL_TSUTSAROTH;
+		if (isLunarChests(player, region)) return HiscoreSkill.LUNAR_CHESTS;
+		if (isMimic(player, region)) return HiscoreSkill.MIMIC;
+		if (isNex(player, region)) return HiscoreSkill.NEX;
+		if (isNightmare(player, region)) return HiscoreSkill.NIGHTMARE;
+		if (isPhosanisNightmare(player, region)) return HiscoreSkill.PHOSANIS_NIGHTMARE;
+		if (isObor(player, region)) return HiscoreSkill.OBOR;
+		if (isPhantomMuspah(player, region)) return HiscoreSkill.PHANTOM_MUSPAH;
+		if (isSarachnis(player, region)) return HiscoreSkill.SARACHNIS;
+		if (isScorpia(player, region)) return HiscoreSkill.SCORPIA;
+		if (isScurrius(player, region)) return HiscoreSkill.SCURRIUS;
+		if (isSkotizo(player, region)) return HiscoreSkill.SKOTIZO;
+		if (isSolHeredit(player, region)) return HiscoreSkill.SOL_HEREDIT;
+		if (isTempoross(player, region)) return HiscoreSkill.TEMPOROSS;
+		if (isTheHueycoatl(player, region)) return HiscoreSkill.THE_HUEYCOATL;
+		if (isTheLeviathan(player, region)) return HiscoreSkill.THE_LEVIATHAN;
+		if (isTheWhisperer(player, region)) return HiscoreSkill.THE_WHISPERER;
+		if (isTheatreOfBlood(player, region)) return HiscoreSkill.THEATRE_OF_BLOOD;
+		if (isTheatreOfBloodHardMode(player, region)) return HiscoreSkill.THEATRE_OF_BLOOD_HARD_MODE;
+		if (isThermonuclearSmokeDevil(player, region)) return HiscoreSkill.THERMONUCLEAR_SMOKE_DEVIL;
+		if (isTombsOfAmascut(player, region)) return HiscoreSkill.TOMBS_OF_AMASCUT;
+		if (isTombsOfAmascutExpert(player, region)) return HiscoreSkill.TOMBS_OF_AMASCUT_EXPERT;
+		if (isVenenatis(player, region)) return HiscoreSkill.VENENATIS;
+		if (isVetion(player, region)) return HiscoreSkill.VETION;
+		if (isCorruptedGauntlet(player, region)) return HiscoreSkill.THE_CORRUPTED_GAUNTLET;
+		if (isRoyalTitans(player, region)) return HiscoreSkill.THE_ROYAL_TITANS;
+		if (isTzKalZuk(player, region)) return HiscoreSkill.TZKAL_ZUK;
+		if (isTzTokJad(player, region)) return HiscoreSkill.TZTOK_JAD;
+		if (isVardorvis(player, region)) return HiscoreSkill.VARDORVIS;
+		if (isVorkath(player, region)) return HiscoreSkill.VORKATH;
+		if (isWintertodt(player, region)) return HiscoreSkill.WINTERTODT;
+		if (isZalcano(player, region)) return HiscoreSkill.ZALCANO;
+		if (isZulrah(player, region)) return HiscoreSkill.ZULRAH;
 
 		return null;
+	}
+	private boolean isSoulWarsZeal(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isLastManStanding(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isRiftsClosed(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isAbyssalSire(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isAlchemicalHydra(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isAmoxliatl(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isAraxxor(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isArtio(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isBarrowsChests(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isBryophyta(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isCallisto(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isCalvarion(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isCerberus(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isChambersOfXeric(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isChambersOfXericChallengeMode(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isChaosElemental(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isChaosFanatic(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isCommanderZilyana(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isCorporealBeast(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isCrazyArchaeologist(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isDagannothPrime(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isDagannothRex(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isDagannothSupreme(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isDerangedArchaeologist(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isDukeSucellus(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isGeneralGraardor(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isGiantMole(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isGrotesqueGuardians(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isHespori(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isKalphiteQueen(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isKingBlackDragon(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isKraken(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isKreeArra(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isKrilTsutsaroth(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isLunarChests(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isMimic(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isNex(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isNightmare(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isPhosanisNightmare(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isObor(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isPhantomMuspah(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isSarachnis(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isScorpia(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isScurrius(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isSkotizo(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isSolHeredit(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isTempoross(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isTheHueycoatl(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isTheLeviathan(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isTheWhisperer(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isTheatreOfBlood(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isTheatreOfBloodHardMode(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isThermonuclearSmokeDevil(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isTombsOfAmascut(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isTombsOfAmascutExpert(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isVenenatis(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isVetion(Player player, int region)
+	{
+		return false;
+	}
+	private boolean isCorruptedGauntlet(Player player, int region)
+	{
+		return region == 12127 && enabledLobby(config.bossEnabledCorruptedGauntlet());
+	}
+
+	private boolean isRoyalTitans(Player player, int region)
+	{
+		return
+			(isInArea(player, 2948, 9571, 2958, 9583) && enabledLobby(config.bossEnabledRoyalTitans())) ||
+			(region == 11669 && enabledAlways(config.bossEnabledRoyalTitans()));
+	}
+
+	private boolean isTzKalZuk(Player player, int region)
+	{
+		return (isInArea(player, 2482, 5124, 2509, 5090) && enabledLobby(config.bossEnabledTzKalZuk()));
+	}
+
+	private boolean isTzTokJad(Player player, int region)
+	{
+		return (isInArea(player, 2457, 5162, 2417, 5183) && enabledLobby(config.bossEnabledTzTokJad()));
+	}
+
+	private boolean isVardorvis(Player player, int region)
+	{
+		return false;
+	}
+
+	private boolean isVorkath(Player player, int region)
+	{
+		return
+			(region == 9023 && !isInArea(player, 2261, 4054, 2283, 4076) && enabledLobby(config.bossEnabledVorkath()));
+	}
+
+	private boolean isWintertodt(Player player, int region)
+	{
+		return
+			(region == 6461 && enabledLobby(config.bossEnabledWintertodt())) ||
+			(region == 6462 && enabledAlways(config.bossEnabledWintertodt()));
+	}
+
+	private boolean isZalcano(Player player, int region)
+	{
+		return
+			(isInArea(player, 3028, 6063, 3039, 6071) && enabledLobby(config.bossEnabledZalcano())) ||
+			(region == 12126 && enabledAlways(config.bossEnabledZalcano()));
+	}
+
+	private boolean isZulrah(Player player, int region)
+	{
+		return region == 8751 && enabledLobby(config.bossEnabledZulrah());
 	}
 }
