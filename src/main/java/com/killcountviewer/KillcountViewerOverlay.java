@@ -177,12 +177,16 @@ public class KillcountViewerOverlay extends Overlay
 			Map<HiscoreSkill, Integer> kcMap = fetchPlayerKC(playerName);
 			kcCache.put(playerName, new CachedKC(kcMap, Instant.now()));
 		});
-}
+	}
+
+	public void gameTick()
+	{
+		prisonSentenceService.getBossZone();
+	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		prisonSentenceService.CurrentBoss = prisonSentenceService.getBossZone();
 		prisonSentenceService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
 		return null;
 	}
@@ -199,7 +203,7 @@ public class KillcountViewerOverlay extends Overlay
 		String playerName = Text.removeTags(player.getName());
 
 		CachedKC cached = kcCache.get(playerName);
-		HiscoreSkill boss = prisonSentenceService.getBossZone();
+		HiscoreSkill boss = prisonSentenceService.CurrentBoss;
 		int kc = cached != null && cached.kcMap != null && cached.kcMap.containsKey(boss) ? cached.kcMap.get(boss) : 0;
 
 		// Don't show anything if no KC

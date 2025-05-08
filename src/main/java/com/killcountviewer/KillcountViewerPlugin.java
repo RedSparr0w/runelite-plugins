@@ -26,7 +26,9 @@ package com.killcountviewer;
 
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -63,5 +65,11 @@ public class KillcountViewerPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(prisonSentenceOverlay);
+	}
+
+	@Subscribe
+	public void onGameTick(final GameTick event)
+	{
+		prisonSentenceOverlay.gameTick();
 	}
 }

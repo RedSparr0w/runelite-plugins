@@ -53,9 +53,7 @@ class KillcountViewerService
 	void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
 
-		HiscoreSkill boss = getBossZone();
-
-		if (boss == null)	return;
+		if (CurrentBoss == null)	return;
 
 		for (Player player : client.getPlayers())
 		{
