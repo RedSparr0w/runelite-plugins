@@ -171,6 +171,7 @@ public class KillcountViewerOverlay extends Overlay
 		}
 
 		String playerName = kcLookupQueue.poll();
+		kcCache.put(playerName, new CachedKC(null, Instant.now()));
 
 		executor.submit(() ->
 		{
@@ -211,11 +212,9 @@ public class KillcountViewerOverlay extends Overlay
 			return;
 		}
 
-		// Re-fetch if it's been more than 30 minutes
-		if (cached == null || Duration.between(cached.fetchedAt, Instant.now()).toMinutes() > 30)
+		// Re-fetch if it's been more than 30 minutes and not already in the queue or never fetched
+		if (!kcLookupQueue.contains(playerName) && (cached == null || Duration.between(cached.fetchedAt, Instant.now()).toMinutes() > 30))
 		{
-			// Log a cached KC now so we don't spam the server
-			kcCache.put(playerName, new CachedKC(null, Instant.now()));
 			kcLookupQueue.offer(playerName);
 		}
 
