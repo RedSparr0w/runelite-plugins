@@ -71,7 +71,7 @@ public class KillcountViewerOverlay extends Overlay
 		HiscoreSkill.SOUL_WARS_ZEAL, // Done (test in matchmaking)
 		HiscoreSkill.LAST_MAN_STANDING, // Done (not in matchmaking)
 		HiscoreSkill.RIFTS_CLOSED, // Done
-		HiscoreSkill.ABYSSAL_SIRE,
+		HiscoreSkill.ABYSSAL_SIRE, // Done
 		HiscoreSkill.ALCHEMICAL_HYDRA,
 		HiscoreSkill.AMOXLIATL,
 		HiscoreSkill.ARAXXOR,

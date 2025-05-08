@@ -208,7 +208,8 @@ class KillcountViewerService
 
 	private boolean isAbyssalSire(Player player, int region)
 	{
-		return false;
+		return (region == 12106 && enabledLobby(config.bossEnabledAbyssalSire())) ||
+			((region == 11851 || region == 11850 || region == 12363 || region == 12362) && enabledAlways(config.bossEnabledAbyssalSire()));
 	}
 
 	private boolean isAlchemicalHydra(Player player, int region)
