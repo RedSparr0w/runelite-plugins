@@ -163,7 +163,6 @@ public class KillcountViewerOverlay extends Overlay
 		if (kcLookupQueue.isEmpty()) {
 				return;
 		}
-		// TODO: Clear kcCache if we haven't run this players HS yet, so they will be re-added to the queue next time they are seen
 		if (prisonSentenceService.CurrentBoss == null) {
 			// If we don't have a boss zone, clear the queue and return
 			kcLookupQueue.clear();
