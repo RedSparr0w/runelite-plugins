@@ -160,10 +160,20 @@ public class KillcountViewerOverlay extends Overlay
 		scheduler.scheduleAtFixedRate(this::processKcQueue, 0, 1, TimeUnit.SECONDS);
 	}
 
+	private int lookupCounter = 0;
 	private void processKcQueue() {
 		if (kcLookupQueue.isEmpty()) {
-				return;
+			lookupCounter = config.lookupCooldown() - 1;
+			return;
 		}
+		
+		// Only run every x seconds to avoid spamming the hiscore API
+		lookupCounter = (lookupCounter + 1) % config.lookupCooldown();
+
+		if (lookupCounter != 0) {
+			return;
+		}
+
 		if (prisonSentenceService.CurrentBoss == null) {
 			// If we don't have a boss zone, clear the queue and return
 			kcLookupQueue.clear();

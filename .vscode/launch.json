@@ -9,21 +9,6 @@
       "name": "ExamplePluginTest",
       "request": "launch",
       "mainClass": "com.example.ExamplePluginTest",
-      "projectName": "runelite-plugins",
-      "vmArgs": "-ea"
-    },
-    {
-      "type": "java",
-      "name": "Current File",
-      "request": "launch",
-      "mainClass": "${file}",
-      "vmArgs": "-ea"
-    },
-    {
-      "type": "java",
-      "name": "ExamplePluginTest",
-      "request": "launch",
-      "mainClass": "com.example.ExamplePluginTest",
       "projectName": "example-runelite-plugins",
       "vmArgs": "-ea"
     }

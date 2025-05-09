@@ -28,6 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Range;
 
 import java.awt.*;
 
@@ -68,6 +69,21 @@ public interface KillcountViewerConfig extends Config
 	default boolean killcountRankIcon()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "lookupCooldown",
+		name = "Killcount lookup cooldown",
+		description = "Time between each kill count lookup request, to avoid spamming API."
+	)
+	@Range(
+		min = 1,
+		max = 10
+	)
+	default int lookupCooldown()
+	{
+		return 5;
 	}
 
 	@ConfigSection(
