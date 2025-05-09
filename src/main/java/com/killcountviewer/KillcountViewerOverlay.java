@@ -75,48 +75,49 @@ public class KillcountViewerOverlay extends Overlay
 		HiscoreSkill.ALCHEMICAL_HYDRA,
 		HiscoreSkill.AMOXLIATL, // Done
 		HiscoreSkill.ARAXXOR,
-		HiscoreSkill.ARTIO,
+		HiscoreSkill.ARTIO, //Done
 		HiscoreSkill.BARROWS_CHESTS, // Done
 		HiscoreSkill.BRYOPHYTA, // Done
-		HiscoreSkill.CALLISTO,
-		HiscoreSkill.CALVARION,
+		HiscoreSkill.CALLISTO, // Done
+		HiscoreSkill.CALVARION, // Done
 		HiscoreSkill.CERBERUS,
 		HiscoreSkill.CHAMBERS_OF_XERIC,
 		HiscoreSkill.CHAMBERS_OF_XERIC_CHALLENGE_MODE,
-		HiscoreSkill.CHAOS_ELEMENTAL,
-		HiscoreSkill.CHAOS_FANATIC,
+		HiscoreSkill.CHAOS_ELEMENTAL, // Done
+		HiscoreSkill.CHAOS_FANATIC, //Done
 		HiscoreSkill.COMMANDER_ZILYANA,
-		HiscoreSkill.CORPOREAL_BEAST,
-		HiscoreSkill.CRAZY_ARCHAEOLOGIST,
+		HiscoreSkill.CORPOREAL_BEAST, // Done
+		HiscoreSkill.CRAZY_ARCHAEOLOGIST, //Done
 		HiscoreSkill.DAGANNOTH_PRIME,
 		HiscoreSkill.DAGANNOTH_REX,
 		HiscoreSkill.DAGANNOTH_SUPREME,
-		HiscoreSkill.DERANGED_ARCHAEOLOGIST,
+		HiscoreSkill.DERANGED_ARCHAEOLOGIST, //Done
 		HiscoreSkill.DUKE_SUCELLUS,
 		HiscoreSkill.GENERAL_GRAARDOR,
 		HiscoreSkill.GIANT_MOLE, // Done
-		HiscoreSkill.GROTESQUE_GUARDIANS,
-		HiscoreSkill.HESPORI,
-		HiscoreSkill.KALPHITE_QUEEN,
+		HiscoreSkill.GROTESQUE_GUARDIANS, //Done
+		HiscoreSkill.HESPORI, //Done
+		HiscoreSkill.KALPHITE_QUEEN, //Done (to test)
 		HiscoreSkill.KING_BLACK_DRAGON,
-		HiscoreSkill.KRAKEN,
+		HiscoreSkill.KRAKEN, // Done (to test)
 		HiscoreSkill.KREEARRA,
 		HiscoreSkill.KRIL_TSUTSAROTH,
-		HiscoreSkill.LUNAR_CHESTS,
+		HiscoreSkill.LUNAR_CHESTS, // Done
 		HiscoreSkill.MIMIC,
 		HiscoreSkill.NEX,
 		HiscoreSkill.NIGHTMARE,
 		HiscoreSkill.PHOSANIS_NIGHTMARE,
 		HiscoreSkill.OBOR, // Done
-		HiscoreSkill.PHANTOM_MUSPAH,
-		HiscoreSkill.SARACHNIS,
-		HiscoreSkill.SCORPIA,
-		HiscoreSkill.SCURRIUS,
+		HiscoreSkill.PHANTOM_MUSPAH, //Done
+		HiscoreSkill.SARACHNIS, // Done
+		HiscoreSkill.SCORPIA, // Done
+		HiscoreSkill.SCURRIUS, // Done
 		HiscoreSkill.SKOTIZO, // Done
-		HiscoreSkill.SOL_HEREDIT,
-		HiscoreSkill.TEMPOROSS,
+		HiscoreSkill.SOL_HEREDIT, // Done
+		HiscoreSkill.SPINDEL, // Done
+		HiscoreSkill.TEMPOROSS, //Done
 		HiscoreSkill.THE_CORRUPTED_GAUNTLET, // Done
-		HiscoreSkill.THE_HUEYCOATL,
+		HiscoreSkill.THE_HUEYCOATL, // Done
 		HiscoreSkill.THE_LEVIATHAN,
 		HiscoreSkill.THE_ROYAL_TITANS, // Done
 		HiscoreSkill.THE_WHISPERER,
@@ -128,8 +129,8 @@ public class KillcountViewerOverlay extends Overlay
 		HiscoreSkill.TZKAL_ZUK, // Done
 		HiscoreSkill.TZTOK_JAD, // Done
 		HiscoreSkill.VARDORVIS,
-		HiscoreSkill.VENENATIS,
-		HiscoreSkill.VETION,
+		HiscoreSkill.VENENATIS, // Done
+		HiscoreSkill.VETION, //Done
 		HiscoreSkill.VORKATH, // Done
 		HiscoreSkill.WINTERTODT, // Done
 		HiscoreSkill.ZALCANO, // Done
@@ -156,7 +157,7 @@ public class KillcountViewerOverlay extends Overlay
 		this.chatIconManager = chatIconManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_MED);
-		scheduler.scheduleAtFixedRate(this::processKcQueue, 0, 5, TimeUnit.SECONDS);
+		scheduler.scheduleAtFixedRate(this::processKcQueue, 0, 1, TimeUnit.SECONDS);
 	}
 
 	private void processKcQueue() {

@@ -165,6 +165,7 @@ class KillcountViewerService
 		if (checkCurrentBoss(HiscoreSkill.SCURRIUS) && isScurrius(player, region)) return CurrentBoss = HiscoreSkill.SCURRIUS;
 		if (checkCurrentBoss(HiscoreSkill.SKOTIZO) && isSkotizo(player, region)) return CurrentBoss = HiscoreSkill.SKOTIZO;
 		if (checkCurrentBoss(HiscoreSkill.SOL_HEREDIT) && isSolHeredit(player, region)) return CurrentBoss = HiscoreSkill.SOL_HEREDIT;
+		if (checkCurrentBoss(HiscoreSkill.SPINDEL) && isSpindel(player, region)) return CurrentBoss = HiscoreSkill.SPINDEL;
 		if (checkCurrentBoss(HiscoreSkill.TEMPOROSS) && isTempoross(player, region)) return CurrentBoss = HiscoreSkill.TEMPOROSS;
 		if (checkCurrentBoss(HiscoreSkill.THE_HUEYCOATL) && isTheHueycoatl(player, region)) return CurrentBoss = HiscoreSkill.THE_HUEYCOATL;
 		if (checkCurrentBoss(HiscoreSkill.THE_LEVIATHAN) && isTheLeviathan(player, region)) return CurrentBoss = HiscoreSkill.THE_LEVIATHAN;
@@ -231,7 +232,9 @@ class KillcountViewerService
 
 	private boolean isArtio(Player player, int region)
 	{
-		return false;
+		return
+			(isInArea(player, 3108, 3679, 3123, 3665) && enabledLobby(config.bossEnabledArtio())) ||
+			(region == 7092 && enabledAlways(config.bossEnabledArtio()));
 	}
 
 	private boolean isBarrowsChests(Player player, int region)
@@ -248,12 +251,16 @@ class KillcountViewerService
 
 	private boolean isCallisto(Player player, int region)
 	{
-		return false;
+		return 
+			(isInArea(player, 3282, 3857, 3303, 3840) && enabledLobby(config.bossEnabledCallisto())) ||
+			(region == 13473 && enabledAlways(config.bossEnabledCallisto()));
 	}
 
 	private boolean isCalvarion(Player player, int region)
 	{
-		return false;
+		return
+			(isInArea(player, 3176, 3687, 3183, 3678) && enabledLobby(config.bossEnabledCalvarion())) ||
+			(region == 7604 && enabledAlways(config.bossEnabledCalvarion()));
 	}
 
 	private boolean isCerberus(Player player, int region)
@@ -273,12 +280,12 @@ class KillcountViewerService
 
 	private boolean isChaosElemental(Player player, int region)
 	{
-		return false;
+		return isInArea(player, 3274, 3933, 3197, 3904) && enabledLobby(config.bossEnabledChaosElemental());
 	}
 
 	private boolean isChaosFanatic(Player player, int region)
 	{
-		return false;
+		return isInArea(player, 2960, 3858, 2986, 3831) && enabledLobby(config.bossEnabledChaosFanatic());
 	}
 
 	private boolean isCommanderZilyana(Player player, int region)
@@ -288,12 +295,14 @@ class KillcountViewerService
 
 	private boolean isCorporealBeast(Player player, int region)
 	{
-		return false;
+		return 
+			(isInArea(player, 2971, 4260, 2962, 4250, 2) && enabledLobby(config.bossEnabledCorporealBeast())) ||
+			(region == 11842 && enabledAlways(config.bossEnabledCorporealBeast()));
 	}
 
 	private boolean isCrazyArchaeologist(Player player, int region)
 	{
-		return false;
+		return isInArea(player, 2967, 3719, 2995, 3693) && enabledLobby(config.bossEnabledCrazyArchaeologist());
 	}
 
 	private boolean isDagannothPrime(Player player, int region)
@@ -313,7 +322,7 @@ class KillcountViewerService
 
 	private boolean isDerangedArchaeologist(Player player, int region)
 	{
-		return false;
+		return isInArea(player, 3657, 3735, 3700, 3712) && enabledLobby(config.bossEnabledDerangedArchaeologist());
 	}
 
 	private boolean isDukeSucellus(Player player, int region)
@@ -335,17 +344,18 @@ class KillcountViewerService
 
 	private boolean isGrotesqueGuardians(Player player, int region)
 	{
-		return false;
+		return (isInArea(player, 3429, 3545, 3405, 3531, 2) && enabledLobby(config.bossEnabledGrotesqueGuardians()));
 	}
 
 	private boolean isHespori(Player player, int region)
 	{
-		return false;
+		return (isInArea(player, 1242, 3739, 1223, 3720) || region == 5021) && enabledLobby(config.bossEnabledHespori());
 	}
 
 	private boolean isKalphiteQueen(Player player, int region)
 	{
-		return false;
+		return ((region == 12692 || region == 12948) && enabledLobby(config.bossEnabledKalphiteQueen())) ||
+			((region == 12691 || region == 12947) && enabledAlways(config.bossEnabledKalphiteQueen()));
 	}
 
 	private boolean isKingBlackDragon(Player player, int region)
@@ -355,7 +365,9 @@ class KillcountViewerService
 
 	private boolean isKraken(Player player, int region)
 	{
-		return false;
+		return
+			(isInArea(player, 2270, 10019, 2288, 10008) && enabledLobby(config.bossEnabledKraken())) ||
+			(isInArea(player, 2290, 10044, 2269, 10022) && enabledAlways(config.bossEnabledKraken()));
 	}
 
 	private boolean isKreeArra(Player player, int region)
@@ -370,7 +382,9 @@ class KillcountViewerService
 
 	private boolean isLunarChests(Player player, int region)
 	{
-		return false;
+		return
+			((region == 5527 || region == 6039 || region == 6037 || region == 5525 || region == 5782) && enabledLobby(config.bossEnabledLunarChests())) ||
+			((region == 6038 || region == 5783 || region == 5526) && enabledAlways(config.bossEnabledLunarChests()));
 	}
 
 	private boolean isMimic(Player player, int region)
@@ -400,22 +414,28 @@ class KillcountViewerService
 
 	private boolean isPhantomMuspah(Player player, int region)
 	{
-		return false;
+		return isInArea(player, 2907, 10313, 2918, 10324) && enabledLobby(config.bossEnabledPhantomMuspah());
 	}
 
 	private boolean isSarachnis(Player player, int region)
 	{
-		return false;
+		return
+			(isInArea(player, 1839, 9912, 1849, 9919) && enabledLobby(config.bossEnabledSarachnis())) ||
+			(region == 7322 && enabledAlways(config.bossEnabledSarachnis()));
 	}
 
 	private boolean isScorpia(Player player, int region)
 	{
-		return false;
+		return
+			(isInArea(player, 3260, 3960, 3216, 3934) && enabledLobby(config.bossEnabledScorpia())) ||
+			(region == 12961 && enabledAlways(config.bossEnabledScorpia()));
 	}
 
 	private boolean isScurrius(Player player, int region)
 	{
-		return false;
+		return
+			(isInArea(player, 3264, 9878, 3282, 9864) && enabledLobby(config.bossEnabledScurrius())) ||
+			(isInArea(player, 3308, 9858, 3289, 9877) && enabledAlways(config.bossEnabledScurrius()));
 	}
 
 	private boolean isSkotizo(Player player, int region)
@@ -425,17 +445,26 @@ class KillcountViewerService
 
 	private boolean isSolHeredit(Player player, int region)
 	{
-		return false;
+		return region == 7316 && enabledLobby(config.bossEnabledSolHeredit());
+	}
+
+	private boolean isSpindel(Player player, int region)
+	{
+		return (isInArea(player, 3177, 3750, 3189, 3730) && enabledLobby(config.bossEnabledSpindel())) ||
+			(region == 6580 && enabledAlways(config.bossEnabledSpindel()));
 	}
 
 	private boolean isTempoross(Player player, int region)
 	{
-		return false;
+		return ((region == 12588 || region == 12332) && enabledLobby(config.bossEnabledTempoross())) ||
+			(region == 12078 && enabledAlways(config.bossEnabledTempoross()));
 	}
 
 	private boolean isTheHueycoatl(Player player, int region)
 	{
-		return false;
+		return
+			(isInArea(player, 1521, 3296, 1538, 3285) && enabledLobby(config.bossEnabledTheHueycoatl())) ||
+			(isInArea(player, 1501, 3296, 1534, 3269) && enabledAlways(config.bossEnabledTheHueycoatl()));
 	}
 
 	private boolean isTheLeviathan(Player player, int region)
@@ -475,12 +504,15 @@ class KillcountViewerService
 
 	private boolean isVenenatis(Player player, int region)
 	{
-		return false;
+		return (isInArea(player, 3309, 3808, 3327, 3782) && enabledLobby(config.bossEnabledVenenatis())) ||
+			(region == 13727 && enabledAlways(config.bossEnabledVenenatis()));
 	}
 
 	private boolean isVetion(Player player, int region)
 	{
-		return false;
+		return
+			(isInArea(player, 3212, 3798, 3231, 3778) && enabledLobby(config.bossEnabledVetion())) ||
+			(region == 13215 && enabledAlways(config.bossEnabledVetion()));
 	}
 	private boolean isCorruptedGauntlet(Player player, int region)
 	{

@@ -751,6 +751,18 @@ public interface KillcountViewerConfig extends Config
 
 	@ConfigItem(
 		position = 0,
+		keyName = "bossSpindel",
+		name = "Spindel",
+		description = "Configures whether kill count is displayed within Spindel.",
+		section = highlightSection
+	)
+	default HighlightAlwaysSetting bossEnabledSpindel()
+	{
+		return HighlightAlwaysSetting.LOBBY;
+	}
+
+	@ConfigItem(
+		position = 0,
 		keyName = "bossTempoross",
 		name = "Tempoross",
 		description = "Configures whether kill count is displayed within Tempoross.",
@@ -764,7 +776,7 @@ public interface KillcountViewerConfig extends Config
 	@ConfigItem(
 		position = 0,
 		keyName = "bossTheHueycoatl",
-		name = "The Hueycoatl",
+		name = "Hueycoatl",
 		description = "Configures whether kill count is displayed within The Hueycoatl.",
 		section = highlightSection
 	)
@@ -776,7 +788,7 @@ public interface KillcountViewerConfig extends Config
 	@ConfigItem(
 		position = 0,
 		keyName = "bossTheLeviathan",
-		name = "The Leviathan",
+		name = "Leviathan",
 		description = "Configures whether kill count is displayed within The Leviathan.",
 		section = highlightSection
 	)
@@ -788,7 +800,7 @@ public interface KillcountViewerConfig extends Config
 	@ConfigItem(
 		position = 0,
 		keyName = "bossTheWhisperer",
-		name = "The Whisperer",
+		name = "Whisperer",
 		description = "Configures whether kill count is displayed within The Whisperer.",
 		section = highlightSection
 	)
