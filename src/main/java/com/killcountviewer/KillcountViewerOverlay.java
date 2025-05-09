@@ -181,7 +181,8 @@ public class KillcountViewerOverlay extends Overlay
 		}
 
 		String playerName = kcLookupQueue.poll();
-		kcCache.put(playerName, new CachedKC(null, Instant.now()));
+		Map<HiscoreSkill, Integer> data = kcCache.get(playerName) != null ? kcCache.get(playerName).kcMap : null;
+		kcCache.put(playerName, new CachedKC(data, Instant.now()));
 
 		executor.submit(() ->
 		{
