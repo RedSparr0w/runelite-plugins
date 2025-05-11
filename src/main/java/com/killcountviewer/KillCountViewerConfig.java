@@ -88,14 +88,14 @@ public interface KillCountViewerConfig extends Config
 
 	@ConfigSection(
 		name = "Boss options",
-		description = "Toggle which bosses to show kill count for (Always will not show everywhere in game, just while in the activity as well as the lobby).",
+		description = "Toggle which bosses to show kill count for (Always will not show everywhere in game, just while in the boss fight as well as the lobby).",
 		position = 10
 	)
 	String BOSS_SECTION = "BossSection";
 
 	@ConfigSection(
 		name = "Raid options",
-		description = "Toggle which raids to show kill count for (Always will not show everywhere in game, just while in the activity as well as the lobby).",
+		description = "Toggle which raids to show kill count for and type of kill count (only visible in lobby).",
 		position = 20
 	)
 	String RAID_SECTION = "RaidSection";
@@ -119,6 +119,14 @@ public interface KillCountViewerConfig extends Config
 		LOBBY,
 		ALWAYS,
 	}
+
+	enum HighlightRaidSetting
+	{
+		DISABLED,
+		NORMAL,
+		HARD,
+	}
+
 	@ConfigItem(
 		position = 0,
 		keyName = "bossSoulWarsZeal",
@@ -414,21 +422,9 @@ public interface KillCountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Chambers of Xeric.",
 		section = RAID_SECTION
 	)
-	default HighlightAlwaysSetting bossEnabledChambersOfXeric()
+	default HighlightRaidSetting bossEnabledChambersOfXeric()
 	{
-		return HighlightAlwaysSetting.LOBBY;
-	}
-
-	@ConfigItem(
-		position = 0,
-		keyName = "bossChambersOfXericChallengeMode",
-		name = "Chambers of Xeric (Challenge Mode)",
-		description = "Configures whether kill count is displayed within Chambers of Xeric (Challenge Mode).",
-		section = RAID_SECTION
-	)
-	default HighlightAlwaysSetting bossEnabledChambersOfXericChallengeMode()
-	{
-		return HighlightAlwaysSetting.LOBBY;
+		return HighlightRaidSetting.NORMAL;
 	}
 
 	@ConfigItem(
@@ -846,21 +842,9 @@ public interface KillCountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Theatre of Blood.",
 		section = RAID_SECTION
 	)
-	default HighlightAlwaysSetting bossEnabledTheatreOfBlood()
+	default HighlightRaidSetting bossEnabledTheatreOfBlood()
 	{
-		return HighlightAlwaysSetting.LOBBY;
-	}
-
-	@ConfigItem(
-		position = 0,
-		keyName = "bossTheatreOfBloodHardMode",
-		name = "Theatre of Blood (Hard Mode)",
-		description = "Configures whether kill count is displayed within Theatre of Blood (Hard Mode).",
-		section = RAID_SECTION
-	)
-	default HighlightAlwaysSetting bossEnabledTheatreOfBloodHardMode()
-	{
-		return HighlightAlwaysSetting.LOBBY;
+		return HighlightRaidSetting.NORMAL;
 	}
 
 	@ConfigItem(
@@ -882,21 +866,9 @@ public interface KillCountViewerConfig extends Config
 		description = "Configures whether kill count is displayed within Tombs of Amascut.",
 		section = RAID_SECTION
 	)
-	default HighlightAlwaysSetting bossEnabledTombsOfAmascut()
+	default HighlightRaidSetting bossEnabledTombsOfAmascut()
 	{
-		return HighlightAlwaysSetting.LOBBY;
-	}
-
-	@ConfigItem(
-		position = 0,
-		keyName = "bossTombsOfAmascutExpert",
-		name = "Tombs of Amascut (Expert)",
-		description = "Configures whether kill count is displayed within Tombs of Amascut (Expert).",
-		section = RAID_SECTION
-	)
-	default HighlightAlwaysSetting bossEnabledTombsOfAmascutExpert()
-	{
-		return HighlightAlwaysSetting.LOBBY;
+		return HighlightRaidSetting.NORMAL;
 	}
 
 	@ConfigItem(

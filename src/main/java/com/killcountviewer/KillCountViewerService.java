@@ -29,6 +29,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.hiscore.HiscoreSkill;
 import net.runelite.client.party.PartyService;
 import com.killcountviewer.KillCountViewerConfig.HighlightAlwaysSetting;
+import com.killcountviewer.KillCountViewerConfig.HighlightRaidSetting;
 import com.killcountviewer.KillCountViewerConfig.HighlightSetting;
 import java.awt.*;
 import java.util.function.BiConsumer;
@@ -107,6 +108,16 @@ class KillCountViewerService
 	boolean enabledLobby(HighlightSetting setting)
 	{
 		return setting == HighlightSetting.LOBBY;
+	}
+
+	boolean enabledRaidNormal(HighlightRaidSetting setting)
+	{
+		return setting == HighlightRaidSetting.NORMAL;
+	}
+
+	boolean enabledRaidExpert(HighlightRaidSetting setting)
+	{
+		return setting == HighlightRaidSetting.HARD;
 	}
 
 	boolean checkCurrentBoss(HiscoreSkill boss)
@@ -221,7 +232,7 @@ class KillCountViewerService
 
 	private boolean isAlchemicalHydra(Player player, int region)
 	{
-		return false;
+		return region == 5536 && enabledLobby(config.bossEnabledAlchemicalHydra());
 	}
 
 	private boolean isAmoxliatl(Player player, int region)
@@ -231,7 +242,7 @@ class KillCountViewerService
 
 	private boolean isAraxxor(Player player, int region)
 	{
-		return false;
+		return region == 14745 && enabledLobby(config.bossEnabledAraxxor());
 	}
 
 	private boolean isArtio(Player player, int region)
@@ -269,17 +280,17 @@ class KillCountViewerService
 
 	private boolean isCerberus(Player player, int region)
 	{
-		return false;
+		return region == 5139 && enabledLobby(config.bossEnabledCerberus());
 	}
 
 	private boolean isChambersOfXeric(Player player, int region)
 	{
-		return false;
+		return (isInArea(player, 1221, 3578, 1265, 3551) && enabledRaidNormal(config.bossEnabledChambersOfXeric()));
 	}
 
 	private boolean isChambersOfXericChallengeMode(Player player, int region)
 	{
-		return false;
+		return (isInArea(player, 1221, 3578, 1265, 3551) && enabledRaidExpert(config.bossEnabledChambersOfXeric()));
 	}
 
 	private boolean isChaosElemental(Player player, int region)
@@ -294,7 +305,8 @@ class KillCountViewerService
 
 	private boolean isCommanderZilyana(Player player, int region)
 	{
-		return false;
+		return (isInArea(player, 2909, 5257, 2932, 5276) && enabledLobby(config.bossEnabledCommanderZilyana())) ||
+			(region == 11601 && enabledAlways(config.bossEnabledCommanderZilyana()));
 	}
 
 	private boolean isCorporealBeast(Player player, int region)
@@ -336,7 +348,8 @@ class KillCountViewerService
 
 	private boolean isGeneralGraardor(Player player, int region)
 	{
-		return false;
+		return (isInArea(player, 2862, 5369, 2840, 5338, 2) && enabledLobby(config.bossEnabledGeneralGraardor())) ||
+			(region == 11347 && enabledAlways(config.bossEnabledGeneralGraardor()));
 	}
 
 	private boolean isGiantMole(Player player, int region)
@@ -376,12 +389,14 @@ class KillCountViewerService
 
 	private boolean isKreeArra(Player player, int region)
 	{
-		return false;
+		return (isInArea(player, 2822, 5294, 2854, 5279, 2) && enabledLobby(config.bossEnabledKreeArra())) ||
+			(region == 11346 && enabledAlways(config.bossEnabledKreeArra()));
 	}
 
 	private boolean isKrilTsutsaroth(Player player, int region)
 	{
-		return false;
+		return (isInArea(player, 2938, 5333, 2909, 5366, 2) && enabledLobby(config.bossEnabledKrilTsutsaroth())) ||
+			(region == 11603 && enabledAlways(config.bossEnabledKrilTsutsaroth()));
 	}
 
 	private boolean isLunarChests(Player player, int region)
@@ -483,12 +498,12 @@ class KillCountViewerService
 
 	private boolean isTheatreOfBlood(Player player, int region)
 	{
-		return false;
+		return (isInArea(player, 3640, 3235, 3684, 3203) && enabledRaidNormal(config.bossEnabledTheatreOfBlood()));
 	}
 
 	private boolean isTheatreOfBloodHardMode(Player player, int region)
 	{
-		return false;
+		return (isInArea(player, 3640, 3235, 3684, 3203) && enabledRaidExpert(config.bossEnabledTheatreOfBlood()));
 	}
 
 	private boolean isThermonuclearSmokeDevil(Player player, int region)
@@ -498,12 +513,12 @@ class KillCountViewerService
 
 	private boolean isTombsOfAmascut(Player player, int region)
 	{
-		return false;
+		return (region == 13454 && enabledRaidNormal(config.bossEnabledTombsOfAmascut()));
 	}
 
 	private boolean isTombsOfAmascutExpert(Player player, int region)
 	{
-		return false;
+		return (region == 13454 && enabledRaidExpert(config.bossEnabledTombsOfAmascut()));
 	}
 
 	private boolean isVenenatis(Player player, int region)
