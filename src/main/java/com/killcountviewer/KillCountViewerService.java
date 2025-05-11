@@ -41,7 +41,11 @@ class KillCountViewerService
 	private final Client client;
 	private final KillCountViewerConfig config;
 
-	HiscoreSkill CurrentBoss = null;
+	// The current boss zone the player is in
+	// This is used to check if the player is in a boss zone and only check against that boss
+	// This is set to null when the player leaves the boss zone and will check against all zones again
+	// This is used to prevent checking against all zones every tick
+	HiscoreSkill currentBoss = null;
 
 	@Inject
 	private KillCountViewerService(Client client, KillCountViewerConfig config, PartyService partyService)
@@ -53,7 +57,7 @@ class KillCountViewerService
 	void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
 
-		if (CurrentBoss == null)	return;
+		if (currentBoss == null)	return;
 
 		for (Player player : client.getPlayers())
 		{
@@ -107,7 +111,7 @@ class KillCountViewerService
 
 	boolean checkCurrentBoss(HiscoreSkill boss)
 	{
-		return CurrentBoss == null || CurrentBoss == boss;
+		return currentBoss == null || currentBoss == boss;
 	}
 
 	// Check if the player is in a boss zone and return the corresponding HiscoreSkill
@@ -117,77 +121,77 @@ class KillCountViewerService
 		if (player == null || player.getWorldLocation() == null) return null;
 
 		int region = WorldPoint.fromLocalInstance(client, player.getLocalLocation()).getRegionID();
-		// System.out.println("Region ID: " + region + " | Current Boss: " + CurrentBoss);
+		System.out.println("Region ID: " + region + " | Current Boss: " + currentBoss);
 		
-		if (checkCurrentBoss(HiscoreSkill.SOUL_WARS_ZEAL) && isSoulWarsZeal(player, region)) return CurrentBoss = HiscoreSkill.SOUL_WARS_ZEAL;
-		if (checkCurrentBoss(HiscoreSkill.LAST_MAN_STANDING) && isLastManStanding(player, region)) return CurrentBoss = HiscoreSkill.LAST_MAN_STANDING;
-		if (checkCurrentBoss(HiscoreSkill.RIFTS_CLOSED) && isRiftsClosed(player, region)) return CurrentBoss = HiscoreSkill.RIFTS_CLOSED;
-		if (checkCurrentBoss(HiscoreSkill.ABYSSAL_SIRE) && isAbyssalSire(player, region)) return CurrentBoss = HiscoreSkill.ABYSSAL_SIRE;
-		if (checkCurrentBoss(HiscoreSkill.ALCHEMICAL_HYDRA) && isAlchemicalHydra(player, region)) return CurrentBoss = HiscoreSkill.ALCHEMICAL_HYDRA;
-		if (checkCurrentBoss(HiscoreSkill.AMOXLIATL) && isAmoxliatl(player, region)) return CurrentBoss = HiscoreSkill.AMOXLIATL;
-		if (checkCurrentBoss(HiscoreSkill.ARAXXOR) && isAraxxor(player, region)) return CurrentBoss = HiscoreSkill.ARAXXOR;
-		if (checkCurrentBoss(HiscoreSkill.ARTIO) && isArtio(player, region)) return CurrentBoss = HiscoreSkill.ARTIO;
-		if (checkCurrentBoss(HiscoreSkill.BARROWS_CHESTS) && isBarrowsChests(player, region)) return CurrentBoss = HiscoreSkill.BARROWS_CHESTS;
-		if (checkCurrentBoss(HiscoreSkill.BRYOPHYTA) && isBryophyta(player, region)) return CurrentBoss = HiscoreSkill.BRYOPHYTA;
-		if (checkCurrentBoss(HiscoreSkill.CALLISTO) && isCallisto(player, region)) return CurrentBoss = HiscoreSkill.CALLISTO;
-		if (checkCurrentBoss(HiscoreSkill.CALVARION) && isCalvarion(player, region)) return CurrentBoss = HiscoreSkill.CALVARION;
-		if (checkCurrentBoss(HiscoreSkill.CERBERUS) && isCerberus(player, region)) return CurrentBoss = HiscoreSkill.CERBERUS;
-		if (checkCurrentBoss(HiscoreSkill.CHAMBERS_OF_XERIC) && isChambersOfXeric(player, region)) return CurrentBoss = HiscoreSkill.CHAMBERS_OF_XERIC;
-		if (checkCurrentBoss(HiscoreSkill.CHAMBERS_OF_XERIC_CHALLENGE_MODE) && isChambersOfXericChallengeMode(player, region)) return CurrentBoss = HiscoreSkill.CHAMBERS_OF_XERIC_CHALLENGE_MODE;
-		if (checkCurrentBoss(HiscoreSkill.CHAOS_ELEMENTAL) && isChaosElemental(player, region)) return CurrentBoss = HiscoreSkill.CHAOS_ELEMENTAL;
-		if (checkCurrentBoss(HiscoreSkill.CHAOS_FANATIC) && isChaosFanatic(player, region)) return CurrentBoss = HiscoreSkill.CHAOS_FANATIC;
-		if (checkCurrentBoss(HiscoreSkill.COMMANDER_ZILYANA) && isCommanderZilyana(player, region)) return CurrentBoss = HiscoreSkill.COMMANDER_ZILYANA;
-		if (checkCurrentBoss(HiscoreSkill.CORPOREAL_BEAST) && isCorporealBeast(player, region)) return CurrentBoss = HiscoreSkill.CORPOREAL_BEAST;
-		if (checkCurrentBoss(HiscoreSkill.CRAZY_ARCHAEOLOGIST) && isCrazyArchaeologist(player, region)) return CurrentBoss = HiscoreSkill.CRAZY_ARCHAEOLOGIST;
-		if (checkCurrentBoss(HiscoreSkill.DAGANNOTH_PRIME) && isDagannothPrime(player, region)) return CurrentBoss = HiscoreSkill.DAGANNOTH_PRIME;
-		if (checkCurrentBoss(HiscoreSkill.DAGANNOTH_REX) && isDagannothRex(player, region)) return CurrentBoss = HiscoreSkill.DAGANNOTH_REX;
-		if (checkCurrentBoss(HiscoreSkill.DAGANNOTH_SUPREME) && isDagannothSupreme(player, region)) return CurrentBoss = HiscoreSkill.DAGANNOTH_SUPREME;
-		if (checkCurrentBoss(HiscoreSkill.DERANGED_ARCHAEOLOGIST) && isDerangedArchaeologist(player, region)) return CurrentBoss = HiscoreSkill.DERANGED_ARCHAEOLOGIST;
-		if (checkCurrentBoss(HiscoreSkill.DUKE_SUCELLUS) && isDukeSucellus(player, region)) return CurrentBoss = HiscoreSkill.DUKE_SUCELLUS;
-		if (checkCurrentBoss(HiscoreSkill.GENERAL_GRAARDOR) && isGeneralGraardor(player, region)) return CurrentBoss = HiscoreSkill.GENERAL_GRAARDOR;
-		if (checkCurrentBoss(HiscoreSkill.GIANT_MOLE) && isGiantMole(player, region)) return CurrentBoss = HiscoreSkill.GIANT_MOLE;
-		if (checkCurrentBoss(HiscoreSkill.GROTESQUE_GUARDIANS) && isGrotesqueGuardians(player, region)) return CurrentBoss = HiscoreSkill.GROTESQUE_GUARDIANS;
-		if (checkCurrentBoss(HiscoreSkill.HESPORI) && isHespori(player, region)) return CurrentBoss = HiscoreSkill.HESPORI;
-		if (checkCurrentBoss(HiscoreSkill.KALPHITE_QUEEN) && isKalphiteQueen(player, region)) return CurrentBoss = HiscoreSkill.KALPHITE_QUEEN;
-		if (checkCurrentBoss(HiscoreSkill.KING_BLACK_DRAGON) && isKingBlackDragon(player, region)) return CurrentBoss = HiscoreSkill.KING_BLACK_DRAGON;
-		if (checkCurrentBoss(HiscoreSkill.KRAKEN) && isKraken(player, region)) return CurrentBoss = HiscoreSkill.KRAKEN;
-		if (checkCurrentBoss(HiscoreSkill.KREEARRA) && isKreeArra(player, region)) return CurrentBoss = HiscoreSkill.KREEARRA;
-		if (checkCurrentBoss(HiscoreSkill.KRIL_TSUTSAROTH) && isKrilTsutsaroth(player, region)) return CurrentBoss = HiscoreSkill.KRIL_TSUTSAROTH;
-		if (checkCurrentBoss(HiscoreSkill.LUNAR_CHESTS) && isLunarChests(player, region)) return CurrentBoss = HiscoreSkill.LUNAR_CHESTS;
-		if (checkCurrentBoss(HiscoreSkill.MIMIC) && isMimic(player, region)) return CurrentBoss = HiscoreSkill.MIMIC;
-		if (checkCurrentBoss(HiscoreSkill.NEX) && isNex(player, region)) return CurrentBoss = HiscoreSkill.NEX;
-		if (checkCurrentBoss(HiscoreSkill.NIGHTMARE) && isNightmare(player, region)) return CurrentBoss = HiscoreSkill.NIGHTMARE;
-		if (checkCurrentBoss(HiscoreSkill.PHOSANIS_NIGHTMARE) && isPhosanisNightmare(player, region)) return CurrentBoss = HiscoreSkill.PHOSANIS_NIGHTMARE;
-		if (checkCurrentBoss(HiscoreSkill.OBOR) && isObor(player, region)) return CurrentBoss = HiscoreSkill.OBOR;
-		if (checkCurrentBoss(HiscoreSkill.PHANTOM_MUSPAH) && isPhantomMuspah(player, region)) return CurrentBoss = HiscoreSkill.PHANTOM_MUSPAH;
-		if (checkCurrentBoss(HiscoreSkill.SARACHNIS) && isSarachnis(player, region)) return CurrentBoss = HiscoreSkill.SARACHNIS;
-		if (checkCurrentBoss(HiscoreSkill.SCORPIA) && isScorpia(player, region)) return CurrentBoss = HiscoreSkill.SCORPIA;
-		if (checkCurrentBoss(HiscoreSkill.SCURRIUS) && isScurrius(player, region)) return CurrentBoss = HiscoreSkill.SCURRIUS;
-		if (checkCurrentBoss(HiscoreSkill.SKOTIZO) && isSkotizo(player, region)) return CurrentBoss = HiscoreSkill.SKOTIZO;
-		if (checkCurrentBoss(HiscoreSkill.SOL_HEREDIT) && isSolHeredit(player, region)) return CurrentBoss = HiscoreSkill.SOL_HEREDIT;
-		if (checkCurrentBoss(HiscoreSkill.SPINDEL) && isSpindel(player, region)) return CurrentBoss = HiscoreSkill.SPINDEL;
-		if (checkCurrentBoss(HiscoreSkill.TEMPOROSS) && isTempoross(player, region)) return CurrentBoss = HiscoreSkill.TEMPOROSS;
-		if (checkCurrentBoss(HiscoreSkill.THE_HUEYCOATL) && isTheHueycoatl(player, region)) return CurrentBoss = HiscoreSkill.THE_HUEYCOATL;
-		if (checkCurrentBoss(HiscoreSkill.THE_LEVIATHAN) && isTheLeviathan(player, region)) return CurrentBoss = HiscoreSkill.THE_LEVIATHAN;
-		if (checkCurrentBoss(HiscoreSkill.THE_WHISPERER) && isTheWhisperer(player, region)) return CurrentBoss = HiscoreSkill.THE_WHISPERER;
-		if (checkCurrentBoss(HiscoreSkill.THEATRE_OF_BLOOD) && isTheatreOfBlood(player, region)) return CurrentBoss = HiscoreSkill.THEATRE_OF_BLOOD;
-		if (checkCurrentBoss(HiscoreSkill.THEATRE_OF_BLOOD_HARD_MODE) && isTheatreOfBloodHardMode(player, region)) return CurrentBoss = HiscoreSkill.THEATRE_OF_BLOOD_HARD_MODE;
-		if (checkCurrentBoss(HiscoreSkill.THERMONUCLEAR_SMOKE_DEVIL) && isThermonuclearSmokeDevil(player, region)) return CurrentBoss = HiscoreSkill.THERMONUCLEAR_SMOKE_DEVIL;
-		if (checkCurrentBoss(HiscoreSkill.TOMBS_OF_AMASCUT) && isTombsOfAmascut(player, region)) return CurrentBoss = HiscoreSkill.TOMBS_OF_AMASCUT;
-		if (checkCurrentBoss(HiscoreSkill.TOMBS_OF_AMASCUT_EXPERT) && isTombsOfAmascutExpert(player, region)) return CurrentBoss = HiscoreSkill.TOMBS_OF_AMASCUT_EXPERT;
-		if (checkCurrentBoss(HiscoreSkill.VENENATIS) && isVenenatis(player, region)) return CurrentBoss = HiscoreSkill.VENENATIS;
-		if (checkCurrentBoss(HiscoreSkill.VETION) && isVetion(player, region)) return CurrentBoss = HiscoreSkill.VETION;
-		if (checkCurrentBoss(HiscoreSkill.THE_CORRUPTED_GAUNTLET) && isCorruptedGauntlet(player, region)) return CurrentBoss = HiscoreSkill.THE_CORRUPTED_GAUNTLET;
-		if (checkCurrentBoss(HiscoreSkill.THE_ROYAL_TITANS) && isRoyalTitans(player, region)) return CurrentBoss = HiscoreSkill.THE_ROYAL_TITANS;
-		if (checkCurrentBoss(HiscoreSkill.TZKAL_ZUK) && isTzKalZuk(player, region)) return CurrentBoss = HiscoreSkill.TZKAL_ZUK;
-		if (checkCurrentBoss(HiscoreSkill.TZTOK_JAD) && isTzTokJad(player, region)) return CurrentBoss = HiscoreSkill.TZTOK_JAD;
-		if (checkCurrentBoss(HiscoreSkill.VARDORVIS) && isVardorvis(player, region)) return CurrentBoss = HiscoreSkill.VARDORVIS;
-		if (checkCurrentBoss(HiscoreSkill.VORKATH) && isVorkath(player, region)) return CurrentBoss = HiscoreSkill.VORKATH;
-		if (checkCurrentBoss(HiscoreSkill.WINTERTODT) && isWintertodt(player, region)) return CurrentBoss = HiscoreSkill.WINTERTODT;
-		if (checkCurrentBoss(HiscoreSkill.ZALCANO) && isZalcano(player, region)) return CurrentBoss = HiscoreSkill.ZALCANO;
-		if (checkCurrentBoss(HiscoreSkill.ZULRAH) && isZulrah(player, region)) return CurrentBoss = HiscoreSkill.ZULRAH;
+		if (checkCurrentBoss(HiscoreSkill.SOUL_WARS_ZEAL) && isSoulWarsZeal(player, region)) return currentBoss = HiscoreSkill.SOUL_WARS_ZEAL;
+		if (checkCurrentBoss(HiscoreSkill.LAST_MAN_STANDING) && isLastManStanding(player, region)) return currentBoss = HiscoreSkill.LAST_MAN_STANDING;
+		if (checkCurrentBoss(HiscoreSkill.RIFTS_CLOSED) && isRiftsClosed(player, region)) return currentBoss = HiscoreSkill.RIFTS_CLOSED;
+		if (checkCurrentBoss(HiscoreSkill.ABYSSAL_SIRE) && isAbyssalSire(player, region)) return currentBoss = HiscoreSkill.ABYSSAL_SIRE;
+		if (checkCurrentBoss(HiscoreSkill.ALCHEMICAL_HYDRA) && isAlchemicalHydra(player, region)) return currentBoss = HiscoreSkill.ALCHEMICAL_HYDRA;
+		if (checkCurrentBoss(HiscoreSkill.AMOXLIATL) && isAmoxliatl(player, region)) return currentBoss = HiscoreSkill.AMOXLIATL;
+		if (checkCurrentBoss(HiscoreSkill.ARAXXOR) && isAraxxor(player, region)) return currentBoss = HiscoreSkill.ARAXXOR;
+		if (checkCurrentBoss(HiscoreSkill.ARTIO) && isArtio(player, region)) return currentBoss = HiscoreSkill.ARTIO;
+		if (checkCurrentBoss(HiscoreSkill.BARROWS_CHESTS) && isBarrowsChests(player, region)) return currentBoss = HiscoreSkill.BARROWS_CHESTS;
+		if (checkCurrentBoss(HiscoreSkill.BRYOPHYTA) && isBryophyta(player, region)) return currentBoss = HiscoreSkill.BRYOPHYTA;
+		if (checkCurrentBoss(HiscoreSkill.CALLISTO) && isCallisto(player, region)) return currentBoss = HiscoreSkill.CALLISTO;
+		if (checkCurrentBoss(HiscoreSkill.CALVARION) && isCalvarion(player, region)) return currentBoss = HiscoreSkill.CALVARION;
+		if (checkCurrentBoss(HiscoreSkill.CERBERUS) && isCerberus(player, region)) return currentBoss = HiscoreSkill.CERBERUS;
+		if (checkCurrentBoss(HiscoreSkill.CHAMBERS_OF_XERIC) && isChambersOfXeric(player, region)) return currentBoss = HiscoreSkill.CHAMBERS_OF_XERIC;
+		if (checkCurrentBoss(HiscoreSkill.CHAMBERS_OF_XERIC_CHALLENGE_MODE) && isChambersOfXericChallengeMode(player, region)) return currentBoss = HiscoreSkill.CHAMBERS_OF_XERIC_CHALLENGE_MODE;
+		if (checkCurrentBoss(HiscoreSkill.CHAOS_ELEMENTAL) && isChaosElemental(player, region)) return currentBoss = HiscoreSkill.CHAOS_ELEMENTAL;
+		if (checkCurrentBoss(HiscoreSkill.CHAOS_FANATIC) && isChaosFanatic(player, region)) return currentBoss = HiscoreSkill.CHAOS_FANATIC;
+		if (checkCurrentBoss(HiscoreSkill.COMMANDER_ZILYANA) && isCommanderZilyana(player, region)) return currentBoss = HiscoreSkill.COMMANDER_ZILYANA;
+		if (checkCurrentBoss(HiscoreSkill.CORPOREAL_BEAST) && isCorporealBeast(player, region)) return currentBoss = HiscoreSkill.CORPOREAL_BEAST;
+		if (checkCurrentBoss(HiscoreSkill.CRAZY_ARCHAEOLOGIST) && isCrazyArchaeologist(player, region)) return currentBoss = HiscoreSkill.CRAZY_ARCHAEOLOGIST;
+		if (checkCurrentBoss(HiscoreSkill.DAGANNOTH_PRIME) && isDagannothPrime(player, region)) return currentBoss = HiscoreSkill.DAGANNOTH_PRIME;
+		if (checkCurrentBoss(HiscoreSkill.DAGANNOTH_REX) && isDagannothRex(player, region)) return currentBoss = HiscoreSkill.DAGANNOTH_REX;
+		if (checkCurrentBoss(HiscoreSkill.DAGANNOTH_SUPREME) && isDagannothSupreme(player, region)) return currentBoss = HiscoreSkill.DAGANNOTH_SUPREME;
+		if (checkCurrentBoss(HiscoreSkill.DERANGED_ARCHAEOLOGIST) && isDerangedArchaeologist(player, region)) return currentBoss = HiscoreSkill.DERANGED_ARCHAEOLOGIST;
+		if (checkCurrentBoss(HiscoreSkill.DUKE_SUCELLUS) && isDukeSucellus(player, region)) return currentBoss = HiscoreSkill.DUKE_SUCELLUS;
+		if (checkCurrentBoss(HiscoreSkill.GENERAL_GRAARDOR) && isGeneralGraardor(player, region)) return currentBoss = HiscoreSkill.GENERAL_GRAARDOR;
+		if (checkCurrentBoss(HiscoreSkill.GIANT_MOLE) && isGiantMole(player, region)) return currentBoss = HiscoreSkill.GIANT_MOLE;
+		if (checkCurrentBoss(HiscoreSkill.GROTESQUE_GUARDIANS) && isGrotesqueGuardians(player, region)) return currentBoss = HiscoreSkill.GROTESQUE_GUARDIANS;
+		if (checkCurrentBoss(HiscoreSkill.HESPORI) && isHespori(player, region)) return currentBoss = HiscoreSkill.HESPORI;
+		if (checkCurrentBoss(HiscoreSkill.KALPHITE_QUEEN) && isKalphiteQueen(player, region)) return currentBoss = HiscoreSkill.KALPHITE_QUEEN;
+		if (checkCurrentBoss(HiscoreSkill.KING_BLACK_DRAGON) && isKingBlackDragon(player, region)) return currentBoss = HiscoreSkill.KING_BLACK_DRAGON;
+		if (checkCurrentBoss(HiscoreSkill.KRAKEN) && isKraken(player, region)) return currentBoss = HiscoreSkill.KRAKEN;
+		if (checkCurrentBoss(HiscoreSkill.KREEARRA) && isKreeArra(player, region)) return currentBoss = HiscoreSkill.KREEARRA;
+		if (checkCurrentBoss(HiscoreSkill.KRIL_TSUTSAROTH) && isKrilTsutsaroth(player, region)) return currentBoss = HiscoreSkill.KRIL_TSUTSAROTH;
+		if (checkCurrentBoss(HiscoreSkill.LUNAR_CHESTS) && isLunarChests(player, region)) return currentBoss = HiscoreSkill.LUNAR_CHESTS;
+		if (checkCurrentBoss(HiscoreSkill.MIMIC) && isMimic(player, region)) return currentBoss = HiscoreSkill.MIMIC;
+		if (checkCurrentBoss(HiscoreSkill.NEX) && isNex(player, region)) return currentBoss = HiscoreSkill.NEX;
+		if (checkCurrentBoss(HiscoreSkill.NIGHTMARE) && isNightmare(player, region)) return currentBoss = HiscoreSkill.NIGHTMARE;
+		if (checkCurrentBoss(HiscoreSkill.PHOSANIS_NIGHTMARE) && isPhosanisNightmare(player, region)) return currentBoss = HiscoreSkill.PHOSANIS_NIGHTMARE;
+		if (checkCurrentBoss(HiscoreSkill.OBOR) && isObor(player, region)) return currentBoss = HiscoreSkill.OBOR;
+		if (checkCurrentBoss(HiscoreSkill.PHANTOM_MUSPAH) && isPhantomMuspah(player, region)) return currentBoss = HiscoreSkill.PHANTOM_MUSPAH;
+		if (checkCurrentBoss(HiscoreSkill.SARACHNIS) && isSarachnis(player, region)) return currentBoss = HiscoreSkill.SARACHNIS;
+		if (checkCurrentBoss(HiscoreSkill.SCORPIA) && isScorpia(player, region)) return currentBoss = HiscoreSkill.SCORPIA;
+		if (checkCurrentBoss(HiscoreSkill.SCURRIUS) && isScurrius(player, region)) return currentBoss = HiscoreSkill.SCURRIUS;
+		if (checkCurrentBoss(HiscoreSkill.SKOTIZO) && isSkotizo(player, region)) return currentBoss = HiscoreSkill.SKOTIZO;
+		if (checkCurrentBoss(HiscoreSkill.SOL_HEREDIT) && isSolHeredit(player, region)) return currentBoss = HiscoreSkill.SOL_HEREDIT;
+		if (checkCurrentBoss(HiscoreSkill.SPINDEL) && isSpindel(player, region)) return currentBoss = HiscoreSkill.SPINDEL;
+		if (checkCurrentBoss(HiscoreSkill.TEMPOROSS) && isTempoross(player, region)) return currentBoss = HiscoreSkill.TEMPOROSS;
+		if (checkCurrentBoss(HiscoreSkill.THE_HUEYCOATL) && isTheHueycoatl(player, region)) return currentBoss = HiscoreSkill.THE_HUEYCOATL;
+		if (checkCurrentBoss(HiscoreSkill.THE_LEVIATHAN) && isTheLeviathan(player, region)) return currentBoss = HiscoreSkill.THE_LEVIATHAN;
+		if (checkCurrentBoss(HiscoreSkill.THE_WHISPERER) && isTheWhisperer(player, region)) return currentBoss = HiscoreSkill.THE_WHISPERER;
+		if (checkCurrentBoss(HiscoreSkill.THEATRE_OF_BLOOD) && isTheatreOfBlood(player, region)) return currentBoss = HiscoreSkill.THEATRE_OF_BLOOD;
+		if (checkCurrentBoss(HiscoreSkill.THEATRE_OF_BLOOD_HARD_MODE) && isTheatreOfBloodHardMode(player, region)) return currentBoss = HiscoreSkill.THEATRE_OF_BLOOD_HARD_MODE;
+		if (checkCurrentBoss(HiscoreSkill.THERMONUCLEAR_SMOKE_DEVIL) && isThermonuclearSmokeDevil(player, region)) return currentBoss = HiscoreSkill.THERMONUCLEAR_SMOKE_DEVIL;
+		if (checkCurrentBoss(HiscoreSkill.TOMBS_OF_AMASCUT) && isTombsOfAmascut(player, region)) return currentBoss = HiscoreSkill.TOMBS_OF_AMASCUT;
+		if (checkCurrentBoss(HiscoreSkill.TOMBS_OF_AMASCUT_EXPERT) && isTombsOfAmascutExpert(player, region)) return currentBoss = HiscoreSkill.TOMBS_OF_AMASCUT_EXPERT;
+		if (checkCurrentBoss(HiscoreSkill.VENENATIS) && isVenenatis(player, region)) return currentBoss = HiscoreSkill.VENENATIS;
+		if (checkCurrentBoss(HiscoreSkill.VETION) && isVetion(player, region)) return currentBoss = HiscoreSkill.VETION;
+		if (checkCurrentBoss(HiscoreSkill.THE_CORRUPTED_GAUNTLET) && isCorruptedGauntlet(player, region)) return currentBoss = HiscoreSkill.THE_CORRUPTED_GAUNTLET;
+		if (checkCurrentBoss(HiscoreSkill.THE_ROYAL_TITANS) && isRoyalTitans(player, region)) return currentBoss = HiscoreSkill.THE_ROYAL_TITANS;
+		if (checkCurrentBoss(HiscoreSkill.TZKAL_ZUK) && isTzKalZuk(player, region)) return currentBoss = HiscoreSkill.TZKAL_ZUK;
+		if (checkCurrentBoss(HiscoreSkill.TZTOK_JAD) && isTzTokJad(player, region)) return currentBoss = HiscoreSkill.TZTOK_JAD;
+		if (checkCurrentBoss(HiscoreSkill.VARDORVIS) && isVardorvis(player, region)) return currentBoss = HiscoreSkill.VARDORVIS;
+		if (checkCurrentBoss(HiscoreSkill.VORKATH) && isVorkath(player, region)) return currentBoss = HiscoreSkill.VORKATH;
+		if (checkCurrentBoss(HiscoreSkill.WINTERTODT) && isWintertodt(player, region)) return currentBoss = HiscoreSkill.WINTERTODT;
+		if (checkCurrentBoss(HiscoreSkill.ZALCANO) && isZalcano(player, region)) return currentBoss = HiscoreSkill.ZALCANO;
+		if (checkCurrentBoss(HiscoreSkill.ZULRAH) && isZulrah(player, region)) return currentBoss = HiscoreSkill.ZULRAH;
 
-		return CurrentBoss = null;
+		return currentBoss = null;
 	}
 	private boolean isSoulWarsZeal(Player player, int region)
 	{

@@ -88,10 +88,24 @@ public interface KillCountViewerConfig extends Config
 
 	@ConfigSection(
 		name = "Boss options",
-		description = "Toggle which bosses to show kill count for.",
-		position = 99
+		description = "Toggle which bosses to show kill count for (Always will not show everywhere in game, just while in the activity as well as the lobby).",
+		position = 10
 	)
-	String highlightSection = "section";
+	String BOSS_SECTION = "BossSection";
+
+	@ConfigSection(
+		name = "Raid options",
+		description = "Toggle which raids to show kill count for (Always will not show everywhere in game, just while in the activity as well as the lobby).",
+		position = 20
+	)
+	String RAID_SECTION = "RaidSection";
+
+	@ConfigSection(
+		name = "Activity options",
+		description = "Toggle which activities to show kill count for (Always will not show everywhere in game, just while in the activity as well as the lobby).",
+		position = 30
+	)
+	String ACTIVITY_SECTION = "ActivitySection";
 
 	enum HighlightSetting
 	{
@@ -110,7 +124,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossSoulWarsZeal",
 		name = "Soul Wars Zeal",
 		description = "Configures whether kill count is displayed within Soul Wars Zeal.",
-		section = highlightSection
+		section = ACTIVITY_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledSoulWarsZeal()
 	{
@@ -122,7 +136,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossLastManStanding",
 		name = "Last Man Standing",
 		description = "Configures whether kill count is displayed within Last Man Standing.",
-		section = highlightSection
+		section = ACTIVITY_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledLastManStanding()
 	{
@@ -134,7 +148,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossGuardiansoftheRift",
 		name = "Guardians of the Rift",
 		description = "Configures whether kill count is displayed within Guardian of the Guardians of the Rift.",
-		section = highlightSection
+		section = ACTIVITY_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledRiftsClosed()
 	{
@@ -146,7 +160,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossPhosanisNightmare",
 		name = "Phosani's Nightmare",
 		description = "Configures whether kill count is displayed within Phosani's Nightmare.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledPhosanisNightmare()
 	{
@@ -158,7 +172,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossScurrius",
 		name = "Scurrius",
 		description = "Configures whether kill count is displayed within Scurrius.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledScurrius()
 	{
@@ -170,7 +184,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossCorruptedGauntlet",
 		name = "Corrupted Gauntlet",
 		description = "Configures whether kill count is displayed within the Corrupted Gauntlet.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledCorruptedGauntlet()
 	{
@@ -182,7 +196,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossRoyalTitans",
 		name = "Royal Titans",
 		description = "Configures whether kill count is displayed within Royal Titans.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledRoyalTitans()
 	{
@@ -194,7 +208,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossTzKalZuk",
 		name = "TzKal-Zuk",
 		description = "Configures whether kill count is displayed within TzKal-Zuk.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledTzKalZuk()
 	{
@@ -206,7 +220,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossTzTokJad",
 		name = "TzTok-Jad",
 		description = "Configures whether kill count is displayed within TzTok-Jad.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledTzTokJad()
 	{
@@ -218,7 +232,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossVardorvis",
 		name = "Vardorvis",
 		description = "Configures whether kill count is displayed within Vardorvis.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledVardorvis()
 	{
@@ -230,7 +244,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossVorkath",
 		name = "Vorkath",
 		description = "Configures whether kill count is displayed within Vorkath.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledVorkath()
 	{
@@ -242,7 +256,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossWintertodt",
 		name = "Wintertodt",
 		description = "Configures whether kill count is displayed within Wintertodt.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledWintertodt()
 	{
@@ -254,7 +268,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossZalcano",
 		name = "Zalcano",
 		description = "Configures whether kill count is displayed within Zalcano.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledZalcano()
 	{
@@ -266,7 +280,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossZulrah",
 		name = "Zulrah",
 		description = "Configures whether kill count is displayed within Zulrah.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledZulrah()
 	{
@@ -278,7 +292,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossAbyssalSire",
 		name = "Abyssal Sire",
 		description = "Configures whether kill count is displayed within Abyssal Sire.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledAbyssalSire()
 	{
@@ -290,7 +304,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossAlchemicalHydra",
 		name = "Alchemical Hydra",
 		description = "Configures whether kill count is displayed within Alchemical Hydra.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledAlchemicalHydra()
 	{
@@ -302,7 +316,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossAmoxliatl",
 		name = "Amoxliatl",
 		description = "Configures whether kill count is displayed within Amoxliatl.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledAmoxliatl()
 	{
@@ -314,7 +328,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossAraxxor",
 		name = "Araxxor",
 		description = "Configures whether kill count is displayed within Araxxor.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledAraxxor()
 	{
@@ -326,7 +340,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossArtio",
 		name = "Artio",
 		description = "Configures whether kill count is displayed within Artio.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledArtio()
 	{
@@ -338,7 +352,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossBarrowsChests",
 		name = "Barrows Chests",
 		description = "Configures whether kill count is displayed within Barrows Chests.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledBarrowsChests()
 	{
@@ -350,7 +364,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossBryophyta",
 		name = "Bryophyta",
 		description = "Configures whether kill count is displayed within Bryophyta.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledBryophyta()
 	{
@@ -362,7 +376,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossCallisto",
 		name = "Callisto",
 		description = "Configures whether kill count is displayed within Callisto.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledCallisto()
 	{
@@ -374,7 +388,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossCalvarion",
 		name = "Calvarion",
 		description = "Configures whether kill count is displayed within Calvarion.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledCalvarion()
 	{
@@ -386,7 +400,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossCerberus",
 		name = "Cerberus",
 		description = "Configures whether kill count is displayed within Cerberus.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledCerberus()
 	{
@@ -398,7 +412,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossChambersOfXeric",
 		name = "Chambers of Xeric",
 		description = "Configures whether kill count is displayed within Chambers of Xeric.",
-		section = highlightSection
+		section = RAID_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledChambersOfXeric()
 	{
@@ -410,7 +424,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossChambersOfXericChallengeMode",
 		name = "Chambers of Xeric (Challenge Mode)",
 		description = "Configures whether kill count is displayed within Chambers of Xeric (Challenge Mode).",
-		section = highlightSection
+		section = RAID_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledChambersOfXericChallengeMode()
 	{
@@ -422,7 +436,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossChaosElemental",
 		name = "Chaos Elemental",
 		description = "Configures whether kill count is displayed within Chaos Elemental.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledChaosElemental()
 	{
@@ -434,7 +448,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossChaosFanatic",
 		name = "Chaos Fanatic",
 		description = "Configures whether kill count is displayed within Chaos Fanatic.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledChaosFanatic()
 	{
@@ -446,7 +460,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossCommanderZilyana",
 		name = "Commander Zilyana",
 		description = "Configures whether kill count is displayed within Commander Zilyana.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledCommanderZilyana()
 	{
@@ -458,7 +472,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossCorporealBeast",
 		name = "Corporeal Beast",
 		description = "Configures whether kill count is displayed within Corporeal Beast.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledCorporealBeast()
 	{
@@ -470,7 +484,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossCrazyArchaeologist",
 		name = "Crazy Archaeologist",
 		description = "Configures whether kill count is displayed within Crazy Archaeologist.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledCrazyArchaeologist()
 	{
@@ -482,7 +496,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossDagannothPrime",
 		name = "Dagannoth Prime",
 		description = "Configures whether kill count is displayed within Dagannoth Prime.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledDagannothPrime()
 	{
@@ -494,7 +508,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossDagannothRex",
 		name = "Dagannoth Rex",
 		description = "Configures whether kill count is displayed within Dagannoth Rex.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledDagannothRex()
 	{
@@ -506,7 +520,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossDagannothSupreme",
 		name = "Dagannoth Supreme",
 		description = "Configures whether kill count is displayed within Dagannoth Supreme.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledDagannothSupreme()
 	{
@@ -518,7 +532,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossDerangedArchaeologist",
 		name = "Deranged Archaeologist",
 		description = "Configures whether kill count is displayed within Deranged Archaeologist.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledDerangedArchaeologist()
 	{
@@ -530,7 +544,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossDukeSucellus",
 		name = "Duke Sucellus",
 		description = "Configures whether kill count is displayed within Duke Sucellus.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledDukeSucellus()
 	{
@@ -542,7 +556,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossGeneralGraardor",
 		name = "General Graardor",
 		description = "Configures whether kill count is displayed within General Graardor.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledGeneralGraardor()
 	{
@@ -554,7 +568,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossGiantMole",
 		name = "Giant Mole",
 		description = "Configures whether kill count is displayed within Giant Mole.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledGiantMole()
 	{
@@ -566,7 +580,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossGrotesqueGuardians",
 		name = "Grotesque Guardians",
 		description = "Configures whether kill count is displayed within Grotesque Guardians.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledGrotesqueGuardians()
 	{
@@ -578,7 +592,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossHespori",
 		name = "Hespori",
 		description = "Configures whether kill count is displayed within Hespori.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledHespori()
 	{
@@ -590,7 +604,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossKalphiteQueen",
 		name = "Kalphite Queen",
 		description = "Configures whether kill count is displayed within Kalphite Queen.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledKalphiteQueen()
 	{
@@ -602,7 +616,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossKingBlackDragon",
 		name = "King Black Dragon",
 		description = "Configures whether kill count is displayed within King Black Dragon.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledKingBlackDragon()
 	{
@@ -614,7 +628,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossKraken",
 		name = "Kraken",
 		description = "Configures whether kill count is displayed within Kraken.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledKraken()
 	{
@@ -626,7 +640,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossKreeArra",
 		name = "Kree'arra",
 		description = "Configures whether kill count is displayed within Kree'arra.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledKreeArra()
 	{
@@ -638,7 +652,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossKrilTsutsaroth",
 		name = "K'ril Tsutsaroth",
 		description = "Configures whether kill count is displayed within K'ril Tsutsaroth.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledKrilTsutsaroth()
 	{
@@ -650,7 +664,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossLunarChests",
 		name = "Lunar Chests",
 		description = "Configures whether kill count is displayed within Lunar Chests.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledLunarChests()
 	{
@@ -662,7 +676,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossMimic",
 		name = "Mimic",
 		description = "Configures whether kill count is displayed within Mimic.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledMimic()
 	{
@@ -674,7 +688,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossNex",
 		name = "Nex",
 		description = "Configures whether kill count is displayed within Nex.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledNex()
 	{
@@ -686,7 +700,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossNightmare",
 		name = "Nightmare",
 		description = "Configures whether kill count is displayed within Nightmare.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledNightmare()
 	{
@@ -698,7 +712,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossObor",
 		name = "Obor",
 		description = "Configures whether kill count is displayed within Obor.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledObor()
 	{
@@ -710,7 +724,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossPhantomMuspah",
 		name = "Phantom Muspah",
 		description = "Configures whether kill count is displayed within Phantom Muspah.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledPhantomMuspah()
 	{
@@ -722,7 +736,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossSarachnis",
 		name = "Sarachnis",
 		description = "Configures whether kill count is displayed within Sarachnis.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledSarachnis()
 	{
@@ -734,7 +748,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossScorpia",
 		name = "Scorpia",
 		description = "Configures whether kill count is displayed within Scorpia.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledScorpia()
 	{
@@ -746,7 +760,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossSkotizo",
 		name = "Skotizo",
 		description = "Configures whether kill count is displayed within Skotizo.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledSkotizo()
 	{
@@ -758,7 +772,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossSolHeredit",
 		name = "Sol Heredit",
 		description = "Configures whether kill count is displayed within Sol Heredit.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledSolHeredit()
 	{
@@ -770,7 +784,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossSpindel",
 		name = "Spindel",
 		description = "Configures whether kill count is displayed within Spindel.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledSpindel()
 	{
@@ -782,7 +796,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossTempoross",
 		name = "Tempoross",
 		description = "Configures whether kill count is displayed within Tempoross.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledTempoross()
 	{
@@ -794,7 +808,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossTheHueycoatl",
 		name = "Hueycoatl",
 		description = "Configures whether kill count is displayed within The Hueycoatl.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledTheHueycoatl()
 	{
@@ -806,7 +820,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossTheLeviathan",
 		name = "Leviathan",
 		description = "Configures whether kill count is displayed within The Leviathan.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledTheLeviathan()
 	{
@@ -818,7 +832,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossTheWhisperer",
 		name = "Whisperer",
 		description = "Configures whether kill count is displayed within The Whisperer.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledTheWhisperer()
 	{
@@ -830,7 +844,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossTheatreOfBlood",
 		name = "Theatre of Blood",
 		description = "Configures whether kill count is displayed within Theatre of Blood.",
-		section = highlightSection
+		section = RAID_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledTheatreOfBlood()
 	{
@@ -842,7 +856,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossTheatreOfBloodHardMode",
 		name = "Theatre of Blood (Hard Mode)",
 		description = "Configures whether kill count is displayed within Theatre of Blood (Hard Mode).",
-		section = highlightSection
+		section = RAID_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledTheatreOfBloodHardMode()
 	{
@@ -854,7 +868,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossThermonuclearSmokeDevil",
 		name = "Thermonuclear Smoke Devil",
 		description = "Configures whether kill count is displayed within Thermonuclear Smoke Devil.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledThermonuclearSmokeDevil()
 	{
@@ -866,7 +880,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossTombsOfAmascut",
 		name = "Tombs of Amascut",
 		description = "Configures whether kill count is displayed within Tombs of Amascut.",
-		section = highlightSection
+		section = RAID_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledTombsOfAmascut()
 	{
@@ -878,7 +892,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossTombsOfAmascutExpert",
 		name = "Tombs of Amascut (Expert)",
 		description = "Configures whether kill count is displayed within Tombs of Amascut (Expert).",
-		section = highlightSection
+		section = RAID_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledTombsOfAmascutExpert()
 	{
@@ -890,7 +904,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossVenenatis",
 		name = "Venenatis",
 		description = "Configures whether kill count is displayed within Venenatis.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledVenenatis()
 	{
@@ -902,7 +916,7 @@ public interface KillCountViewerConfig extends Config
 		keyName = "bossVetion",
 		name = "Vet'ion",
 		description = "Configures whether kill count is displayed within Vet'ion.",
-		section = highlightSection
+		section = BOSS_SECTION
 	)
 	default HighlightAlwaysSetting bossEnabledVetion()
 	{

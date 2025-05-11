@@ -173,7 +173,7 @@ public class KillCountViewerOverlay extends Overlay
 			return;
 		}
 
-		if (killcountService.CurrentBoss == null) {
+		if (killcountService.currentBoss == null) {
 			// If we don't have a boss zone, clear the queue and return
 			kcLookupQueue.clear();
 			return;
@@ -215,7 +215,7 @@ public class KillCountViewerOverlay extends Overlay
 		String playerName = Text.removeTags(player.getName());
 
 		CachedKC cached = kcCache.get(playerName);
-		HiscoreSkill boss = killcountService.CurrentBoss;
+		HiscoreSkill boss = killcountService.currentBoss;
 		int kc = cached != null && cached.kcMap != null && cached.kcMap.containsKey(boss) ? cached.kcMap.get(boss) : 0;
 
 		// Don't show anything if no KC

@@ -33,21 +33,16 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 import javax.inject.Inject;
 
 @PluginDescriptor(
 	name = "Kill Count Viewer",
-	description = "Show players time served within the Corrupted Gauntlet",
+	description = "Display players kill counts at various bosses throughout the game",
 	tags = {"highlight", "boss", "overlay", "players", "killcount", "kc"}
 )
 @Slf4j
 public class KillCountViewerPlugin extends Plugin
 {
-	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 	@Inject
 	private OverlayManager overlayManager;
 
