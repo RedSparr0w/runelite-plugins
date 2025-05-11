@@ -36,7 +36,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-class KillcountViewerService
+class KillCountViewerService
 {
 	private final Client client;
 	private final KillcountViewerConfig config;
@@ -44,7 +44,7 @@ class KillcountViewerService
 	HiscoreSkill CurrentBoss = null;
 
 	@Inject
-	private KillcountViewerService(Client client, KillcountViewerConfig config, PartyService partyService)
+	private KillCountViewerService(Client client, KillcountViewerConfig config, PartyService partyService)
 	{
 		this.config = config;
 		this.client = client;

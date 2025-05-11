@@ -1,6 +1,6 @@
-# Red Prison Sentence
+# Kill Count Viewer
 
-A plugin to display players time served within the corrupted gauntlet
+A plugin to display players kill counts at various bosses throughout the game
 
 ![image](https://github.com/user-attachments/assets/06379502-3e20-4b79-9cf5-ca850022b095)
 

@@ -59,12 +59,11 @@ public class KillcountViewerOverlay extends Overlay
 	private static final int ACTOR_OVERHEAD_TEXT_MARGIN = 25;
 	private static final int ACTOR_HORIZONTAL_TEXT_MARGIN = 10;
 
-	private final KillcountViewerService prisonSentenceService;
+	private final KillCountViewerService killcountService;
 	private final KillcountViewerConfig config;
 	private final ChatIconManager chatIconManager;
 	private final Map<String, CachedKC> kcCache = new ConcurrentHashMap<>();
 	private final ExecutorService executor = Executors.newSingleThreadExecutor();
-	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 	private final Queue<String> kcLookupQueue = new ConcurrentLinkedQueue<>();
 
 	private static final HiscoreSkill[] SCORES = {
@@ -150,18 +149,18 @@ public class KillcountViewerOverlay extends Overlay
 	}
 
 	@Inject
-	private KillcountViewerOverlay(KillcountViewerConfig config, KillcountViewerService prisonSentenceService, ChatIconManager chatIconManager)
+	private KillcountViewerOverlay(KillcountViewerConfig config, KillCountViewerService KillCountService, ChatIconManager chatIconManager)
 	{
 		this.config = config;
-		this.prisonSentenceService = prisonSentenceService;
+		this.killcountService = KillCountService;
 		this.chatIconManager = chatIconManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_MED);
-		scheduler.scheduleAtFixedRate(this::processKcQueue, 0, 1, TimeUnit.SECONDS);
 	}
 
 	private int lookupCounter = 0;
-	private void processKcQueue() {
+
+	public void processKcQueue() {
 		if (kcLookupQueue.isEmpty()) {
 			lookupCounter = config.lookupCooldown() - 1;
 			return;
@@ -174,7 +173,7 @@ public class KillcountViewerOverlay extends Overlay
 			return;
 		}
 
-		if (prisonSentenceService.CurrentBoss == null) {
+		if (killcountService.CurrentBoss == null) {
 			// If we don't have a boss zone, clear the queue and return
 			kcLookupQueue.clear();
 			return;
@@ -193,13 +192,14 @@ public class KillcountViewerOverlay extends Overlay
 
 	public void gameTick()
 	{
-		prisonSentenceService.getBossZone();
+		killcountService.getBossZone();
+		this.processKcQueue();
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		prisonSentenceService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
+		killcountService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
 		return null;
 	}
 
@@ -215,7 +215,7 @@ public class KillcountViewerOverlay extends Overlay
 		String playerName = Text.removeTags(player.getName());
 
 		CachedKC cached = kcCache.get(playerName);
-		HiscoreSkill boss = prisonSentenceService.CurrentBoss;
+		HiscoreSkill boss = killcountService.CurrentBoss;
 		int kc = cached != null && cached.kcMap != null && cached.kcMap.containsKey(boss) ? cached.kcMap.get(boss) : 0;
 
 		// Don't show anything if no KC

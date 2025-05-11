@@ -33,6 +33,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 @PluginDescriptor(
@@ -43,11 +47,12 @@ import javax.inject.Inject;
 @Slf4j
 public class KillcountViewerPlugin extends Plugin
 {
+	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
-	private KillcountViewerOverlay prisonSentenceOverlay;
+	private KillcountViewerOverlay killcountOverlay;
 
 	@Provides
 	KillcountViewerConfig provideConfig(ConfigManager configManager)
@@ -58,18 +63,18 @@ public class KillcountViewerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(prisonSentenceOverlay);
+		overlayManager.add(killcountOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(prisonSentenceOverlay);
+		overlayManager.remove(killcountOverlay);
 	}
 
 	@Subscribe
 	public void onGameTick(final GameTick event)
 	{
-		prisonSentenceOverlay.gameTick();
+		killcountOverlay.gameTick();
 	}
 }

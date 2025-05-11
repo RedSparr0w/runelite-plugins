@@ -75,15 +75,15 @@ public interface KillcountViewerConfig extends Config
 		position = 3,
 		keyName = "lookupCooldown",
 		name = "Killcount lookup cooldown",
-		description = "Time between each kill count lookup request, to avoid spamming API."
+		description = "Ticks between each kill count lookup request, to avoid spamming API."
 	)
 	@Range(
 		min = 1,
-		max = 10
+		max = 20
 	)
 	default int lookupCooldown()
 	{
-		return 5;
+		return 10;
 	}
 
 	@ConfigSection(
