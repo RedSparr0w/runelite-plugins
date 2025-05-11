@@ -28,8 +28,8 @@ import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.hiscore.HiscoreSkill;
 import net.runelite.client.party.PartyService;
-import com.killcountviewer.KillcountViewerConfig.HighlightAlwaysSetting;
-import com.killcountviewer.KillcountViewerConfig.HighlightSetting;
+import com.killcountviewer.KillCountViewerConfig.HighlightAlwaysSetting;
+import com.killcountviewer.KillCountViewerConfig.HighlightSetting;
 import java.awt.*;
 import java.util.function.BiConsumer;
 import javax.inject.Inject;
@@ -39,12 +39,12 @@ import javax.inject.Singleton;
 class KillCountViewerService
 {
 	private final Client client;
-	private final KillcountViewerConfig config;
+	private final KillCountViewerConfig config;
 
 	HiscoreSkill CurrentBoss = null;
 
 	@Inject
-	private KillCountViewerService(Client client, KillcountViewerConfig config, PartyService partyService)
+	private KillCountViewerService(Client client, KillCountViewerConfig config, PartyService partyService)
 	{
 		this.config = config;
 		this.client = client;

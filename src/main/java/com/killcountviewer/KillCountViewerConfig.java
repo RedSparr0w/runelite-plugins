@@ -32,8 +32,8 @@ import net.runelite.client.config.Range;
 
 import java.awt.*;
 
-@ConfigGroup(KillcountViewerConfig.GROUP)
-public interface KillcountViewerConfig extends Config
+@ConfigGroup(KillCountViewerConfig.GROUP)
+public interface KillCountViewerConfig extends Config
 {
 	String GROUP = "killcountviewer";
 

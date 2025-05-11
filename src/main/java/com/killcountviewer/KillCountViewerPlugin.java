@@ -45,19 +45,19 @@ import javax.inject.Inject;
 	tags = {"highlight", "boss", "overlay", "players", "killcount", "kc"}
 )
 @Slf4j
-public class KillcountViewerPlugin extends Plugin
+public class KillCountViewerPlugin extends Plugin
 {
 	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
-	private KillcountViewerOverlay killcountOverlay;
+	private KillCountViewerOverlay killcountOverlay;
 
 	@Provides
-	KillcountViewerConfig provideConfig(ConfigManager configManager)
+	KillCountViewerConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(KillcountViewerConfig.class);
+		return configManager.getConfig(KillCountViewerConfig.class);
 	}
 
 	@Override

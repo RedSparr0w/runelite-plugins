@@ -51,7 +51,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 @Singleton
-public class KillcountViewerOverlay extends Overlay
+public class KillCountViewerOverlay extends Overlay
 {
 	@Inject
 	private HiscoreClient hiscoreClient;
@@ -60,7 +60,7 @@ public class KillcountViewerOverlay extends Overlay
 	private static final int ACTOR_HORIZONTAL_TEXT_MARGIN = 10;
 
 	private final KillCountViewerService killcountService;
-	private final KillcountViewerConfig config;
+	private final KillCountViewerConfig config;
 	private final ChatIconManager chatIconManager;
 	private final Map<String, CachedKC> kcCache = new ConcurrentHashMap<>();
 	private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -149,7 +149,7 @@ public class KillcountViewerOverlay extends Overlay
 	}
 
 	@Inject
-	private KillcountViewerOverlay(KillcountViewerConfig config, KillCountViewerService KillCountService, ChatIconManager chatIconManager)
+	private KillCountViewerOverlay(KillCountViewerConfig config, KillCountViewerService KillCountService, ChatIconManager chatIconManager)
 	{
 		this.config = config;
 		this.killcountService = KillCountService;
