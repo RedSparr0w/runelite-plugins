@@ -2,7 +2,7 @@
 
 A plugin to display players kill counts at various bosses throughout the game
 
-![image](https://github.com/user-attachments/assets/06379502-3e20-4b79-9cf5-ca850022b095)
+![image](https://github.com/user-attachments/assets/cd6a91d3-714d-43b3-a224-35069e0d3c93)
 
 ![image](https://github.com/user-attachments/assets/e2e8d429-8dab-4d51-b045-e0cf85f79263)
-![image](https://github.com/user-attachments/assets/ee4f34e8-b98b-4315-9373-b1043235e3f7)
+![image](https://github.com/user-attachments/assets/425b6f0e-4d9c-474e-81a2-0fcf4294b7c8)
