@@ -162,7 +162,14 @@ public class KillCountViewerOverlay extends Overlay
 
 	public void processKcQueue() {
 		if (kcLookupQueue.isEmpty()) {
+			// If the queue is empty, reset the counter so it does a look up next tick when a player is added
 			lookupCounter = config.lookupCooldown() - 1;
+			return;
+		}
+
+		if (killcountService.currentBoss == null) {
+			// If we don't have a boss zone, clear the queue and return
+			kcLookupQueue.clear();
 			return;
 		}
 		
@@ -173,20 +180,19 @@ public class KillCountViewerOverlay extends Overlay
 			return;
 		}
 
-		if (killcountService.currentBoss == null) {
-			// If we don't have a boss zone, clear the queue and return
-			kcLookupQueue.clear();
-			return;
-		}
-
 		String playerName = kcLookupQueue.poll();
 		Map<HiscoreSkill, Integer> data = kcCache.get(playerName) != null ? kcCache.get(playerName).kcMap : null;
 		kcCache.put(playerName, new CachedKC(data, Instant.now()));
 
 		executor.submit(() ->
 		{
-			Map<HiscoreSkill, Integer> kcMap = fetchPlayerKC(playerName);
-			kcCache.put(playerName, new CachedKC(kcMap, Instant.now()));
+			try {
+				Map<HiscoreSkill, Integer> kcMap = fetchPlayerKC(playerName);
+				kcCache.put(playerName, new CachedKC(kcMap, Instant.now()));
+			}
+			catch (Exception e) {
+				System.err.println("Error fetching kill count for " + playerName + ": " + e.getMessage());
+			}
 		});
 	}
 
