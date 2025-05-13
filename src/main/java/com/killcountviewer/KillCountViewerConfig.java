@@ -164,6 +164,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
+		hidden = true,
 		position = 0,
 		keyName = "bossPhosanisNightmare",
 		name = "Phosani's Nightmare",
@@ -488,6 +489,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
+		hidden = true,
 		position = 0,
 		keyName = "bossDagannothPrime",
 		name = "Dagannoth Prime",
@@ -500,6 +502,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
+		hidden = true,
 		position = 0,
 		keyName = "bossDagannothRex",
 		name = "Dagannoth Rex",
@@ -512,6 +515,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
+		hidden = true,
 		position = 0,
 		keyName = "bossDagannothSupreme",
 		name = "Dagannoth Supreme",
@@ -536,6 +540,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
+		hidden = true,
 		position = 0,
 		keyName = "bossDukeSucellus",
 		name = "Duke Sucellus",
@@ -680,6 +685,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
+		hidden = true,
 		position = 0,
 		keyName = "bossNex",
 		name = "Nex",
@@ -812,6 +818,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
+		hidden = true,
 		position = 0,
 		keyName = "bossTheLeviathan",
 		name = "Leviathan",
@@ -824,6 +831,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
+		hidden = true,
 		position = 0,
 		keyName = "bossTheWhisperer",
 		name = "Whisperer",
@@ -848,6 +856,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
+		hidden = true,
 		position = 0,
 		keyName = "bossThermonuclearSmokeDevil",
 		name = "Thermonuclear Smoke Devil",

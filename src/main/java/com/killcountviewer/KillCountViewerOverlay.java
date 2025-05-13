@@ -97,12 +97,12 @@ public class KillCountViewerOverlay extends Overlay
 		HiscoreSkill.GROTESQUE_GUARDIANS,               // Done
 		HiscoreSkill.HESPORI,                           // Done
 		HiscoreSkill.KALPHITE_QUEEN,                    // Done (to test)
-		HiscoreSkill.KING_BLACK_DRAGON,
+		HiscoreSkill.KING_BLACK_DRAGON,                 // Done
 		HiscoreSkill.KRAKEN,                            // Done (to test)
 		HiscoreSkill.KREEARRA,                          // Done
 		HiscoreSkill.KRIL_TSUTSAROTH,                   // Done
 		HiscoreSkill.LUNAR_CHESTS,                      // Done
-		HiscoreSkill.MIMIC,
+		HiscoreSkill.MIMIC,                             // Done
 		HiscoreSkill.NEX,
 		HiscoreSkill.NIGHTMARE,
 		HiscoreSkill.PHOSANIS_NIGHTMARE,

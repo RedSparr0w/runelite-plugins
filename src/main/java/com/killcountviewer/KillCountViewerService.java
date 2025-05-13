@@ -132,7 +132,7 @@ class KillCountViewerService
 		if (player == null || player.getWorldLocation() == null) return null;
 
 		int region = WorldPoint.fromLocalInstance(client, player.getLocalLocation()).getRegionID();
-		System.out.println("Region ID: " + region + " | Current Boss: " + currentBoss);
+		// System.out.println("Region ID: " + region + " | Current Boss: " + currentBoss);
 		
 		if (checkCurrentBoss(HiscoreSkill.SOUL_WARS_ZEAL) && isSoulWarsZeal(player, region)) return currentBoss = HiscoreSkill.SOUL_WARS_ZEAL;
 		if (checkCurrentBoss(HiscoreSkill.LAST_MAN_STANDING) && isLastManStanding(player, region)) return currentBoss = HiscoreSkill.LAST_MAN_STANDING;
@@ -377,7 +377,8 @@ class KillCountViewerService
 
 	private boolean isKingBlackDragon(Player player, int region)
 	{
-		return false;
+		return (region == 12192 && enabledLobby(config.bossEnabledKingBlackDragon())) ||
+			(region == 9033 && enabledAlways(config.bossEnabledKingBlackDragon()));
 	}
 
 	private boolean isKraken(Player player, int region)
@@ -408,7 +409,7 @@ class KillCountViewerService
 
 	private boolean isMimic(Player player, int region)
 	{
-		return false;
+		return ((isInArea(player, 1633, 3582, 1657, 3561) || isInArea(player, 1633, 3582, 1657, 3561, 1)) && enabledLobby(config.bossEnabledMimic()));
 	}
 
 	private boolean isNex(Player player, int region)
@@ -418,7 +419,7 @@ class KillCountViewerService
 
 	private boolean isNightmare(Player player, int region)
 	{
-		return false;
+		return region == 15256 && enabledLobby(config.bossEnabledNightmare());
 	}
 
 	private boolean isPhosanisNightmare(Player player, int region)
