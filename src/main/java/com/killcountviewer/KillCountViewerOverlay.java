@@ -186,13 +186,8 @@ public class KillCountViewerOverlay extends Overlay
 
 		executor.submit(() ->
 		{
-			try {
-				Map<HiscoreSkill, Integer> kcMap = fetchPlayerKC(playerName);
-				kcCache.put(playerName, new CachedKC(kcMap, Instant.now()));
-			}
-			catch (Exception e) {
-				System.err.println("Error fetching kill count for " + playerName + ": " + e.getMessage());
-			}
+			Map<HiscoreSkill, Integer> kcMap = fetchPlayerKC(playerName);
+			kcCache.put(playerName, new CachedKC(kcMap, Instant.now()));
 		});
 	}
 
