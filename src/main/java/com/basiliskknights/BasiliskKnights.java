@@ -147,7 +147,7 @@ public class BasiliskKnights extends Plugin
 			String counterText = "Flick Counter: 0";
 
 			int size = graphics.getFontMetrics().stringWidth(counterText);
-			panelComponent.setPreferredSize(new Dimension(size + 20,0));
+			panelComponent.setPreferredSize(new Dimension(size + 20, 0));
 			panelComponent.setOrientation(ComponentOrientation.VERTICAL);
 			
 			panelComponent.getChildren().add(LineComponent.builder()
