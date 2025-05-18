@@ -1,5 +1,6 @@
 package com.example;
 
+import com.basiliskknights.BasiliskKnights;
 import com.gauntletextended.GauntletExtendedPlugin;
 import com.hunllefswitcher.HunllefSwitcherPlugin;
 import com.killcountviewer.KillCountViewerPlugin;
@@ -13,9 +14,7 @@ public class ExamplePluginTest
 	public static void main(String[] args) throws Exception
 	{
 		ExternalPluginManager.loadBuiltin(
-			// GauntletExtendedPlugin.class,
-			HunllefSwitcherPlugin.class,
-			KillCountViewerPlugin.class
+			BasiliskKnights.class
 		);
 		RuneLite.main(args);
 	}
