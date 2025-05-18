@@ -34,23 +34,15 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
-import net.runelite.api.Model;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.api.Projectile;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.model.Jarvis;
 import com.gauntletextended.GauntletExtendedConfig;
 import com.gauntletextended.GauntletExtendedPlugin;
 import com.gauntletextended.entity.Hunllef;
-import com.gauntletextended.entity.Missile;
 import com.gauntletextended.entity.Tornado;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -131,8 +123,6 @@ public class OverlayHunllef extends Overlay
 		renderHunllefAttackCounter(graphics2D);
 
 		renderHunllefAttackStyleIcon(graphics2D);
-
-		renderHunllefTile(graphics2D);
 
 		renderFlashOnWrongAttack(graphics2D);
 
@@ -265,33 +255,6 @@ public class OverlayHunllef extends Overlay
 		graphics2D.drawImage(icon, point.getX(), point.getY(), null);
 	}
 
-	private void renderHunllefTile(final Graphics2D graphics2D)
-	{
-		if (!config.hunllefOutlineTile())
-		{
-			return;
-		}
-
-		final NPC npc = hunllef.getNpc();
-
-		final NPCComposition npcComposition = npc.getComposition();
-
-		if (npcComposition == null)
-		{
-			return;
-		}
-
-		final Polygon polygon = Perspective.getCanvasTileAreaPoly(client, npc.getLocalLocation(),
-			npcComposition.getSize());
-
-		if (polygon == null)
-		{
-			return;
-		}
-
-		drawOutlineAndFill(graphics2D, config.hunllefOutlineColor(), config.hunllefFillColor(),
-			config.hunllefTileOutlineWidth(), polygon);
-	}
 
 	private void renderFlashOnWrongAttack(final Graphics2D graphics2D)
 	{

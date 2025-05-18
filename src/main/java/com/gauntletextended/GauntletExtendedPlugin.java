@@ -120,47 +120,11 @@ public class GauntletExtendedPlugin extends Plugin
 		ATTACK_ANIM_IDS.add(HIGH_LEVEL_MAGIC_ATTACK);
 	}
 
-	private static final Set<Integer> PROJECTILE_IDS = new HashSet<>();
-
 	private static final Set<Integer> HUNLLEF_IDS = Set.of(
 		NpcID.CRYSTALLINE_HUNLLEF, NpcID.CRYSTALLINE_HUNLLEF_9022,
 		NpcID.CRYSTALLINE_HUNLLEF_9023, NpcID.CRYSTALLINE_HUNLLEF_9024,
 		NpcID.CORRUPTED_HUNLLEF, NpcID.CORRUPTED_HUNLLEF_9036,
 		NpcID.CORRUPTED_HUNLLEF_9037, NpcID.CORRUPTED_HUNLLEF_9038
-	);
-
-	private static final Set<Integer> TORNADO_IDS = Set.of(NullNpcID.NULL_9025, NullNpcID.NULL_9039);
-
-	private static final Set<Integer> DEMIBOSS_IDS = Set.of(
-		NpcID.CRYSTALLINE_BEAR, NpcID.CORRUPTED_BEAR,
-		NpcID.CRYSTALLINE_DARK_BEAST, NpcID.CORRUPTED_DARK_BEAST,
-		NpcID.CRYSTALLINE_DRAGON, NpcID.CORRUPTED_DRAGON
-	);
-
-	private static final Set<Integer> STRONG_NPC_IDS = Set.of(
-		NpcID.CRYSTALLINE_SCORPION, NpcID.CORRUPTED_SCORPION,
-		NpcID.CRYSTALLINE_UNICORN, NpcID.CORRUPTED_UNICORN,
-		NpcID.CRYSTALLINE_WOLF, NpcID.CORRUPTED_WOLF
-	);
-
-	private static final Set<Integer> WEAK_NPC_IDS = Set.of(
-		NpcID.CRYSTALLINE_BAT, NpcID.CORRUPTED_BAT,
-		NpcID.CRYSTALLINE_RAT, NpcID.CORRUPTED_RAT,
-		NpcID.CRYSTALLINE_SPIDER, NpcID.CORRUPTED_SPIDER
-	);
-
-	private static final Set<Integer> RESOURCE_IDS = Set.of(
-		ObjectID.CRYSTAL_DEPOSIT, ObjectID.CORRUPT_DEPOSIT,
-		ObjectID.PHREN_ROOTS, ObjectID.PHREN_ROOTS,
-		ObjectID.FISHING_SPOT_36068,
-		ObjectID.GRYM_ROOT,
-		ObjectID.LINUM_TIRINUM
-	);
-
-	private static final Set<Integer> UTILITY_IDS = Set.of(
-		ObjectID.SINGING_BOWL_35966, ObjectID.SINGING_BOWL_36063,
-		ObjectID.RANGE_35980, ObjectID.RANGE_36077,
-		ObjectID.WATER_PUMP_35981, ObjectID.WATER_PUMP_36078
 	);
 
 	@Inject
@@ -394,40 +358,6 @@ public class GauntletExtendedPlugin extends Plugin
 	}
 
 	@Subscribe
-	private void onGameObjectSpawned(final GameObjectSpawned event)
-	{
-		final GameObject gameObject = event.getGameObject();
-
-		final int id = gameObject.getId();
-
-		if (RESOURCE_IDS.contains(id))
-		{
-			resources.add(new Resource(gameObject, skillIconManager, config.resourceIconSize()));
-		}
-		else if (UTILITY_IDS.contains(id))
-		{
-			utilities.add(gameObject);
-		}
-	}
-
-	@Subscribe
-	private void onGameObjectDespawned(final GameObjectDespawned event)
-	{
-		final GameObject gameObject = event.getGameObject();
-
-		final int id = gameObject.getId();
-
-		if (RESOURCE_IDS.contains(gameObject.getId()))
-		{
-			resources.removeIf(o -> o.getGameObject() == gameObject);
-		}
-		else if (UTILITY_IDS.contains(id))
-		{
-			utilities.remove(gameObject);
-		}
-	}
-
-	@Subscribe
 	private void onNpcSpawned(final NpcSpawned event)
 	{
 		final NPC npc = event.getNpc();
@@ -437,22 +367,6 @@ public class GauntletExtendedPlugin extends Plugin
 		if (HUNLLEF_IDS.contains(id))
 		{
 			hunllef = new Hunllef(npc, skillIconManager, config.hunllefAttackStyleIconSize());
-		}
-		else if (TORNADO_IDS.contains(id))
-		{
-			tornadoes.add(new Tornado(npc));
-		}
-		else if (DEMIBOSS_IDS.contains(id))
-		{
-			demibosses.add(new Demiboss(npc));
-		}
-		else if (STRONG_NPC_IDS.contains(id))
-		{
-			strongNpcs.add(npc);
-		}
-		else if (WEAK_NPC_IDS.contains(id))
-		{
-			weakNpcs.add(npc);
 		}
 	}
 
@@ -467,26 +381,10 @@ public class GauntletExtendedPlugin extends Plugin
 		{
 			hunllef = null;
 		}
-		else if (TORNADO_IDS.contains(id))
-		{
-			tornadoes.removeIf(t -> t.getNpc() == npc);
-		}
-		else if (DEMIBOSS_IDS.contains(id))
-		{
-			demibosses.removeIf(d -> d.getNpc() == npc);
-		}
-		else if (STRONG_NPC_IDS.contains(id))
-		{
-			strongNpcs.remove(npc);
-		}
-		else if (WEAK_NPC_IDS.contains(id))
-		{
-			weakNpcs.remove(npc);
-		}
 	}
 
 	@Subscribe
-	private void onHunllefAttack()
+	private void onHunllefAttack(final NpcDespawned event)
 	{
 		// TODO: Figure out when hunllef is attacking
 		if (hunllef == null)

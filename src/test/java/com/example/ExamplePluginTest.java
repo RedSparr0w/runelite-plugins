@@ -13,7 +13,7 @@ public class ExamplePluginTest
 	public static void main(String[] args) throws Exception
 	{
 		ExternalPluginManager.loadBuiltin(
-			GauntletExtendedPlugin.class,
+			// GauntletExtendedPlugin.class,
 			HunllefSwitcherPlugin.class,
 			KillCountViewerPlugin.class
 		);

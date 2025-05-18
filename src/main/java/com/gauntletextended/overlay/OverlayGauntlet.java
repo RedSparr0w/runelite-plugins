@@ -87,64 +87,13 @@ public class OverlayGauntlet extends Overlay
 		{
 			return null;
 		}
-
-		renderResources(graphics2D);
+		
 		renderUtilities();
 		renderDemibosses();
 		renderStrongNpcs();
 		renderWeakNpcs();
 
 		return null;
-	}
-
-	private void renderResources(final Graphics2D graphics2D)
-	{
-		if ((!config.resourceOverlay() && !config.resourceOutline()) || plugin.getResources().isEmpty())
-		{
-			return;
-		}
-
-		final LocalPoint localPointPlayer = player.getLocalLocation();
-
-		for (final Resource resource : plugin.getResources())
-		{
-			final GameObject gameObject = resource.getGameObject();
-
-			final LocalPoint localPointGameObject = gameObject.getLocalLocation();
-
-			if (isOutsideRenderDistance(localPointGameObject, localPointPlayer))
-			{
-				continue;
-			}
-
-			if (config.resourceOverlay())
-			{
-				final Polygon polygon = Perspective.getCanvasTilePoly(client, localPointGameObject);
-
-				if (polygon == null)
-				{
-					continue;
-				}
-
-				drawOutlineAndFill(graphics2D, config.resourceTileOutlineColor(), config.resourceTileFillColor(),
-					config.resourceTileOutlineWidth(), polygon);
-
-				OverlayUtil.renderImageLocation(client, graphics2D, localPointGameObject, resource.getIcon(), 0);
-			}
-
-			if (config.resourceOutline())
-			{
-				final Shape shape = gameObject.getConvexHull();
-
-				if (shape == null)
-				{
-					continue;
-				}
-
-				modelOutlineRenderer.drawOutline(gameObject, config.resourceOutlineWidth(),
-					config.resourceOutlineColor(), 0);
-			}
-		}
 	}
 
 	private void renderUtilities()
