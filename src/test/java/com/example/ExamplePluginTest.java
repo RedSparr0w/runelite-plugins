@@ -1,7 +1,6 @@
 package com.example;
 
 import com.basiliskknights.BasiliskKnights;
-import com.gauntletextended.GauntletExtendedPlugin;
 import com.hunllefswitcher.HunllefSwitcherPlugin;
 import com.killcountviewer.KillCountViewerPlugin;
 import com.tormenteddemons.TormentedDemonsPlugin;
