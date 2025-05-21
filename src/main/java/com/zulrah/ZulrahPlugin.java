@@ -103,7 +103,7 @@ public class ZulrahPlugin extends Plugin
 	private boolean holdingSnakelingHotkey = false;
 	private Counter zulrahTotalTicksInfoBox;
 	public static final BufferedImage[] ZULRAH_IMAGES = new BufferedImage[3];
-	private static final BufferedImage CLOCK_ICON = ImageUtil.getResourceStreamFromClass(ZulrahPlugin.class, "clock.png");
+	private static final BufferedImage CLOCK_ICON = ImageUtil.loadImageResource(ZulrahPlugin.class, "clock.png");
 	private final BiConsumer<RotationType, RotationType> phaseTicksHandler = (current, potential) -> {
 		if (zulrahReset) 
 	{
@@ -213,25 +213,25 @@ public class ZulrahPlugin extends Plugin
 	private void onGameTick(GameTick event) 
 	{
 		if (client.getGameState() != GameState.LOGGED_IN || zulrahNpc == null) 
-	{
+		{
 			return;
 		}
 		++totalTicks;
 		if (attackTicks >= 0) 
-	{
+		{
 			--attackTicks;
 		}
 		if (phaseTicks >= 0) 
-	{
+		{
 			--phaseTicks;
 		}
 		if (projectilesMap.size() > 0) 
-	{
+		{
 			projectilesMap.values().removeIf(v -> v <= 0);
 			projectilesMap.replaceAll((k, v) -> v - 1);
 		}
 		if (toxicCloudsMap.size() > 0) 
-	{
+		{
 			toxicCloudsMap.values().removeIf(v -> v <= 0);
 			toxicCloudsMap.replaceAll((k, v) -> v - 1);
 		}
@@ -275,7 +275,7 @@ public class ZulrahPlugin extends Plugin
 			case 5072:
 			{
 				if (zulrahReset) 
-	{
+				{
 					zulrahReset = false;
 				}
 				if (currentRotation == null || !isLastPhase(currentRotation)) break;
@@ -322,7 +322,6 @@ public class ZulrahPlugin extends Plugin
 	@Subscribe
 	private void onProjectileMoved(ProjectileMoved event) 
 	{
-		System.out.println("Projectile moved: " + event.getProjectile().getId());
 		if (zulrahNpc == null) 
 		{
 			return;
@@ -492,8 +491,8 @@ public class ZulrahPlugin extends Plugin
 
 	static
 	{
-		ZulrahPlugin.ZULRAH_IMAGES[0] = ImageUtil.getResourceStreamFromClass(ZulrahPlugin.class, "zulrah_range.png");
-		ZulrahPlugin.ZULRAH_IMAGES[1] = ImageUtil.getResourceStreamFromClass(ZulrahPlugin.class, "zulrah_melee.png");
-		ZulrahPlugin.ZULRAH_IMAGES[2] = ImageUtil.getResourceStreamFromClass(ZulrahPlugin.class, "zulrah_magic.png");
+		ZulrahPlugin.ZULRAH_IMAGES[0] = ImageUtil.loadImageResource(ZulrahPlugin.class, "zulrah_range.png");
+		ZulrahPlugin.ZULRAH_IMAGES[1] = ImageUtil.loadImageResource(ZulrahPlugin.class, "zulrah_melee.png");
+		ZulrahPlugin.ZULRAH_IMAGES[2] = ImageUtil.loadImageResource(ZulrahPlugin.class, "zulrah_magic.png");
 	}
 }
