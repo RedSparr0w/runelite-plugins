@@ -175,16 +175,14 @@ public class HunllefSwitcherPlugin extends Plugin
 		// Check if we are attacking agianst prayed style (we shouldn't be), these wont' count as an attack
 		switch (hunllefPrayerStyle)
 		{
-			case AttackStyle.MELEE:
+			case MELEE:
 				if (MELEE_ANIM_IDS.contains(animationId)) return;
 				break;
-			case AttackStyle.RANGED:
+			case RANGED:
 				if (animationId == BOW_ATTACK_ANIMATION) return;
 				break;
-			case AttackStyle.MAGIC:
+			case MAGIC:
 				if (animationId == HIGH_LEVEL_MAGIC_ATTACK) return;
-				break;
-			case null:
 				break;
 		}
 
@@ -335,11 +333,11 @@ public class HunllefSwitcherPlugin extends Plugin
 		{
 			switch (style)
 			{
-				case AttackStyle.MAGIC:
+				case MAGIC:
 					return ImageUtil.resizeImage(originalMagicIcon, iconSize, iconSize);
-				case AttackStyle.RANGED:
+				case RANGED:
 					return ImageUtil.resizeImage(originalRangeIcon, iconSize, iconSize);
-				case AttackStyle.MELEE:
+				case MELEE:
 					return ImageUtil.resizeImage(originalMeleeIcon, iconSize, iconSize);
 			}
 			return ImageUtil.resizeImage(originalMeleeIcon, iconSize, iconSize);
