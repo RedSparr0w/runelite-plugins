@@ -90,7 +90,6 @@ public class OverlayUtils
 					graphics.setColor(color);
 					graphics.fill(widgetBounds);
 				}
-
 			}
 		}
 	}
