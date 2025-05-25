@@ -242,12 +242,12 @@ public class ZulrahPlugin extends Plugin
 	private void onAnimationChanged(AnimationChanged event) 
 	{
 		if (!(event.getActor() instanceof NPC)) 
-	{
+		{
 			return;
 		}
 		NPC npc = (NPC)((Object)event.getActor());
 		if (npc.getName() != null && !npc.getName().equalsIgnoreCase("zulrah")) 
-	{
+		{
 			return;
 		}
 		switch (npc.getAnimation()) 
