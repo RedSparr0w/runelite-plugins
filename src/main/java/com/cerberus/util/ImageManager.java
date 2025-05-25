@@ -104,8 +104,7 @@ public final class ImageManager
 
 	private static BufferedImage getBufferedImage(final String path, final int imgIdx, final CerberusConfig.InfoBoxComponentSize size)
 	{
-		final BufferedImage img = ImageUtil.getResourceStreamFromClass(CerberusPlugin.class, path);
-
+		final BufferedImage img = ImageUtil.loadImageResource(CerberusPlugin.class, path);
 		final int resize = (int) (size.getSize() / RESIZE_FACTOR);
 
 		switch (size)

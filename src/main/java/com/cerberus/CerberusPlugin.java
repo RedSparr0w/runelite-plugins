@@ -298,16 +298,21 @@ public class CerberusPlugin extends Plugin
 	@Subscribe
 	private void onProjectileMoved(ProjectileMoved event) 
 	{
+
+		final Projectile projectile = event.getProjectile();
+		// TODO: Only continue on new projectile some how
+		System.out.println("projectileId=" + projectile.getId() + ", projectileHash=" + projectile.getHash());
+		
 		if (cerberus == null)
 		{
 			return;
 		}
 
-		final Projectile projectile = event.getProjectile();
 
 		final int hp = cerberus.getHp();
 
 		final Phase expectedAttack = cerberus.getNextAttackPhase(1, hp);
+
 
 		switch (projectile.getId())
 		{

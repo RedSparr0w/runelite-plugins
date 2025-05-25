@@ -16,7 +16,6 @@ import net.runelite.api.Prayer;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.vars.InterfaceTab;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.client.ui.overlay.OverlayUtil.renderPolygon;
 

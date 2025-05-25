@@ -1,6 +1,7 @@
 package com.example;
 
 import com.basiliskknights.BasiliskKnights;
+import com.cerberus.CerberusPlugin;
 import com.hunllefswitcher.HunllefSwitcherPlugin;
 import com.killcountviewer.KillCountViewerPlugin;
 import com.tormenteddemons.TormentedDemonsPlugin;
@@ -14,7 +15,8 @@ public class ExamplePluginTest
 	public static void main(String[] args) throws Exception
 	{
 		ExternalPluginManager.loadBuiltin(
-			ZulrahPlugin.class
+			ZulrahPlugin.class,
+			CerberusPlugin.class
 		);
 		RuneLite.main(args);
 	}
