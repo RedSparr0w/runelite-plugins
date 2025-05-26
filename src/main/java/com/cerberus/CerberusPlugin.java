@@ -300,14 +300,13 @@ public class CerberusPlugin extends Plugin
 	{
 
 		final Projectile projectile = event.getProjectile();
-		// TODO: Only continue on new projectile some how
-		System.out.println("projectileId=" + projectile.getId() + ", projectileHash=" + projectile.getHash());
+		// Only continue if this is the first cycle of the projectile so we don't count incorrectly
+		boolean isFirst = (projectile.getStartCycle() + projectile.getRemainingCycles() == projectile.getEndCycle());
 		
-		if (cerberus == null)
+		if (cerberus == null || !isFirst)
 		{
 			return;
 		}
-
 
 		final int hp = cerberus.getHp();
 
