@@ -136,9 +136,10 @@ public final class CurrentAttackOverlay extends Overlay
 
 		if (config.showCurrentAttackTimer())
 		{
-			final double timeUntilAttack = Math.max((double) ((cerberusAttack.getTick() - plugin.getGameTick()) * 600 - (System.currentTimeMillis() - plugin.getLastTick())) / 1000, 0);
+			// final double timeUntilAttack = Math.max((double) ((cerberusAttack.getTick() - plugin.getGameTick()) * 600 - (System.currentTimeMillis() - plugin.getLastTick())) / 1000, 0);
+			final double ticksUntilAttack = Math.max(((cerberusAttack.getTick() - plugin.getGameTick()) * 600 - (System.currentTimeMillis() - plugin.getLastTick())) / 600, 0);
 
-			infoBoxComponent.setText(String.format("+%.1fs", timeUntilAttack));
+			infoBoxComponent.setText(String.format("%d", (int) Math.round(ticksUntilAttack)));
 		}
 		else
 		{
