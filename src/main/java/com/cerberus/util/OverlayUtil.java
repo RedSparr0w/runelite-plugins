@@ -16,25 +16,26 @@ import net.runelite.api.Prayer;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+
 import static net.runelite.client.ui.overlay.OverlayUtil.renderPolygon;
 
 public class OverlayUtil
 {
 	public static Rectangle renderPrayerOverlay(Graphics2D graphics, Client client, Prayer prayer, Color color)
 	{
-		// Widget widget = client.getWidget(prayer.getWidgetInfo());
+		Widget widget = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_PRAYER_TAB);
 
-		// if (widget == null || client.getVar(VarClientInt.INVENTORY_TAB) != InterfaceTab.PRAYER.getId())
-		// {
-		// 	return null;
-		// }
+		if (widget == null || client.getVar(VarClientInt.INVENTORY_TAB) != InterfaceID.Prayerbook.CONTAINER)
+		{
+			return null;
+		}
 
-		// Rectangle bounds = widget.getBounds();
-		// renderPolygon(graphics, rectangleToPolygon(bounds), color);
-		// return bounds;
-
-		return null;
+		Rectangle bounds = widget.getBounds();
+		renderPolygon(graphics, rectangleToPolygon(bounds), color);
+		return bounds;
 	}
 
 	private static Polygon rectangleToPolygon(Rectangle rect)
