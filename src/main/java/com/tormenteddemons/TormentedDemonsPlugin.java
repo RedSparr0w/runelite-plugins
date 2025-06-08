@@ -161,6 +161,10 @@ public class TormentedDemonsPlugin extends Plugin
 
 		NPC npc = (NPC) event.getActor();
 
+		if (client.getLocalPlayer().getInteracting() != npc) {
+			return; // Only track if the player is interacting with this NPC
+		}
+
 		if (npc.getName() == null || !npc.getName().equalsIgnoreCase("Tormented Demon")) {
 			return;
 		}

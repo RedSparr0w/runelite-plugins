@@ -18,7 +18,9 @@ public class ExamplePluginTest
 		ExternalPluginManager.loadBuiltin(
 			ZulrahPlugin.class,
 			CerberusPlugin.class,
-			PlayerAttackTimerPlugin.class
+			PlayerAttackTimerPlugin.class,
+			TormentedDemonsPlugin.class,
+			KillCountViewerPlugin.class
 		);
 		RuneLite.main(args);
 	}
