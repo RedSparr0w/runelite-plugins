@@ -3,10 +3,7 @@ package com.tormenteddemons;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -15,24 +12,14 @@ import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.NPC;
 
 import java.util.Set;
-import java.util.Map;
-import java.util.HashMap;
-
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.components.TextComponent;
 
 import java.awt.*;
 
-import net.runelite.api.Perspective;
-import net.runelite.api.coords.LocalPoint;
-
-import net.runelite.api.Point; // Runelite Point
 import net.runelite.client.ui.overlay.OverlayManager;
 
 import net.runelite.client.config.Config;
@@ -63,11 +50,24 @@ public class TormentedDemonsPlugin extends Plugin
 	public interface ExampleConfig extends Config
 	{
 		@ConfigItem(
-				keyName = "fontSize",
-				name = "Font Size",
-				description = "Adjust the font size for the attack counter"
+				keyName = "fontColorize",
+				name = "Font Colorize",
+				description = "Color font based on attack style"
 		)
-		int fontSize();
+		default boolean fontColor()
+		{
+			return true;
+		};
+
+		@ConfigItem(
+				keyName = "backgroundColorize",
+				name = "Background Colorize",
+				description = "Color background based on attack style"
+		)
+		default boolean backgroundColor()
+		{
+			return false;
+		};
 	}
 
 	@Override
@@ -239,25 +239,30 @@ public class TormentedDemonsPlugin extends Plugin
 			panelComponent.setOrientation(ComponentOrientation.VERTICAL);
 
 			// determine color based on attack style
-			Color textColor;
+			Color color = Color.LIGHT_GRAY; // Default color
 			switch (plugin.tracker.style)
 			{
 				case MELEE:
-					textColor = Color.RED;
+					color = Color.RED;
 					break;
 				case MAGIC:
-					textColor = Color.BLUE;
+					color = Color.BLUE;
 					break;
 				case RANGED:
-					textColor = Color.GREEN;
+					color = Color.GREEN;
 					break;
+				case null:
 				default:
-					textColor = Color.YELLOW;
+					color = Color.LIGHT_GRAY;
 					break;
 			}
+			Color backgroundColor = plugin.config.backgroundColor() ? color : Color.DARK_GRAY;
+			Color textColor = plugin.config.fontColor() ? color : Color.DARK_GRAY;
+
+			panelComponent.setBackgroundColor(backgroundColor);
 			
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left(plugin.tracker.style.toString() + " Hits: ")
+				.left(plugin.tracker.style != null ? plugin.tracker.style.toString() + " Hits: " : "Hits: ")
 				.leftColor(textColor)
 				.right("" + plugin.tracker.attacks)
 				.rightColor(textColor)
