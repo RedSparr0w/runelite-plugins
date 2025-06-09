@@ -22,7 +22,9 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 
 import java.awt.*;
@@ -161,7 +163,7 @@ public class TormentedDemonsPlugin extends Plugin
 
 		NPC npc = (NPC) event.getActor();
 
-		if (client.getLocalPlayer().getInteracting() != npc) {
+		if (trackedDemon != npc) {
 			return; // Only track if the player is interacting with this NPC
 		}
 
@@ -211,6 +213,7 @@ public class TormentedDemonsPlugin extends Plugin
 	{
 		private final Client client;
 		private final TormentedDemonsPlugin plugin;
+		private final PanelComponent panelComponent = new PanelComponent();
 
 		// Injected dependencies
 		@Inject
@@ -220,14 +223,24 @@ public class TormentedDemonsPlugin extends Plugin
 			this.client = client;
 			this.plugin = plugin;
 			setPosition(OverlayPosition.TOP_CENTER);
-			setLayer(OverlayLayer.ABOVE_SCENE);
 		}
 
 		@Override
 		public Dimension render(Graphics2D graphics)
 		{
-			int x = 20;
-			int y = 50;
+			if (plugin.trackedDemon == null || client.getGameState() != GameState.LOGGED_IN)
+			{
+				return null; // Don't render if no demon is being tracked or not logged in
+			}
+
+			panelComponent.getChildren().clear();
+
+			// Create our string we will display (replace actual value with 0 so size doesn't change)
+			String counterText = "Ranged Hits: 0";
+
+			int size = graphics.getFontMetrics().stringWidth(counterText);
+			panelComponent.setPreferredSize(new Dimension(size + 20, 0));
+			panelComponent.setOrientation(ComponentOrientation.VERTICAL);
 
 			// Get the demon trackers map (holds all the counters)
 			Map<Integer, TDAttackTracker> demonTrackers = TormentedDemonsPlugin.demonTrackers;
@@ -268,28 +281,15 @@ public class TormentedDemonsPlugin extends Plugin
 						break;
 				}
 			}
+			
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(attackStyle + " Hits: ")
+				.leftColor(textColor)
+				.right(""+totalAttacks)
+				.rightColor(textColor)
+				.build());
 
-			// create the counter text to display
-			String counterText = attackStyle + " Hits: " + totalAttacks;
-
-			// get the current font size from the config
-			int fontSize = plugin.config.fontSize();
-
-			// set text font
-			graphics.setFont(new Font("Arial", Font.BOLD, fontSize));
-
-			//draw the background box
-			int boxWidth = graphics.getFontMetrics().stringWidth(counterText) + 10;
-			int boxHeight = graphics.getFontMetrics().getHeight() + 5;
-
-			graphics.setColor(new Color(0, 0, 0, 150));
-			graphics.fillRect(x - 5, y - 5, boxWidth, boxHeight);
-
-			// Draw the text over the box
-			graphics.setColor(textColor);
-			graphics.drawString(counterText, x, y + boxHeight - 5);
-
-			return null;
+			return panelComponent.render(graphics);
 		}
 
 	}
