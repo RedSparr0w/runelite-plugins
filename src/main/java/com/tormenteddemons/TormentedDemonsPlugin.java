@@ -83,7 +83,37 @@ public class TormentedDemonsPlugin extends Plugin
 	}
 
 	private int ticksSinceNoInteraction = 0;
-	private NPC trackedDemon = null;
+	//stores current attack style
+	private static class AttackTracker {
+		NPC demon = null;
+		AttackStyle style;
+		int attacks;
+
+		AttackTracker(AttackStyle style) {
+			this.setStyle(style);
+		}
+
+		public void setDemon(NPC demon) {
+			this.demon = demon;
+		}
+
+		public void setStyle(AttackStyle style) {
+			this.style = style;
+			this.attacks = 1; // Reset count when style changes
+		}
+
+		public void reset() {
+			this.demon = null;
+			this.style = null;
+			this.attacks = 0;
+		}
+	}
+	AttackTracker tracker = new AttackTracker(null);
+
+	//enums for each type
+	private enum AttackStyle {
+		MELEE, MAGIC, RANGED
+	}
 
 	@Subscribe
 	public void onGameTick(net.runelite.api.events.GameTick event)
@@ -95,24 +125,23 @@ public class TormentedDemonsPlugin extends Plugin
 		if (target instanceof NPC && isTormentedDemon((NPC) target))
 		{
 
-			if (trackedDemon == null)
+			if (tracker.demon == null)
 			{
-				trackedDemon = (NPC) target;
+				tracker.setDemon((NPC) target);
 				ticksSinceNoInteraction = 0;
-				overlayManager.add(tdCounterOverlay);
 			}
 		}
 		else
 		{
 			// if no demon is being interacted with, increment the tick counter
-			if (trackedDemon != null)
+			if (tracker.demon != null)
 			{
 				ticksSinceNoInteraction++;
 				// if the player hasn't interacted with a demon for 16 ticks, stop tracking
 				if (ticksSinceNoInteraction >= 16)
 				{
-					resetTracker();
-					overlayManager.remove(tdCounterOverlay);
+					tracker.reset();
+					ticksSinceNoInteraction = 0;
 				}
 			}
 		}
@@ -125,34 +154,6 @@ public class TormentedDemonsPlugin extends Plugin
 		return npc.getName() != null && npc.getName().equals("Tormented Demon");
 	}
 
-	private void resetTracker()
-	{
-		log.info("Resetting tracker due to loss of interaction.");
-		trackedDemon = null;
-		ticksSinceNoInteraction = 0;
-		demonTrackers.clear();  // Wipe all counters
-	}
-
-
-	//------------------------------------------------------------------------------------------------------------
-
-	//stores current attack style
-	private static class TDAttackTracker {
-		AttackStyle currentStyle;
-		int count;
-
-		TDAttackTracker(AttackStyle style) {
-			this.currentStyle = style;
-			this.count = 1;
-		}
-	}
-	//enums for each type
-	private enum AttackStyle {
-		MELEE, MAGIC, RANGED
-	}
-
-	private static final Map<Integer, TDAttackTracker> demonTrackers = new HashMap<>();
-
 	//method to detect and keep tracker of attacks by tormented demon
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
@@ -163,7 +164,7 @@ public class TormentedDemonsPlugin extends Plugin
 
 		NPC npc = (NPC) event.getActor();
 
-		if (trackedDemon != npc) {
+		if (tracker.demon != npc) {
 			return; // Only track if the player is interacting with this NPC
 		}
 
@@ -187,18 +188,13 @@ public class TormentedDemonsPlugin extends Plugin
 
 		if (style != null) {
 			int npcIndex = npc.getIndex();
-			trackedDemon = npc;
 			ticksSinceNoInteraction = 0;
 
-			TDAttackTracker tracker = demonTrackers.get(npcIndex);
-
-			if (tracker == null || tracker.currentStyle != style) {
+			if (tracker.style != style) {
 				// New style or new tracker
-				demonTrackers.put(npcIndex, new TDAttackTracker(style));
-				log.info(npc.getName() + " switched to " + style + ". Count reset to 1.");
+				tracker.setStyle(style);
 			} else {
-				tracker.count++;
-				log.info(npc.getName() + " used " + style + " attack #" + tracker.count);
+				tracker.attacks++;
 			}
 		}
 
@@ -228,64 +224,42 @@ public class TormentedDemonsPlugin extends Plugin
 		@Override
 		public Dimension render(Graphics2D graphics)
 		{
-			if (plugin.trackedDemon == null || client.getGameState() != GameState.LOGGED_IN)
+			if (plugin.tracker.demon == null || client.getGameState() != GameState.LOGGED_IN)
 			{
 				return null; // Don't render if no demon is being tracked or not logged in
 			}
 
 			panelComponent.getChildren().clear();
 
-			// Create our string we will display (replace actual value with 0 so size doesn't change)
+			// Create our string we will display so the size doesn't change
 			String counterText = "Ranged Hits: 0";
 
 			int size = graphics.getFontMetrics().stringWidth(counterText);
 			panelComponent.setPreferredSize(new Dimension(size + 20, 0));
 			panelComponent.setOrientation(ComponentOrientation.VERTICAL);
 
-			// Get the demon trackers map (holds all the counters)
-			Map<Integer, TDAttackTracker> demonTrackers = TormentedDemonsPlugin.demonTrackers;
-
-			// Summing up the attack counts for all demons
-			int totalAttacks = 0;
-
-			// Track the attack style for display
-			String attackStyle = "";
-
-			// Define colors for each attack style
-			Color meleeColor = Color.RED;
-			Color magicColor = Color.BLUE;
-			Color rangedColor = Color.GREEN;
-
-			Color textColor = Color.YELLOW;
-
-			// loop through all the demons to get their attack style and total count
-			for (TDAttackTracker tracker : demonTrackers.values())
+			// determine color based on attack style
+			Color textColor;
+			switch (plugin.tracker.style)
 			{
-				totalAttacks += tracker.count;
-				attackStyle = tracker.currentStyle.toString();
-
-				// determine color based on attack style
-				switch (tracker.currentStyle)
-				{
-					case MELEE:
-						textColor = meleeColor;
-						break;
-					case MAGIC:
-						textColor = magicColor;
-						break;
-					case RANGED:
-						textColor = rangedColor;
-						break;
-					default:
-						textColor = Color.YELLOW;
-						break;
-				}
+				case MELEE:
+					textColor = Color.RED;
+					break;
+				case MAGIC:
+					textColor = Color.BLUE;
+					break;
+				case RANGED:
+					textColor = Color.GREEN;
+					break;
+				default:
+					textColor = Color.YELLOW;
+					break;
 			}
 			
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left(attackStyle + " Hits: ")
+				.left(plugin.tracker.style.toString() + " Hits: ")
 				.leftColor(textColor)
-				.right(""+totalAttacks)
+				.right("" + plugin.tracker.attacks)
 				.rightColor(textColor)
 				.build());
 
