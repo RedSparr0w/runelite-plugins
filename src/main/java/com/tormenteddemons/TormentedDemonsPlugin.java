@@ -89,6 +89,8 @@ public class TormentedDemonsPlugin extends Plugin
 		NPC demon = null;
 		AttackStyle style;
 		int attacks;
+		int health;
+		int healthChangeCountdown = 0;
 
 		AttackTracker(AttackStyle style) {
 			this.setStyle(style);
@@ -96,6 +98,7 @@ public class TormentedDemonsPlugin extends Plugin
 
 		public void setDemon(NPC demon) {
 			this.demon = demon;
+			this.health = 600;
 		}
 
 		public void setStyle(AttackStyle style) {
@@ -107,6 +110,7 @@ public class TormentedDemonsPlugin extends Plugin
 			this.demon = null;
 			this.style = null;
 			this.attacks = 0;
+			this.health = 600;
 		}
 	}
 	AttackTracker tracker = new AttackTracker(null);
@@ -174,6 +178,16 @@ public class TormentedDemonsPlugin extends Plugin
 		}
 
 		int animationId = npc.getAnimation();
+
+		int health = (600 / (npc.getHealthScale()) * npc.getHealthRatio());
+		
+		if (tracker.healthChangeCountdown > 0) {
+			tracker.healthChangeCountdown--;
+		}
+		if (Math.ceil(tracker.health / 150) <= 3 && Math.ceil(health / 150) != Math.ceil(tracker.health / 150)) {
+			tracker.healthChangeCountdown = 5;
+		}
+		tracker.health = health;
 
 		//call style to get the style which a tormented demon is using.
 		AttackStyle style = null;
@@ -258,7 +272,7 @@ public class TormentedDemonsPlugin extends Plugin
 					break;
 			}
 			Color backgroundColor = plugin.config.backgroundColor() ? color : Color.DARK_GRAY;
-			Color textColor = plugin.config.fontColor() ? color : Color.DARK_GRAY;
+			Color textColor = plugin.config.fontColor() ? color : Color.WHITE;
 
 			panelComponent.setBackgroundColor(backgroundColor);
 			
@@ -268,6 +282,14 @@ public class TormentedDemonsPlugin extends Plugin
 				.right("" + plugin.tracker.attacks)
 				.rightColor(textColor)
 				.build());
+
+			if (plugin.tracker.healthChangeCountdown > 0)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("SWITCH ATTACKS!")
+					.leftColor(plugin.tracker.healthChangeCountdown % 2 == 1 ? Color.RED : Color.WHITE)
+					.build());
+			}
 
 			return panelComponent.render(graphics);
 		}
