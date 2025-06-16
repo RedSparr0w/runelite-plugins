@@ -87,13 +87,12 @@ public class TormentedDemonsPlugin extends Plugin
 	//stores current attack style
 	private static class AttackTracker {
 		NPC demon = null;
-		AttackStyle style;
-		int attacks;
-		int health;
+		AttackStyle style = AttackStyle.NONE;
+		int attacks = 0;
+		int health = 600;
 		int healthChangeCountdown = 0;
 
-		AttackTracker(AttackStyle style) {
-			this.setStyle(style);
+		AttackTracker() {
 		}
 
 		public void setDemon(NPC demon) {
@@ -108,16 +107,16 @@ public class TormentedDemonsPlugin extends Plugin
 
 		public void reset() {
 			this.demon = null;
-			this.style = null;
+			this.style = AttackStyle.NONE;
 			this.attacks = 0;
 			this.health = 600;
 		}
 	}
-	AttackTracker tracker = new AttackTracker(null);
+	AttackTracker tracker = new AttackTracker();
 
 	//enums for each type
 	private enum AttackStyle {
-		MELEE, MAGIC, RANGED
+		MELEE, MAGIC, RANGED, NONE
 	}
 
 	@Subscribe
@@ -190,7 +189,7 @@ public class TormentedDemonsPlugin extends Plugin
 		tracker.health = health;
 
 		//call style to get the style which a tormented demon is using.
-		AttackStyle style = null;
+		AttackStyle style = AttackStyle.NONE;
 
 		//detect animation
 		if (MELEE_ANIMS.contains(animationId)) {
@@ -266,7 +265,7 @@ public class TormentedDemonsPlugin extends Plugin
 				case RANGED:
 					color = Color.GREEN;
 					break;
-				case null:
+				case NONE:
 				default:
 					color = Color.LIGHT_GRAY;
 					break;
