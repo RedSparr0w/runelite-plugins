@@ -4,6 +4,7 @@ import com.basiliskknights.BasiliskKnights;
 import com.cerberus.CerberusPlugin;
 import com.hunllefswitcher.HunllefSwitcherPlugin;
 import com.killcountviewer.KillCountViewerPlugin;
+import com.misc.Misc;
 import com.playerattacktimer.PlayerAttackTimerPlugin;
 import com.tormenteddemons.TormentedDemonsPlugin;
 import com.zulrah.ZulrahPlugin;
@@ -20,7 +21,9 @@ public class ExamplePluginTest
 			CerberusPlugin.class,
 			PlayerAttackTimerPlugin.class,
 			TormentedDemonsPlugin.class,
-			KillCountViewerPlugin.class
+			KillCountViewerPlugin.class,
+			BasiliskKnights.class,
+			Misc.class
 		);
 		RuneLite.main(args);
 	}
