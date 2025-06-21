@@ -35,9 +35,20 @@ public interface GroupStorageReminderConfig extends Config
   }
 
   @ConfigItem(
+    keyName = "alwaysShowInventoryItems",
+    name = "Always show inventory items",
+    description = "Continue to show a reminder for worn items and items in inventory.",
+    position = 5
+  )
+  default boolean alwaysShowInventoryItems()
+  {
+    return false;
+  }
+
+  @ConfigItem(
     keyName = "reminderTimerOnBankClose",
     name = "Remind on bank close",
-    description = "Continue to show a reminder when closing the bank with tracked items still in inventory for x seconds.",
+    description = "Continue to show a reminder when closing the bank with tracked items still in inventory/worn/bank for x seconds.",
     position = 5
   )
   default int reminderTimerOnBankClose()
