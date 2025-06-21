@@ -37,27 +37,27 @@ import java.util.List;
 import javax.inject.Inject;
 
 @PluginDescriptor(
-	name = "Group Storage Reminder",
-	description = "Reminds players to return items to group storage",
-	tags = {"highlight", "group", "shared", "overlay", "storage", "reminder", "gim", "ironman", "bank"}
+  name = "Group Storage Reminder",
+  description = "Reminds players to return items to group storage",
+  tags = {"highlight", "group", "shared", "overlay", "storage", "reminder", "gim", "ironman", "bank"}
 )
 @Slf4j
 public class GroupStorageReminderPlugin extends Plugin
 {
-	@Inject
-	private OverlayManager overlayManager;
+  @Inject
+  private OverlayManager overlayManager;
 
-	@Inject
-	private Client client;
+  @Inject
+  private Client client;
 
   @Inject
   private ItemManager itemManager;
 
-	@Inject
-	private GroupStorageReminderConfig config;
+  @Inject
+  private GroupStorageReminderConfig config;
 
-	@Inject
-	private PluginOverlay pluginOverlay;
+  @Inject
+  private PluginOverlay pluginOverlay;
 
   boolean bankIsOpen = false;
   boolean groupStorageIsOpen = false;
@@ -67,27 +67,29 @@ public class GroupStorageReminderPlugin extends Plugin
   List<String> itemsOnPlayer = new ArrayList<>();
   List<String> itemsInBank = new ArrayList<>();
 
-	@Provides
-	GroupStorageReminderConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(GroupStorageReminderConfig.class);
-	}
+  @Provides
+  GroupStorageReminderConfig provideConfig(ConfigManager configManager)
+  {
+    return configManager.getConfig(GroupStorageReminderConfig.class);
+  }
 
-	@Override
-	protected void startUp() throws Exception
-	{
-		overlayManager.add(pluginOverlay);
-	}
+  @Override
+  protected void startUp() throws Exception
+  {
+    loadItems();
+    overlayManager.add(pluginOverlay);
+  }
 
-	@Override
-	protected void shutDown() throws Exception
-	{
-		overlayManager.remove(pluginOverlay);
-	}
+  @Override
+  protected void shutDown() throws Exception
+  {
+    saveItems();
+    overlayManager.remove(pluginOverlay);
+  }
 
-	@Subscribe
-	public void onGameTick(final GameTick event)
-	{
+  @Subscribe
+  public void onGameTick(final GameTick event)
+  {
     /*
      * ============================
      * Check if the logout/world switcher tab is open.
@@ -145,7 +147,7 @@ public class GroupStorageReminderPlugin extends Plugin
     {
       reminderTimerActive = reminderTimer-- > 0;
     }
-	}
+  }
 
   @Subscribe
   public void onWidgetLoaded(WidgetLoaded event)
@@ -205,6 +207,7 @@ public class GroupStorageReminderPlugin extends Plugin
         if (WildcardMatcher.matches(targetName, itemName)) itemsOnPlayer.add(itemName);
       }
     }
+    saveItems();
   }
 
   private void checkBankContainsItems()
@@ -230,27 +233,53 @@ public class GroupStorageReminderPlugin extends Plugin
           if (WildcardMatcher.matches(targetName, itemName)) itemsInBank.add(itemName);
         }
       }
+      saveItems();
     }
   }
 
-	public static class PluginOverlay extends Overlay
-	{
-		private final GroupStorageReminderPlugin plugin;
-		private final PanelComponent panelComponent = new PanelComponent();
+  void saveItems()
+  {
+    config.setStoredInventory(String.join(",", itemsOnPlayer));
+    config.setStoredBank(String.join(",", itemsInBank));
+  }
 
-		// Injected dependencies
-		@Inject
-		public PluginOverlay(GroupStorageReminderPlugin plugin)
-		{
-			super(plugin);
-			this.plugin = plugin;
-			setPosition(OverlayPosition.TOP_LEFT);
+  void loadItems()
+  {
+    // Clear existing items
+    itemsOnPlayer.clear();
+    itemsInBank.clear();
+
+    // Load items from inventory/worn
+    for (String item : config.storedInventory().split(","))
+    {
+      if (!item.isEmpty()) itemsOnPlayer.add(item);
+    }
+
+    // Load items from bank
+    for (String item : config.storedBank().split(","))
+    {
+      if (!item.isEmpty()) itemsInBank.add(item);
+    }
+  }
+
+  public static class PluginOverlay extends Overlay
+  {
+    private final GroupStorageReminderPlugin plugin;
+    private final PanelComponent panelComponent = new PanelComponent();
+
+    // Injected dependencies
+    @Inject
+    public PluginOverlay(GroupStorageReminderPlugin plugin)
+    {
+      super(plugin);
+      this.plugin = plugin;
+      setPosition(OverlayPosition.TOP_LEFT);
       setPriority(OverlayPriority.HIGH);
-		}
+    }
 
-		@Override
-		public Dimension render(Graphics2D graphics)
-		{
+    @Override
+    public Dimension render(Graphics2D graphics)
+    {
       if (
         !plugin.logoutSwitcherOpen &&
         !plugin.bankIsOpen &&
@@ -263,12 +292,12 @@ public class GroupStorageReminderPlugin extends Plugin
 
       if (plugin.itemsOnPlayer.isEmpty() && plugin.itemsInBank.isEmpty()) return null; // Don't render if no items to show
 
-			panelComponent.getChildren().clear();
+      panelComponent.getChildren().clear();
 
-			String baseText = "GROUP STORAGE REMINDER";
+      String baseText = "GROUP STORAGE REMINDER";
 
-			int size = graphics.getFontMetrics().stringWidth(baseText);
-			panelComponent.setPreferredSize(new Dimension(size + 20, 0));
+      int size = graphics.getFontMetrics().stringWidth(baseText);
+      panelComponent.setPreferredSize(new Dimension(size + 20, 0));
 
       panelComponent.getChildren().add(LineComponent.builder()
         .left(baseText)
@@ -315,7 +344,7 @@ public class GroupStorageReminderPlugin extends Plugin
           .build());
       }
 
-			return panelComponent.render(graphics);
-		}
-	}
+      return panelComponent.render(graphics);
+    }
+  }
 }
