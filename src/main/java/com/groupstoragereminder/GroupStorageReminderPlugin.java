@@ -8,6 +8,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -24,8 +25,6 @@ import net.runelite.client.util.Text;
 import net.runelite.client.util.WildcardMatcher;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.events.ItemContainerChanged;
 
 import java.awt.Color;
@@ -95,9 +94,8 @@ public class GroupStorageReminderPlugin extends Plugin
      * Check if the logout/world switcher tab is open.
      * ============================
      */
-    Widget logoutWorldSwitcherTab = client.getWidget(WidgetInfo.LOGOUT_BUTTON);
-    if (logoutWorldSwitcherTab == null) logoutWorldSwitcherTab = client.getWidget(WidgetInfo.WORLD_SWITCHER_LIST);
-    if (logoutWorldSwitcherTab == null) logoutWorldSwitcherTab = client.getWidget(WidgetInfo.WORLD_SWITCHER_BUTTON);
+    Widget logoutWorldSwitcherTab = client.getWidget(InterfaceID.WORLDSWITCHER, 0);
+    if (logoutWorldSwitcherTab == null) logoutWorldSwitcherTab = client.getWidget(InterfaceID.LOGOUT, 0);
 
     if (logoutWorldSwitcherTab != null && !logoutWorldSwitcherTab.isHidden())
     {
@@ -116,7 +114,7 @@ public class GroupStorageReminderPlugin extends Plugin
      * Check if the bank was open and if the bank is now closed
      * ============================
      */
-    if (bankIsOpen && client.getWidget(WidgetID.BANK_GROUP_ID, 0) == null)
+    if (bankIsOpen && client.getWidget(InterfaceID.BANKMAIN, 0) == null)
     {
       bankIsOpen = false;
       // Reset the reminder timer
@@ -129,7 +127,7 @@ public class GroupStorageReminderPlugin extends Plugin
      * Check if the group storage was open and if the group storage is now closed
      * ============================
      */
-    if (groupStorageIsOpen && client.getWidget(WidgetID.GROUP_STORAGE_GROUP_ID, 0) == null)
+    if (groupStorageIsOpen && client.getWidget(InterfaceID.SHARED_BANK, 0) == null)
     {
       groupStorageIsOpen = false;
       // Reset the reminder timer
@@ -152,18 +150,18 @@ public class GroupStorageReminderPlugin extends Plugin
   @Subscribe
   public void onWidgetLoaded(WidgetLoaded event)
   {
-    if (event.getGroupId() == WidgetID.BANK_GROUP_ID)
+    if (event.getGroupId() == InterfaceID.BANKMAIN)
     {
       bankIsOpen = true;
       checkBankContainsItems();
       checkItemsOnPlayer();
     }
-    if (event.getGroupId() == WidgetID.GROUP_STORAGE_GROUP_ID)
+    if (event.getGroupId() == InterfaceID.SHARED_BANK)
     {
       groupStorageIsOpen = true;
       checkItemsOnPlayer();
     }
-    if (event.getGroupId() == WidgetID.INVENTORY_GROUP_ID)
+    if (event.getGroupId() == InterfaceID.INVENTORY)
     {
       checkItemsOnPlayer();
     }
