@@ -8,6 +8,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -23,7 +24,7 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.WildcardMatcher;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.events.ItemContainerChanged;
 
 import java.awt.Color;
@@ -35,99 +36,132 @@ import java.util.List;
 import javax.inject.Inject;
 
 @PluginDescriptor(
-	name = "Group Storage Reminder",
-	description = "Reminds players to return items to group storage",
-	tags = {"highlight", "group", "overlay", "storage", "reminder", "gim", "ironman", "bank"}
+  name = "Group Storage Reminder",
+  description = "Reminds players to return items to group storage",
+  tags = {"highlight", "group", "shared", "overlay", "storage", "reminder", "gim", "ironman", "bank"}
 )
 @Slf4j
 public class GroupStorageReminderPlugin extends Plugin
 {
-	@Inject
-	private OverlayManager overlayManager;
+  @Inject
+  private OverlayManager overlayManager;
 
-	@Inject
-	private Client client;
+  @Inject
+  private Client client;
 
   @Inject
   private ItemManager itemManager;
 
-	@Inject
-	private GroupStorageReminderConfig config;
+  @Inject
+  private GroupStorageReminderConfig config;
 
-	@Inject
-	private PluginOverlay pluginOverlay;
+  @Inject
+  private PluginOverlay pluginOverlay;
 
   boolean bankIsOpen = false;
   boolean groupStorageIsOpen = false;
   boolean reminderTimerActive = false;
   int reminderTimer = 0;
+  boolean logoutSwitcherOpen = false;
   List<String> itemsOnPlayer = new ArrayList<>();
   List<String> itemsInBank = new ArrayList<>();
 
-	@Provides
-	GroupStorageReminderConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(GroupStorageReminderConfig.class);
-	}
+  @Provides
+  GroupStorageReminderConfig provideConfig(ConfigManager configManager)
+  {
+    return configManager.getConfig(GroupStorageReminderConfig.class);
+  }
 
-	@Override
-	protected void startUp() throws Exception
-	{
-		overlayManager.add(pluginOverlay);
-	}
+  @Override
+  protected void startUp() throws Exception
+  {
+    loadItems();
+    overlayManager.add(pluginOverlay);
+  }
 
-	@Override
-	protected void shutDown() throws Exception
-	{
-		overlayManager.remove(pluginOverlay);
-	}
+  @Override
+  protected void shutDown() throws Exception
+  {
+    saveItems();
+    overlayManager.remove(pluginOverlay);
+  }
 
-	@Subscribe
-	public void onGameTick(final GameTick event)
-	{
-    // Check if the bank was open and if the bank is now closed
-    if (bankIsOpen && client.getWidget(WidgetID.BANK_GROUP_ID, 0) == null)
+  @Subscribe
+  public void onGameTick(final GameTick event)
+  {
+    /*
+     * ============================
+     * Check if the logout/world switcher tab is open.
+     * ============================
+     */
+    Widget logoutWorldSwitcherTab = client.getWidget(InterfaceID.WORLDSWITCHER, 0);
+    if (logoutWorldSwitcherTab == null) logoutWorldSwitcherTab = client.getWidget(InterfaceID.LOGOUT, 0);
+
+    if (logoutWorldSwitcherTab != null && !logoutWorldSwitcherTab.isHidden())
     {
-      bankIsOpen = false;
-      // Reset the reminder timer
-      reminderTimerActive = true;
-      reminderTimer = (int)(config.reminderTimerOnBankClose() / 0.6);
+      logoutSwitcherOpen = true;
     }
-    // Check if the group storage was open and if the group storage is now closed
-    if (groupStorageIsOpen && client.getWidget(WidgetID.GROUP_STORAGE_GROUP_ID, 0) == null)
+    else if (logoutSwitcherOpen)
     {
-      groupStorageIsOpen = false;
-      // Reset the reminder timer
-      reminderTimerActive = true;
-      reminderTimer = (int)(config.reminderTimerOnBankClose() / 0.6);
+      logoutSwitcherOpen = closeInterface();
     }
 
+    /*
+     * ============================
+     * Check if the bank was open and if the bank is now closed
+     * ============================
+     */
+    if (bankIsOpen && client.getWidget(InterfaceID.BANKMAIN, 0) == null)
+    {
+      bankIsOpen = closeInterface();
+    }
+
+    /*
+     * ============================
+     * Check if the group storage was open and if the group storage is now closed
+     * ============================
+     */
+    if (groupStorageIsOpen && client.getWidget(InterfaceID.SHARED_BANK, 0) == null)
+    {
+      groupStorageIsOpen = closeInterface();
+    }
+
+    /*
+     * ============================
+     * If the reminder timer is active, decrement it.
+     * If it reaches 0, deactivate the timer.
+     * ============================
+     */
     if (reminderTimerActive)
     {
-      // If reminder timer is active, check if we should stop it
-      if (reminderTimer <= 0)
-      {
-        reminderTimerActive = false;
-      }
-      else
-      {
-        reminderTimer--;
-      }
+      reminderTimerActive = reminderTimer-- > 0;
     }
-	}
+  }
+
+  public boolean closeInterface()
+  {
+    // Reset the reminder timer
+    reminderTimerActive = true;
+    reminderTimer = (int)(config.reminderTimerOnBankClose() / 0.6);
+    return false;
+  }
 
   @Subscribe
   public void onWidgetLoaded(WidgetLoaded event)
   {
-    if (event.getGroupId() == WidgetID.BANK_GROUP_ID)
+    if (event.getGroupId() == InterfaceID.BANKMAIN)
     {
       bankIsOpen = true;
       checkBankContainsItems();
       checkItemsOnPlayer();
     }
-    if (event.getGroupId() == WidgetID.GROUP_STORAGE_GROUP_ID)
+    if (event.getGroupId() == InterfaceID.SHARED_BANK)
     {
       groupStorageIsOpen = true;
+      checkItemsOnPlayer();
+    }
+    if (event.getGroupId() == InterfaceID.INVENTORY)
+    {
       checkItemsOnPlayer();
     }
   }
@@ -141,7 +175,7 @@ public class GroupStorageReminderPlugin extends Plugin
       checkBankContainsItems();
     }
 
-    // Check if the bank or group storage is open before checking items on player
+    // Check if the bank or group storage is open before checking items on player as we don't want to check every time the inventory changes
     if (!bankIsOpen && !groupStorageIsOpen) return;
     
     if (event.getContainerId() == InventoryID.INV)
@@ -170,6 +204,7 @@ public class GroupStorageReminderPlugin extends Plugin
         if (WildcardMatcher.matches(targetName, itemName)) itemsOnPlayer.add(itemName);
       }
     }
+    saveItems();
   }
 
   private void checkBankContainsItems()
@@ -195,52 +230,79 @@ public class GroupStorageReminderPlugin extends Plugin
           if (WildcardMatcher.matches(targetName, itemName)) itemsInBank.add(itemName);
         }
       }
+      saveItems();
     }
   }
 
-	public static class PluginOverlay extends Overlay
-	{
-		private final GroupStorageReminderPlugin plugin;
-		private final PanelComponent panelComponent = new PanelComponent();
+  void saveItems()
+  {
+    config.setStoredInventory(String.join(",", itemsOnPlayer));
+    config.setStoredBank(String.join(",", itemsInBank));
+  }
 
-		// Injected dependencies
-		@Inject
-		public PluginOverlay(GroupStorageReminderPlugin plugin)
-		{
-			super(plugin);
-			this.plugin = plugin;
-			setPosition(OverlayPosition.TOP_LEFT);
+  void loadItems()
+  {
+    // Clear existing items
+    itemsOnPlayer.clear();
+    itemsInBank.clear();
+
+    // Load items from inventory/worn
+    for (String item : config.storedInventory().split(","))
+    {
+      if (!item.isEmpty()) itemsOnPlayer.add(item);
+    }
+
+    // Load items from bank
+    for (String item : config.storedBank().split(","))
+    {
+      if (!item.isEmpty()) itemsInBank.add(item);
+    }
+  }
+
+  public static class PluginOverlay extends Overlay
+  {
+    private final GroupStorageReminderPlugin plugin;
+    private final PanelComponent panelComponent = new PanelComponent();
+
+    // Injected dependencies
+    @Inject
+    public PluginOverlay(GroupStorageReminderPlugin plugin)
+    {
+      super(plugin);
+      this.plugin = plugin;
+      setPosition(OverlayPosition.TOP_LEFT);
       setPriority(OverlayPriority.HIGH);
-		}
+    }
 
-		@Override
-		public Dimension render(Graphics2D graphics)
-		{
-
+    @Override
+    public Dimension render(Graphics2D graphics)
+    {
       if (
+        !plugin.logoutSwitcherOpen &&
         !plugin.bankIsOpen &&
         !plugin.groupStorageIsOpen &&
         !(plugin.reminderTimerActive && !plugin.itemsOnPlayer.isEmpty()) &&
         !(plugin.reminderTimerActive && !plugin.itemsInBank.isEmpty()) &&
-        !(!plugin.itemsInBank.isEmpty() && plugin.config.alwaysShowBankedItems())
+        !(!plugin.itemsInBank.isEmpty() && plugin.config.alwaysShowBankedItems()) &&
+        !(!plugin.itemsOnPlayer.isEmpty() && plugin.config.alwaysShowInventoryItems())
       ) return null;
 
       if (plugin.itemsOnPlayer.isEmpty() && plugin.itemsInBank.isEmpty()) return null; // Don't render if no items to show
 
-			panelComponent.getChildren().clear();
+      panelComponent.getChildren().clear();
 
-			String counterText = "GROUP STORAGE REMINDER";
+      String baseText = "GROUP STORAGE REMINDER";
 
-			int size = graphics.getFontMetrics().stringWidth(counterText);
-			panelComponent.setPreferredSize(new Dimension(size + 20, 0));
+      int size = graphics.getFontMetrics().stringWidth(baseText);
+      panelComponent.setPreferredSize(new Dimension(size + 20, 0));
 
       panelComponent.getChildren().add(LineComponent.builder()
-        .left("GROUP STORAGE REMINDER")
+        .left(baseText)
         .leftColor(Color.WHITE)
         .build());
 
       // Show any items in bank
-      if (!plugin.itemsInBank.isEmpty() && (plugin.bankIsOpen || plugin.groupStorageIsOpen || plugin.reminderTimerActive || plugin.config.alwaysShowBankedItems()))
+      if (!plugin.itemsInBank.isEmpty() && (plugin.logoutSwitcherOpen || plugin.bankIsOpen || plugin.groupStorageIsOpen || plugin.reminderTimerActive || plugin.config.alwaysShowBankedItems()))
       {
         panelComponent.getChildren().add(LineComponent.builder()
           .left("BANKED ITEMS:")
@@ -256,7 +318,7 @@ public class GroupStorageReminderPlugin extends Plugin
       }
 
       // Only show items on player if bank or group storage is open or timer still active
-      if (!plugin.itemsOnPlayer.isEmpty() && (plugin.bankIsOpen || plugin.groupStorageIsOpen || plugin.reminderTimerActive))
+      if (!plugin.itemsOnPlayer.isEmpty() && (plugin.logoutSwitcherOpen || plugin.bankIsOpen || plugin.groupStorageIsOpen || plugin.reminderTimerActive || plugin.config.alwaysShowInventoryItems()))
       {
         panelComponent.getChildren().add(LineComponent.builder()
           .left("INVENTORY/WORN:")
@@ -271,7 +333,15 @@ public class GroupStorageReminderPlugin extends Plugin
         }
       }
 
-			return panelComponent.render(graphics);
-		}
-	}
+      if (plugin.logoutSwitcherOpen)
+      {
+        panelComponent.getChildren().add(LineComponent.builder()
+          .left("!!! ITEMS NOT IN STORAGE !!!")
+          .leftColor(plugin.client.getTickCount() % 2 == 0 ? Color.RED : Color.WHITE)
+          .build());
+      }
+
+      return panelComponent.render(graphics);
+    }
+  }
 }

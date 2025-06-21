@@ -10,7 +10,7 @@ import java.awt.*;
 @ConfigGroup(GroupStorageReminderConfig.GROUP)
 public interface GroupStorageReminderConfig extends Config
 {
-	String GROUP = "groupstoragereminder";
+  String GROUP = "groupstoragereminder";
 
   @ConfigItem(
     keyName = "reminderColor",
@@ -35,9 +35,20 @@ public interface GroupStorageReminderConfig extends Config
   }
 
   @ConfigItem(
+    keyName = "alwaysShowInventoryItems",
+    name = "Always show inventory items",
+    description = "Continue to show a reminder for worn items and items in inventory.",
+    position = 5
+  )
+  default boolean alwaysShowInventoryItems()
+  {
+    return false;
+  }
+
+  @ConfigItem(
     keyName = "reminderTimerOnBankClose",
     name = "Remind on bank close",
-    description = "Continue to show a reminder when closing the bank with tracked items still in inventory for x seconds.",
+    description = "Continue to show a reminder when closing the bank with tracked items still in inventory/worn/bank for x seconds.",
     position = 5
   )
   default int reminderTimerOnBankClose()
@@ -55,4 +66,38 @@ public interface GroupStorageReminderConfig extends Config
   {
     return "Dragon warhammer\nTwisted bow\nBandos god sword"; // Default items, can be overridden in the config
   }
+
+
+  /*
+   * Store our items between sessions.
+   */
+  @ConfigItem(
+    keyName = "storedInventory",
+    name = "Stored Inventory",
+    description = "Serialized list of inventory items",
+    hidden = true
+  )
+  default String storedInventory() { return ""; }
+
+  @ConfigItem(
+    keyName = "storedInventory",
+    name = "Stored Inventory",
+    description = ""
+  )
+  void setStoredInventory(String items);
+
+  @ConfigItem(
+    keyName = "storedBank",
+    name = "Stored Bank",
+    description = "Serialized list of bank items",
+    hidden = true
+  )
+  default String storedBank() { return ""; }
+
+  @ConfigItem(
+    keyName = "storedBank",
+    name = "Stored Bank",
+    description = ""
+  )
+  void setStoredBank(String items);
 }
