@@ -103,10 +103,7 @@ public class GroupStorageReminderPlugin extends Plugin
     }
     else if (logoutSwitcherOpen)
     {
-      logoutSwitcherOpen = false;
-      // Reset the reminder timer
-      reminderTimerActive = true;
-      reminderTimer = (int)(config.reminderTimerOnBankClose() / 0.6);
+      logoutSwitcherOpen = closeInterface();
     }
 
     /*
@@ -116,10 +113,7 @@ public class GroupStorageReminderPlugin extends Plugin
      */
     if (bankIsOpen && client.getWidget(InterfaceID.BANKMAIN, 0) == null)
     {
-      bankIsOpen = false;
-      // Reset the reminder timer
-      reminderTimerActive = true;
-      reminderTimer = (int)(config.reminderTimerOnBankClose() / 0.6);
+      bankIsOpen = closeInterface();
     }
 
     /*
@@ -129,10 +123,7 @@ public class GroupStorageReminderPlugin extends Plugin
      */
     if (groupStorageIsOpen && client.getWidget(InterfaceID.SHARED_BANK, 0) == null)
     {
-      groupStorageIsOpen = false;
-      // Reset the reminder timer
-      reminderTimerActive = true;
-      reminderTimer = (int)(config.reminderTimerOnBankClose() / 0.6);
+      groupStorageIsOpen = closeInterface();
     }
 
     /*
@@ -145,6 +136,14 @@ public class GroupStorageReminderPlugin extends Plugin
     {
       reminderTimerActive = reminderTimer-- > 0;
     }
+  }
+
+  public boolean closeInterface()
+  {
+    // Reset the reminder timer
+    reminderTimerActive = true;
+    reminderTimer = (int)(config.reminderTimerOnBankClose() / 0.6);
+    return false;
   }
 
   @Subscribe
