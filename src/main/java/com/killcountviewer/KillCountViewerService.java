@@ -93,6 +93,15 @@ class KillCountViewerService
 
 		return x >= minX && x <= maxX && y >= minY && y <= maxY && location.getPlane() == z;
 	}
+	private boolean isOnPlane(Player player, int z)
+	{
+		if (player == null || player.getWorldLocation() == null)
+		{
+			return false;
+		}
+
+		return WorldPoint.fromLocalInstance(client, player.getLocalLocation()).getPlane() == z;
+	}
 
 	// Check if the setting is enabled for the given boss zone
 	boolean enabledAlways(HighlightAlwaysSetting setting)
@@ -133,6 +142,8 @@ class KillCountViewerService
 
 		int region = WorldPoint.fromLocalInstance(client, player.getLocalLocation()).getRegionID();
 		// System.out.println("Region ID: " + region + " | Current Boss: " + currentBoss);
+		// WorldPoint location = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
+		// System.out.println("Player Location: " + location.getX() + ", " + location.getY() + ", " + location.getPlane());
 		
 		if (checkCurrentBoss(HiscoreSkill.SOUL_WARS_ZEAL) && isSoulWarsZeal(player, region)) return currentBoss = HiscoreSkill.SOUL_WARS_ZEAL;
 		if (checkCurrentBoss(HiscoreSkill.LAST_MAN_STANDING) && isLastManStanding(player, region)) return currentBoss = HiscoreSkill.LAST_MAN_STANDING;
@@ -371,13 +382,13 @@ class KillCountViewerService
 
 	private boolean isKalphiteQueen(Player player, int region)
 	{
-		return ((region == 12692 || region == 12948) && enabledLobby(config.bossEnabledKalphiteQueen())) ||
-			((region == 12691 || region == 12947) && enabledAlways(config.bossEnabledKalphiteQueen()));
+		return ((region == 13972 && isOnPlane(player, 2)) && enabledLobby(config.bossEnabledKalphiteQueen())) ||
+			((region == 13972 && isOnPlane(player, 0)) && enabledAlways(config.bossEnabledKalphiteQueen()));
 	}
 
 	private boolean isKingBlackDragon(Player player, int region)
 	{
-		return (region == 12192 && enabledLobby(config.bossEnabledKingBlackDragon())) ||
+		return (isInArea(player, 3062, 10251, 3072, 10263) && enabledLobby(config.bossEnabledKingBlackDragon())) ||
 			(region == 9033 && enabledAlways(config.bossEnabledKingBlackDragon()));
 	}
 
@@ -403,7 +414,7 @@ class KillCountViewerService
 	private boolean isLunarChests(Player player, int region)
 	{
 		return
-			((region == 5527 || region == 6039 || region == 6037 || region == 5525 || region == 5782) && enabledLobby(config.bossEnabledLunarChests())) ||
+			((region == 5527 || region == 6039 || region == 6037 || region == 5525 || region == 5782) && isOnPlane(player, 0) && enabledLobby(config.bossEnabledLunarChests())) ||
 			((region == 6038 || region == 5783 || region == 5526) && enabledAlways(config.bossEnabledLunarChests()));
 	}
 
