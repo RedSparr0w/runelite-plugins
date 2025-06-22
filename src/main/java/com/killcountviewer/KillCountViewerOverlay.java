@@ -49,10 +49,14 @@ import javax.inject.Singleton;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 public class KillCountViewerOverlay extends Overlay
 {
+	private static final Logger log = LoggerFactory.getLogger(KillCountViewerOverlay.class);
+
 	@Inject
 	private HiscoreClient hiscoreClient;
 
@@ -332,7 +336,7 @@ public class KillCountViewerOverlay extends Overlay
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			log.warn("Failed to fetch kill count for {}", playerName);
 		}
 		return results;
 	}
