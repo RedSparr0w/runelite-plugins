@@ -16,6 +16,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -272,6 +273,7 @@ public class GroupStorageReminderPlugin extends Plugin
       this.plugin = plugin;
       setPosition(OverlayPosition.TOP_LEFT);
       setPriority(OverlayPriority.HIGH);
+      setLayer(OverlayLayer.ALWAYS_ON_TOP);
     }
 
     @Override
