@@ -41,6 +41,8 @@ import java.util.Queue;
 import net.runelite.client.hiscore.HiscoreClient;
 import net.runelite.client.hiscore.HiscoreResult;
 import net.runelite.client.hiscore.HiscoreSkill;
+import net.runelite.client.hiscore.HiscoreSkillType;
+
 import java.time.Duration;
 import java.util.concurrent.*;
 
@@ -161,6 +163,16 @@ public class KillCountViewerOverlay extends Overlay
 		this.chatIconManager = chatIconManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_MED);
+		// Log any missing activities/bosses from the SCORES array
+		HiscoreSkill[] allSkills = HiscoreSkill.values();
+		java.util.Set<HiscoreSkill> scoresSet = new java.util.HashSet<>();
+		java.util.Collections.addAll(scoresSet, SCORES);
+		for (HiscoreSkill skill : allSkills) {
+			HiscoreSkillType type = skill.getType();
+			if ((type == HiscoreSkillType.BOSS || type == HiscoreSkillType.ACTIVITY) && !scoresSet.contains(skill)) {
+				log.info("HiscoreSkill missing from SCORES: {}", skill);
+			}
+		}
 	}
 
 	private int lookupCounter = 0;
