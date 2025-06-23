@@ -41,6 +41,8 @@ import java.util.Queue;
 import net.runelite.client.hiscore.HiscoreClient;
 import net.runelite.client.hiscore.HiscoreResult;
 import net.runelite.client.hiscore.HiscoreSkill;
+import net.runelite.client.hiscore.HiscoreSkillType;
+
 import java.time.Duration;
 import java.util.concurrent.*;
 
@@ -71,9 +73,26 @@ public class KillCountViewerOverlay extends Overlay
 	private final Queue<String> kcLookupQueue = new ConcurrentLinkedQueue<>();
 
 	private static final HiscoreSkill[] SCORES = {
+		// Skills
+		HiscoreSkill.WOODCUTTING,                      // Done
+		HiscoreSkill.FISHING,                          // Done
+		HiscoreSkill.RANGED,                           // Done
+		HiscoreSkill.MINING,                           // Done
+		HiscoreSkill.CRAFTING,                         // Done
+		HiscoreSkill.COOKING,                          // Done
+		HiscoreSkill.FARMING,                          // Done
+		HiscoreSkill.MAGIC,                            // Done
+		HiscoreSkill.HUNTER,                           // Done
+		HiscoreSkill.SMITHING,                         // Done
+		HiscoreSkill.HERBLORE,                         // Done
+		HiscoreSkill.SLAYER,                           // Done
+		HiscoreSkill.AGILITY,                          // Done (probably some rooftops and courses missing)
+		HiscoreSkill.CONSTRUCTION,                     // Done
+		// Activities
 		HiscoreSkill.SOUL_WARS_ZEAL,                    // Done (test in matchmaking)
 		HiscoreSkill.LAST_MAN_STANDING,                 // Done (not in matchmaking)
 		HiscoreSkill.RIFTS_CLOSED,                      // Done
+		// Bosses
 		HiscoreSkill.ABYSSAL_SIRE,                      // Done
 		HiscoreSkill.ALCHEMICAL_HYDRA,                  // Done
 		HiscoreSkill.AMOXLIATL,                         // Done
@@ -84,8 +103,6 @@ public class KillCountViewerOverlay extends Overlay
 		HiscoreSkill.CALLISTO,                          // Done
 		HiscoreSkill.CALVARION,                         // Done
 		HiscoreSkill.CERBERUS,                          // Done
-		HiscoreSkill.CHAMBERS_OF_XERIC,                 // Done
-		HiscoreSkill.CHAMBERS_OF_XERIC_CHALLENGE_MODE,  // Done
 		HiscoreSkill.CHAOS_ELEMENTAL,                   // Done
 		HiscoreSkill.CHAOS_FANATIC,                     // Done
 		HiscoreSkill.COMMANDER_ZILYANA,                 // Done
@@ -100,15 +117,15 @@ public class KillCountViewerOverlay extends Overlay
 		HiscoreSkill.GIANT_MOLE,                        // Done
 		HiscoreSkill.GROTESQUE_GUARDIANS,               // Done
 		HiscoreSkill.HESPORI,                           // Done
-		HiscoreSkill.KALPHITE_QUEEN,                    // Done (to test)
+		HiscoreSkill.KALPHITE_QUEEN,                    // Done
 		HiscoreSkill.KING_BLACK_DRAGON,                 // Done
-		HiscoreSkill.KRAKEN,                            // Done (to test)
+		HiscoreSkill.KRAKEN,                            // Done
 		HiscoreSkill.KREEARRA,                          // Done
 		HiscoreSkill.KRIL_TSUTSAROTH,                   // Done
 		HiscoreSkill.LUNAR_CHESTS,                      // Done
 		HiscoreSkill.MIMIC,                             // Done
 		HiscoreSkill.NEX,
-		HiscoreSkill.NIGHTMARE,
+		HiscoreSkill.NIGHTMARE,                         // Done (to test)
 		HiscoreSkill.PHOSANIS_NIGHTMARE,
 		HiscoreSkill.OBOR,                              // Done
 		HiscoreSkill.PHANTOM_MUSPAH,                    // Done
@@ -124,11 +141,7 @@ public class KillCountViewerOverlay extends Overlay
 		HiscoreSkill.THE_LEVIATHAN,
 		HiscoreSkill.THE_ROYAL_TITANS,                  // Done
 		HiscoreSkill.THE_WHISPERER,
-		HiscoreSkill.THEATRE_OF_BLOOD,                  // Done
-		HiscoreSkill.THEATRE_OF_BLOOD_HARD_MODE,        // Done
 		HiscoreSkill.THERMONUCLEAR_SMOKE_DEVIL,
-		HiscoreSkill.TOMBS_OF_AMASCUT,                  // Done
-		HiscoreSkill.TOMBS_OF_AMASCUT_EXPERT,           // Done
 		HiscoreSkill.TZKAL_ZUK,                         // Done
 		HiscoreSkill.TZTOK_JAD,                         // Done
 		HiscoreSkill.VARDORVIS,
@@ -136,8 +149,16 @@ public class KillCountViewerOverlay extends Overlay
 		HiscoreSkill.VETION,                            // Done
 		HiscoreSkill.VORKATH,                           // Done
 		HiscoreSkill.WINTERTODT,                        // Done
+		HiscoreSkill.YAMA,                              // Done
 		HiscoreSkill.ZALCANO,                           // Done
 		HiscoreSkill.ZULRAH,                            // Done
+		// Raids
+		HiscoreSkill.CHAMBERS_OF_XERIC,                 // Done
+		HiscoreSkill.CHAMBERS_OF_XERIC_CHALLENGE_MODE,  // Done
+		HiscoreSkill.THEATRE_OF_BLOOD,                  // Done
+		HiscoreSkill.THEATRE_OF_BLOOD_HARD_MODE,        // Done
+		HiscoreSkill.TOMBS_OF_AMASCUT,                  // Done
+		HiscoreSkill.TOMBS_OF_AMASCUT_EXPERT,           // Done
 	};
 
 	private static class CachedKC
@@ -153,13 +174,22 @@ public class KillCountViewerOverlay extends Overlay
 	}
 
 	@Inject
-	private KillCountViewerOverlay(KillCountViewerConfig config, KillCountViewerService KillCountService, ChatIconManager chatIconManager)
+	private KillCountViewerOverlay(KillCountViewerConfig config, KillCountViewerService killCountService, ChatIconManager chatIconManager)
 	{
 		this.config = config;
-		this.killcountService = KillCountService;
+		this.killcountService = killCountService;
 		this.chatIconManager = chatIconManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_MED);
+		// Log any missing activities/bosses from the SCORES array
+		HiscoreSkill[] allSkills = HiscoreSkill.values();
+		java.util.Set<HiscoreSkill> scoresSet = new java.util.HashSet<>();
+		java.util.Collections.addAll(scoresSet, SCORES);
+		for (HiscoreSkill skill : allSkills) {
+			if (!scoresSet.contains(skill)) {
+				log.info("HiscoreSkill missing from SCORES: {}", skill);
+			}
+		}
 	}
 
 	private int lookupCounter = 0;
@@ -235,7 +265,7 @@ public class KillCountViewerOverlay extends Overlay
 		}
 
 		// Caclulate our rank image if enabled
-		BufferedImage rankImage = config.killcountRankIcon() ? this.calculateRankImage(kc) : null;
+		BufferedImage rankImage = config.killcountRankIcon() ? this.calculateRankImage(boss, kc) : null;
 
 		// Draw the kill count
 		final int zOffset;
@@ -297,26 +327,43 @@ public class KillCountViewerOverlay extends Overlay
 		OverlayUtil.renderTextLocation(graphics, textLocation, killCountText, color);
 	}
 
-	private BufferedImage calculateRankImage(int kc)
+	private BufferedImage calculateRankImage(HiscoreSkill skill, int kc)
 	{
-		
-		// math-based rank
-		FriendsChatRank[] ranks = {
-			FriendsChatRank.RECRUIT, // 0-99
-			FriendsChatRank.CORPORAL, // 100-199
-			FriendsChatRank.SERGEANT, // 200-299
-			FriendsChatRank.LIEUTENANT, // 300-399
-			FriendsChatRank.LIEUTENANT, // 400-499
-			FriendsChatRank.CAPTAIN, // 500-599
-			FriendsChatRank.CAPTAIN, // 600-699
-			FriendsChatRank.GENERAL, // 700-799
-			FriendsChatRank.GENERAL, // 800-899
-			FriendsChatRank.GENERAL, // 900-999
-			FriendsChatRank.JMOD, // 1000+
-		};
-		int tierSize = 100;
-		int tier = Math.min(kc / tierSize, ranks.length - 1);
-		return chatIconManager.getRankImage(ranks[tier]);
+		FriendsChatRank rank = FriendsChatRank.RECRUIT;
+		if (skill.getType() == HiscoreSkillType.SKILL) {
+			if (kc >= 99) {
+				rank = FriendsChatRank.JMOD;
+			} else if (kc >= 95) {
+				rank = FriendsChatRank.GENERAL;
+			} else if (kc >= 90) {
+				rank = FriendsChatRank.CAPTAIN;
+			} else if (kc >= 80) {
+				rank = FriendsChatRank.LIEUTENANT;
+			} else if (kc >= 70) {
+				rank = FriendsChatRank.SERGEANT;
+			} else if (kc >= 60) {
+				rank = FriendsChatRank.CORPORAL;
+			} else {
+				rank = FriendsChatRank.RECRUIT;
+			}
+		} else {
+			if (kc >= 1000) {
+				rank = FriendsChatRank.JMOD;
+			} else if (kc >= 700) {
+				rank = FriendsChatRank.GENERAL;
+			} else if (kc >= 500) {
+				rank = FriendsChatRank.CAPTAIN;
+			} else if (kc >= 300) {
+				rank = FriendsChatRank.LIEUTENANT;
+			} else if (kc >= 200) {
+				rank = FriendsChatRank.SERGEANT;
+			} else if (kc >= 100) {
+				rank = FriendsChatRank.CORPORAL;
+			} else {
+				rank = FriendsChatRank.RECRUIT;
+			}
+		}
+		return chatIconManager.getRankImage(rank);
 	}
 
 	private Map<HiscoreSkill, Integer> fetchPlayerKC(String playerName)

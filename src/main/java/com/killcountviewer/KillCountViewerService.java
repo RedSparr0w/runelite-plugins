@@ -25,13 +25,18 @@
 package com.killcountviewer;
 
 import net.runelite.api.*;
+import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.hiscore.HiscoreSkill;
 import net.runelite.client.party.PartyService;
 import com.killcountviewer.KillCountViewerConfig.HighlightAlwaysSetting;
 import com.killcountviewer.KillCountViewerConfig.HighlightRaidSetting;
 import com.killcountviewer.KillCountViewerConfig.HighlightSetting;
+import com.killcountviewer.KillCountViewerConfig.HighlightSkillSetting;
+
 import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.BiConsumer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -91,7 +96,7 @@ class KillCountViewerService
 		int maxY = Math.max(y1, y2);
 		int y = location.getY();
 
-		return x >= minX && x <= maxX && y >= minY && y <= maxY && location.getPlane() == z;
+		return x >= minX && x <= maxX && y >= minY && y <= maxY && (z < 0 || location.getPlane() == z);
 	}
 	private boolean isOnPlane(Player player, int z)
 	{
@@ -101,6 +106,32 @@ class KillCountViewerService
 		}
 
 		return WorldPoint.fromLocalInstance(client, player.getLocalLocation()).getPlane() == z;
+	}
+
+	public boolean isInPolygon(Player player, List<Point> polygonCoords)
+	{
+		return isInPolygon(player, polygonCoords, 0);
+	}
+	
+	public boolean isInPolygon(Player player, List<Point> polygonCoords, int plane)
+	{
+		if (player == null || player.getWorldLocation() == null)
+		{
+			return false;
+		}
+		WorldPoint location = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
+
+		// Optional: Ensure the polygon is only valid on a specific plane (usually 0)
+		if (plane >= 0 && location.getPlane() != plane)
+			return false;
+
+		Polygon polygon = new Polygon();
+		for (Point p : polygonCoords)
+		{
+				polygon.addPoint(p.getX(), p.getY());
+		}
+
+		return polygon.contains(location.getX(), location.getY());
 	}
 
 	// Check if the setting is enabled for the given boss zone
@@ -117,6 +148,11 @@ class KillCountViewerService
 	boolean enabledLobby(HighlightSetting setting)
 	{
 		return setting == HighlightSetting.LOBBY;
+	}
+
+	boolean enabledSkill(HighlightSkillSetting setting)
+	{
+		return setting == HighlightSkillSetting.ENABLED;
 	}
 
 	boolean enabledRaidNormal(HighlightRaidSetting setting)
@@ -145,9 +181,26 @@ class KillCountViewerService
 		// WorldPoint location = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
 		// System.out.println("Player Location: " + location.getX() + ", " + location.getY() + ", " + location.getPlane());
 		
+		// Skills
+		if (checkCurrentBoss(HiscoreSkill.WOODCUTTING) && isWoodcutting(player, region)) return currentBoss = HiscoreSkill.WOODCUTTING;
+		if (checkCurrentBoss(HiscoreSkill.FISHING) && isFishing(player, region)) return currentBoss = HiscoreSkill.FISHING;
+		if (checkCurrentBoss(HiscoreSkill.RANGED) && isRanged(player, region)) return currentBoss = HiscoreSkill.RANGED;
+		if (checkCurrentBoss(HiscoreSkill.MINING) && isMining(player, region)) return currentBoss = HiscoreSkill.MINING;
+		if (checkCurrentBoss(HiscoreSkill.CRAFTING) && isCrafting(player, region)) return currentBoss = HiscoreSkill.CRAFTING;
+		if (checkCurrentBoss(HiscoreSkill.COOKING) && isCooking(player, region)) return currentBoss = HiscoreSkill.COOKING;
+		if (checkCurrentBoss(HiscoreSkill.FARMING) && isFarming(player, region)) return currentBoss = HiscoreSkill.FARMING;
+		if (checkCurrentBoss(HiscoreSkill.HUNTER) && isHunter(player, region)) return currentBoss = HiscoreSkill.HUNTER;
+		if (checkCurrentBoss(HiscoreSkill.MAGIC) && isMagic(player, region)) return currentBoss = HiscoreSkill.MAGIC;
+		if (checkCurrentBoss(HiscoreSkill.SMITHING) && isSmithing(player, region)) return currentBoss = HiscoreSkill.SMITHING;
+		if (checkCurrentBoss(HiscoreSkill.SLAYER) && isSlayer(player, region)) return currentBoss = HiscoreSkill.SLAYER;
+		if (checkCurrentBoss(HiscoreSkill.AGILITY) && isAgility(player, region)) return currentBoss = HiscoreSkill.AGILITY;
+		if (checkCurrentBoss(HiscoreSkill.HERBLORE) && isHerblore(player, region)) return currentBoss = HiscoreSkill.HERBLORE;
+		if (checkCurrentBoss(HiscoreSkill.CONSTRUCTION) && isConstruction(player, region)) return currentBoss = HiscoreSkill.CONSTRUCTION;
+		// Activities
 		if (checkCurrentBoss(HiscoreSkill.SOUL_WARS_ZEAL) && isSoulWarsZeal(player, region)) return currentBoss = HiscoreSkill.SOUL_WARS_ZEAL;
 		if (checkCurrentBoss(HiscoreSkill.LAST_MAN_STANDING) && isLastManStanding(player, region)) return currentBoss = HiscoreSkill.LAST_MAN_STANDING;
 		if (checkCurrentBoss(HiscoreSkill.RIFTS_CLOSED) && isRiftsClosed(player, region)) return currentBoss = HiscoreSkill.RIFTS_CLOSED;
+		// Bosses
 		if (checkCurrentBoss(HiscoreSkill.ABYSSAL_SIRE) && isAbyssalSire(player, region)) return currentBoss = HiscoreSkill.ABYSSAL_SIRE;
 		if (checkCurrentBoss(HiscoreSkill.ALCHEMICAL_HYDRA) && isAlchemicalHydra(player, region)) return currentBoss = HiscoreSkill.ALCHEMICAL_HYDRA;
 		if (checkCurrentBoss(HiscoreSkill.AMOXLIATL) && isAmoxliatl(player, region)) return currentBoss = HiscoreSkill.AMOXLIATL;
@@ -158,8 +211,6 @@ class KillCountViewerService
 		if (checkCurrentBoss(HiscoreSkill.CALLISTO) && isCallisto(player, region)) return currentBoss = HiscoreSkill.CALLISTO;
 		if (checkCurrentBoss(HiscoreSkill.CALVARION) && isCalvarion(player, region)) return currentBoss = HiscoreSkill.CALVARION;
 		if (checkCurrentBoss(HiscoreSkill.CERBERUS) && isCerberus(player, region)) return currentBoss = HiscoreSkill.CERBERUS;
-		if (checkCurrentBoss(HiscoreSkill.CHAMBERS_OF_XERIC) && isChambersOfXeric(player, region)) return currentBoss = HiscoreSkill.CHAMBERS_OF_XERIC;
-		if (checkCurrentBoss(HiscoreSkill.CHAMBERS_OF_XERIC_CHALLENGE_MODE) && isChambersOfXericChallengeMode(player, region)) return currentBoss = HiscoreSkill.CHAMBERS_OF_XERIC_CHALLENGE_MODE;
 		if (checkCurrentBoss(HiscoreSkill.CHAOS_ELEMENTAL) && isChaosElemental(player, region)) return currentBoss = HiscoreSkill.CHAOS_ELEMENTAL;
 		if (checkCurrentBoss(HiscoreSkill.CHAOS_FANATIC) && isChaosFanatic(player, region)) return currentBoss = HiscoreSkill.CHAOS_FANATIC;
 		if (checkCurrentBoss(HiscoreSkill.COMMANDER_ZILYANA) && isCommanderZilyana(player, region)) return currentBoss = HiscoreSkill.COMMANDER_ZILYANA;
@@ -196,11 +247,7 @@ class KillCountViewerService
 		if (checkCurrentBoss(HiscoreSkill.THE_HUEYCOATL) && isTheHueycoatl(player, region)) return currentBoss = HiscoreSkill.THE_HUEYCOATL;
 		if (checkCurrentBoss(HiscoreSkill.THE_LEVIATHAN) && isTheLeviathan(player, region)) return currentBoss = HiscoreSkill.THE_LEVIATHAN;
 		if (checkCurrentBoss(HiscoreSkill.THE_WHISPERER) && isTheWhisperer(player, region)) return currentBoss = HiscoreSkill.THE_WHISPERER;
-		if (checkCurrentBoss(HiscoreSkill.THEATRE_OF_BLOOD) && isTheatreOfBlood(player, region)) return currentBoss = HiscoreSkill.THEATRE_OF_BLOOD;
-		if (checkCurrentBoss(HiscoreSkill.THEATRE_OF_BLOOD_HARD_MODE) && isTheatreOfBloodHardMode(player, region)) return currentBoss = HiscoreSkill.THEATRE_OF_BLOOD_HARD_MODE;
 		if (checkCurrentBoss(HiscoreSkill.THERMONUCLEAR_SMOKE_DEVIL) && isThermonuclearSmokeDevil(player, region)) return currentBoss = HiscoreSkill.THERMONUCLEAR_SMOKE_DEVIL;
-		if (checkCurrentBoss(HiscoreSkill.TOMBS_OF_AMASCUT) && isTombsOfAmascut(player, region)) return currentBoss = HiscoreSkill.TOMBS_OF_AMASCUT;
-		if (checkCurrentBoss(HiscoreSkill.TOMBS_OF_AMASCUT_EXPERT) && isTombsOfAmascutExpert(player, region)) return currentBoss = HiscoreSkill.TOMBS_OF_AMASCUT_EXPERT;
 		if (checkCurrentBoss(HiscoreSkill.VENENATIS) && isVenenatis(player, region)) return currentBoss = HiscoreSkill.VENENATIS;
 		if (checkCurrentBoss(HiscoreSkill.VETION) && isVetion(player, region)) return currentBoss = HiscoreSkill.VETION;
 		if (checkCurrentBoss(HiscoreSkill.THE_CORRUPTED_GAUNTLET) && isCorruptedGauntlet(player, region)) return currentBoss = HiscoreSkill.THE_CORRUPTED_GAUNTLET;
@@ -210,11 +257,294 @@ class KillCountViewerService
 		if (checkCurrentBoss(HiscoreSkill.VARDORVIS) && isVardorvis(player, region)) return currentBoss = HiscoreSkill.VARDORVIS;
 		if (checkCurrentBoss(HiscoreSkill.VORKATH) && isVorkath(player, region)) return currentBoss = HiscoreSkill.VORKATH;
 		if (checkCurrentBoss(HiscoreSkill.WINTERTODT) && isWintertodt(player, region)) return currentBoss = HiscoreSkill.WINTERTODT;
+		if (checkCurrentBoss(HiscoreSkill.YAMA) && isYama(player, region)) return currentBoss = HiscoreSkill.YAMA;
 		if (checkCurrentBoss(HiscoreSkill.ZALCANO) && isZalcano(player, region)) return currentBoss = HiscoreSkill.ZALCANO;
 		if (checkCurrentBoss(HiscoreSkill.ZULRAH) && isZulrah(player, region)) return currentBoss = HiscoreSkill.ZULRAH;
+		// Raids
+		if (checkCurrentBoss(HiscoreSkill.CHAMBERS_OF_XERIC) && isChambersOfXeric(player, region)) return currentBoss = HiscoreSkill.CHAMBERS_OF_XERIC;
+		if (checkCurrentBoss(HiscoreSkill.CHAMBERS_OF_XERIC_CHALLENGE_MODE) && isChambersOfXericChallengeMode(player, region)) return currentBoss = HiscoreSkill.CHAMBERS_OF_XERIC_CHALLENGE_MODE;
+		if (checkCurrentBoss(HiscoreSkill.THEATRE_OF_BLOOD) && isTheatreOfBlood(player, region)) return currentBoss = HiscoreSkill.THEATRE_OF_BLOOD;
+		if (checkCurrentBoss(HiscoreSkill.THEATRE_OF_BLOOD_HARD_MODE) && isTheatreOfBloodHardMode(player, region)) return currentBoss = HiscoreSkill.THEATRE_OF_BLOOD_HARD_MODE;
+		if (checkCurrentBoss(HiscoreSkill.TOMBS_OF_AMASCUT) && isTombsOfAmascut(player, region)) return currentBoss = HiscoreSkill.TOMBS_OF_AMASCUT;
+		if (checkCurrentBoss(HiscoreSkill.TOMBS_OF_AMASCUT_EXPERT) && isTombsOfAmascutExpert(player, region)) return currentBoss = HiscoreSkill.TOMBS_OF_AMASCUT_EXPERT;
 
 		return currentBoss = null;
 	}
+
+	private boolean isWoodcutting(Player player, int region)
+	{
+		return enabledSkill(config.skillEnabledWoodcutting()) &&
+			(
+				// Woodcutting Guild West
+				isInArea(player, 1562, 3472, 1600, 3503) ||
+				// Woodcutting Guild Middle
+				isInArea(player, 1601, 3501, 1606, 3496) ||
+				// Woodcutting Guild East
+				isInArea(player, 1654, 3516, 1607, 3488) ||
+				// Woodcutting Guild RedWoods
+				isInArea(player, 1566, 3497, 1575, 3478, 1) ||
+				isInArea(player, 1566, 3497, 1575, 3478, 2)
+			);
+	}
+
+	private boolean isFishing(Player player, int region)
+	{
+		return enabledSkill(config.skillEnabledFishing()) &&
+			(
+				// Barbarian Fishing
+				isInArea(player, 2509, 3508, 2515, 3496) ||
+				// Catherby Fishing
+				isInArea(player, 2842, 3430, 2852, 3423) ||
+				// Fishing Guild
+				isInArea(player, 2579, 3425, 2624, 3415) ||
+				isInArea(player, 2587, 3414, 2623, 3394)
+			);
+	}
+
+	private boolean isRanged(Player player, int region)
+	{
+		List<Point> rangingGuildPolygon = Arrays.asList(
+			new Point(2668, 3446),
+			new Point(2686, 3428),
+			new Point(2668, 3411),
+			new Point(2650, 3428)
+		);
+
+		return enabledSkill(config.skillEnabledRanged()) &&
+			(
+				// Ranging Guild
+				isInPolygon(player, rangingGuildPolygon, -1)
+			);
+	}
+
+	private boolean isMining(Player player, int region)
+	{
+		return enabledSkill(config.skillEnabledMining()) &&
+			(
+				// Mining Guild
+				isInArea(player, 2999, 9756, 3061, 9698) ||
+				// Motherlode Mine
+				region == 14936
+			);
+	}
+
+	private boolean isCrafting(Player player, int region)
+	{
+		List<Point> craftingGuildPolygon = Arrays.asList(
+			new Point(2927, 3292),
+			new Point(2934, 3292),
+			new Point(2936, 3293),
+			new Point(2938, 3293),
+			new Point(2939, 3292),
+			new Point(2943, 3292),
+			new Point(2944, 3291),
+			new Point(2944, 3277),
+			new Point(2943, 3276),
+			new Point(2938, 3276),
+			new Point(2937, 3277),
+			new Point(2937, 3279),
+			new Point(2933, 3279),
+			new Point(2929, 3274),
+			new Point(2926, 3277),
+			new Point(2929, 3281),
+			new Point(2929, 3285),
+			new Point(2927, 3287)
+		);
+		return enabledSkill(config.skillEnabledCrafting()) &&
+			(
+				// Crafting Guild
+				isInPolygon(player, craftingGuildPolygon, -1)
+			);
+	}
+
+	private boolean isCooking(Player player, int region)
+	{
+		List<Point> cookingGuildPolygon = Arrays.asList(
+			new Point(3140, 3454),
+			new Point(3147, 3454),
+			new Point(3149, 3452),
+			new Point(3149, 3447),
+			new Point(3145, 3444),
+			new Point(3142, 3444),
+			new Point(3137, 3449),
+			new Point(3137, 3451)
+		);
+		return enabledSkill(config.skillEnabledCooking()) &&
+			(
+				// Cooking Guild
+				isInPolygon(player, cookingGuildPolygon, -1)
+			);
+	}
+
+	private boolean isFarming(Player player, int region)
+	{
+		List<Point> farmingGuildPolygon = Arrays.asList(
+			new Point(1226, 3765),
+			new Point(1232, 3765),
+			new Point(1232, 3762),
+			new Point(1240, 3762),
+			new Point(1242, 3764),
+			new Point(1256, 3764),
+			new Point(1259, 3761),
+			new Point(1259, 3749),
+			new Point(1256, 3746),
+			new Point(1251, 3746),
+			new Point(1251, 3744),
+			new Point(1256, 3744),
+			new Point(1256, 3738),
+			new Point(1257, 3737),
+			new Point(1260, 3740),
+			new Point(1263, 3740),
+			new Point(1263, 3744),
+			new Point(1261, 3746),
+			new Point(1261, 3752),
+			new Point(1269, 3752),
+			new Point(1269, 3745),
+			new Point(1267, 3743),
+			new Point(1267, 3740),
+			new Point(1270, 3740),
+			new Point(1275, 3735),
+			new Point(1275, 3725),
+			new Point(1270, 3720),
+			new Point(1261, 3720),
+			new Point(1255, 3726),
+			new Point(1253, 3726),
+			new Point(1253, 3723),
+			new Point(1245, 3723),
+			new Point(1245, 3728),
+			new Point(1243, 3728),
+			new Point(1243, 3732),
+			new Point(1245, 3732),
+			new Point(1245, 3738),
+			new Point(1242, 3738),
+			new Point(1242, 3744),
+			new Point(1247, 3744),
+			new Point(1247, 3746),
+			new Point(1241, 3746),
+			new Point(1239, 3748),
+			new Point(1231, 3748),
+			new Point(1231, 3745),
+			new Point(1227, 3745),
+			new Point(1227, 3748),
+			new Point(1222, 3748),
+			new Point(1222, 3762),
+			new Point(1226, 3762)
+		);
+		return enabledSkill(config.skillEnabledFarming()) &&
+			(
+				// Farming Guild
+				isInPolygon(player, farmingGuildPolygon)
+			);
+	}
+
+	private boolean isHunter(Player player, int region)
+	{
+		return enabledSkill(config.skillEnabledHunter()) &&
+			(
+				// Hunter Guild
+				isInArea(player, 1540, 3063, 1574, 3030)
+			);
+	}
+
+	private boolean isMagic(Player player, int region)
+	{
+
+		List<Point> wizardsGuild = Arrays.asList(
+			new Point(2589, 3094),
+			new Point(2593, 3094),
+			new Point(2597, 3090),
+			new Point(2597, 3086),
+			new Point(2593, 3082),
+			new Point(2589, 3082),
+			new Point(2585, 3086),
+			new Point(2585, 3090)
+		);
+		return enabledSkill(config.skillEnabledMagic()) &&
+			(
+				isInPolygon(player, wizardsGuild, -1) ||
+				isInArea(player, 3353,3324,3373,3295, -1)
+			);
+	}
+
+	private boolean isSmithing(Player player, int region)
+	{
+		return enabledSkill(config.skillEnabledSmithing()) &&
+			(
+				// Giants Foundry
+				region == 13491 ||
+				// Blast Furnace
+				region == 7757
+			);
+	}
+
+	private boolean isSlayer(Player player, int region)
+	{
+		return enabledSkill(config.skillEnabledSlayer()) &&
+			(
+				// Tureal
+				isInArea(player, 2928, 3539, 2933, 3534) ||
+				// Spria
+				isInArea(player, 3089, 3268, 3095, 3265) ||
+				// Krystilia
+				isInArea(player, 3107, 3517, 3111, 3511) ||
+				// Mazchna
+				isInArea(player, 3506, 3514, 3514, 3504) ||
+				// Vannaka
+				isInArea(player, 3141, 9916, 3150, 9910) ||
+				// Chaeldar
+				isInArea(player, 2439, 4434, 2454, 4421) ||
+				// Neive
+				isInArea(player, 2428, 3427, 2436, 3420) ||
+				// Duradel
+				isInArea(player, 2866, 2984, 2871, 2980, 1) ||
+				// Konar
+				isInArea(player, 1305, 3791, 1312, 3782)
+			);
+	}
+
+	private boolean isAgility(Player player, int region)
+	{
+		return enabledSkill(config.skillEnabledAgility()) &&
+			(
+				// Brimhaven Agility Arena
+				region == 11157 ||
+				// Sepulchre Lobby
+				region == 9565 ||
+				// Seers Village Rooftop
+				isInArea(player, 2730, 3500, 2689, 3458, 2) ||
+				isInArea(player, 2730, 3500, 2689, 3458, 3) ||
+				// Gnome Stronghold Agility Course
+				isInArea(player, 2469, 3439, 2490, 3415, -1) ||
+				// Canifis Rooftop
+				isInArea(player, 3471, 3509, 3517, 3467, 2) ||
+				isInArea(player, 3471, 3509, 3517, 3467, 3)
+			);
+	}
+
+	private boolean isConstruction(Player player, int region)
+	{
+		return enabledSkill(config.skillEnabledConstruction()) &&
+			(
+				// Player-owned House (POH) regions
+				region == 7769 ||
+				region == 7770 ||
+				region == 7514 ||
+				region == 7513 ||
+				region == 8026 ||
+				region == 8025 ||
+				region == 7257
+			);
+	}
+
+	private boolean isHerblore(Player player, int region)
+	{
+		return enabledSkill(config.skillEnabledHerblore()) &&
+			(
+				// Mastering Mixology
+				isInArea(player, 1380, 9335, 1404, 9305)
+			);
+	}
+
 	private boolean isSoulWarsZeal(Player player, int region)
 	{
 		return
@@ -582,6 +912,13 @@ class KillCountViewerService
 		return
 			(region == 6461 && enabledLobby(config.bossEnabledWintertodt())) ||
 			(region == 6462 && enabledAlways(config.bossEnabledWintertodt()));
+	}
+
+	private boolean isYama(Player player, int region)
+	{
+		return
+			(region == 5789 && enabledLobby(config.bossEnabledYama())) ||
+			(region == 6045 && enabledAlways(config.bossEnabledYama()));
 	}
 
 	private boolean isZalcano(Player player, int region)
