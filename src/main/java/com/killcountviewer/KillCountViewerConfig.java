@@ -107,6 +107,13 @@ public interface KillCountViewerConfig extends Config
 	)
 	String ACTIVITY_SECTION = "ActivitySection";
 
+	@ConfigSection(
+		name = "Skill options",
+		description = "Toggle which skills to show level for.",
+		position = 40
+	)
+	String SKILL_SECTION = "SkillSection";
+
 	enum HighlightSetting
 	{
 		DISABLED,
@@ -125,6 +132,12 @@ public interface KillCountViewerConfig extends Config
 		DISABLED,
 		NORMAL,
 		HARD,
+	}
+
+	enum HighlightSkillSetting
+	{
+		DISABLED,
+		ENABLED,
 	}
 
 	@ConfigItem(
@@ -914,5 +927,173 @@ public interface KillCountViewerConfig extends Config
 	default HighlightAlwaysSetting bossEnabledVetion()
 	{
 		return HighlightAlwaysSetting.LOBBY;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "skillingWoodcutting",
+		name = "Woodcutting",
+		description = "Configures whether woodcutting level is displayed within Woodcutting Guild.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledWoodcutting()
+	{
+		return HighlightSkillSetting.ENABLED;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "skillingFishing",
+		name = "Fishing",
+		description = "Configures whether fishing level is displayed within Fishing Guild.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledFishing()
+	{
+		return HighlightSkillSetting.ENABLED;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "skillingRanged",
+		name = "Ranged",
+		description = "Configures whether ranged level is displayed within Ranging Guild.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledRanged()
+	{
+		return HighlightSkillSetting.ENABLED;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "skillingMining",
+		name = "Mining",
+		description = "Configures whether mining level is displayed within Mining Guild and Motherlode mine.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledMining()
+	{
+		return HighlightSkillSetting.ENABLED;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "skillingCrafting",
+		name = "Crafting",
+		description = "Configures whether crafting level is displayed within Crafting Guild.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledCrafting()
+	{
+		return HighlightSkillSetting.ENABLED;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "skillingCooking",
+		name = "Cooking",
+		description = "Configures whether cooking level is displayed within Cooking Guild.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledCooking()
+	{
+		return HighlightSkillSetting.ENABLED;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "skillingFarming",
+		name = "Farming",
+		description = "Configures whether farming level is displayed within Farming Guild.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledFarming()
+	{
+		return HighlightSkillSetting.ENABLED;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "skillingHunter",
+		name = "Hunter",
+		description = "Configures whether hunter level is displayed within Hunter Guild.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledHunter()
+	{
+		return HighlightSkillSetting.ENABLED;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "skillingMagic",
+		name = "Magic",
+		description = "Configures whether magic level is displayed within Wizards Guild and MTA.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledMagic()
+	{
+		return HighlightSkillSetting.ENABLED;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "skillingSmithing",
+		name = "Smithing",
+		description = "Configures whether smithing level is displayed within Blast Furnace ans Giants Foundry.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledSmithing()
+	{
+		return HighlightSkillSetting.ENABLED;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "skillingHerblore",
+		name = "Herblore",
+		description = "Configures whether herblore level is displayed within Mastering Mixology.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledHerblore()
+	{
+		return HighlightSkillSetting.ENABLED;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "skillingSlayer",
+		name = "Slayer",
+		description = "Configures whether slayer level is displayed while near slayer masters.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledSlayer()
+	{
+		return HighlightSkillSetting.ENABLED;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "skillingAgility",
+		name = "Agility",
+		description = "Configures whether agility level is displayed on some rooftops, sepulchre lobby and brimhaven agility arena.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledAgility()
+	{
+		return HighlightSkillSetting.ENABLED;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "skillingConstruction",
+		name = "Construction",
+		description = "Configures whether construction level is displayed within Player-Owned House.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledConstruction()
+	{
+		return HighlightSkillSetting.ENABLED;
 	}
 }
