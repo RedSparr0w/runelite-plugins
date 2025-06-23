@@ -154,10 +154,10 @@ public class KillCountViewerOverlay extends Overlay
 	}
 
 	@Inject
-	private KillCountViewerOverlay(KillCountViewerConfig config, KillCountViewerService KillCountService, ChatIconManager chatIconManager)
+	private KillCountViewerOverlay(KillCountViewerConfig config, KillCountViewerService killCountService, ChatIconManager chatIconManager)
 	{
 		this.config = config;
-		this.killcountService = KillCountService;
+		this.killcountService = killCountService;
 		this.chatIconManager = chatIconManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_MED);
