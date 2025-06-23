@@ -100,15 +100,15 @@ public class KillCountViewerOverlay extends Overlay
 		HiscoreSkill.GIANT_MOLE,                        // Done
 		HiscoreSkill.GROTESQUE_GUARDIANS,               // Done
 		HiscoreSkill.HESPORI,                           // Done
-		HiscoreSkill.KALPHITE_QUEEN,                    // Done (to test)
+		HiscoreSkill.KALPHITE_QUEEN,                    // Done
 		HiscoreSkill.KING_BLACK_DRAGON,                 // Done
-		HiscoreSkill.KRAKEN,                            // Done (to test)
+		HiscoreSkill.KRAKEN,                            // Done
 		HiscoreSkill.KREEARRA,                          // Done
 		HiscoreSkill.KRIL_TSUTSAROTH,                   // Done
 		HiscoreSkill.LUNAR_CHESTS,                      // Done
 		HiscoreSkill.MIMIC,                             // Done
 		HiscoreSkill.NEX,
-		HiscoreSkill.NIGHTMARE,
+		HiscoreSkill.NIGHTMARE,                         // Done (to test)
 		HiscoreSkill.PHOSANIS_NIGHTMARE,
 		HiscoreSkill.OBOR,                              // Done
 		HiscoreSkill.PHANTOM_MUSPAH,                    // Done
@@ -136,6 +136,7 @@ public class KillCountViewerOverlay extends Overlay
 		HiscoreSkill.VETION,                            // Done
 		HiscoreSkill.VORKATH,                           // Done
 		HiscoreSkill.WINTERTODT,                        // Done
+		HiscoreSkill.YAMA,                              // Done
 		HiscoreSkill.ZALCANO,                           // Done
 		HiscoreSkill.ZULRAH,                            // Done
 	};

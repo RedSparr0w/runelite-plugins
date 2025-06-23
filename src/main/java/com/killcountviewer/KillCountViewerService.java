@@ -210,6 +210,7 @@ class KillCountViewerService
 		if (checkCurrentBoss(HiscoreSkill.VARDORVIS) && isVardorvis(player, region)) return currentBoss = HiscoreSkill.VARDORVIS;
 		if (checkCurrentBoss(HiscoreSkill.VORKATH) && isVorkath(player, region)) return currentBoss = HiscoreSkill.VORKATH;
 		if (checkCurrentBoss(HiscoreSkill.WINTERTODT) && isWintertodt(player, region)) return currentBoss = HiscoreSkill.WINTERTODT;
+		if (checkCurrentBoss(HiscoreSkill.YAMA) && isYama(player, region)) return currentBoss = HiscoreSkill.YAMA;
 		if (checkCurrentBoss(HiscoreSkill.ZALCANO) && isZalcano(player, region)) return currentBoss = HiscoreSkill.ZALCANO;
 		if (checkCurrentBoss(HiscoreSkill.ZULRAH) && isZulrah(player, region)) return currentBoss = HiscoreSkill.ZULRAH;
 
@@ -582,6 +583,13 @@ class KillCountViewerService
 		return
 			(region == 6461 && enabledLobby(config.bossEnabledWintertodt())) ||
 			(region == 6462 && enabledAlways(config.bossEnabledWintertodt()));
+	}
+
+	private boolean isYama(Player player, int region)
+	{
+		return
+			(region == 5789 && enabledLobby(config.bossEnabledYama())) ||
+			(region == 6045 && enabledAlways(config.bossEnabledYama()));
 	}
 
 	private boolean isZalcano(Player player, int region)

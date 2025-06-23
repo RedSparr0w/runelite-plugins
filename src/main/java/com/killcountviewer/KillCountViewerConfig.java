@@ -274,6 +274,18 @@ public interface KillCountViewerConfig extends Config
 
 	@ConfigItem(
 		position = 0,
+		keyName = "bossYama",
+		name = "Yama",
+		description = "Configures whether kill count is displayed within Yama.",
+		section = BOSS_SECTION
+	)
+	default HighlightAlwaysSetting bossEnabledYama()
+	{
+		return HighlightAlwaysSetting.LOBBY;
+	}
+
+	@ConfigItem(
+		position = 0,
 		keyName = "bossZalcano",
 		name = "Zalcano",
 		description = "Configures whether kill count is displayed within Zalcano.",
