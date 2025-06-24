@@ -38,6 +38,14 @@ public interface KillCountViewerConfig extends Config
 	String GROUP = "killcountviewer";
 
 	@ConfigItem(
+		keyName = "lastSeenVersion",
+		name = "Last Seen Version",
+		description = "Internal use for update notifications",
+		hidden = true
+	)
+	default String lastSeenVersion() { return ""; }
+
+	@ConfigItem(
 		position = 0,
 		keyName = "killcountPosition",
 		name = "Kill count position",

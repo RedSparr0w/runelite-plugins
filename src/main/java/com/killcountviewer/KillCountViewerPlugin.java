@@ -26,6 +26,9 @@ package com.killcountviewer;
 
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -43,11 +46,24 @@ import javax.inject.Inject;
 @Slf4j
 public class KillCountViewerPlugin extends Plugin
 {
+	private static final String PLUGIN_VERSION = "1.1.0";
+
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
 	private KillCountViewerOverlay killcountOverlay;
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private KillCountViewerConfig config;
+
+	@Inject
+	private ConfigManager configManager;
+
+	private int showUpdateMessage = 0;
 
 	@Provides
 	KillCountViewerConfig provideConfig(ConfigManager configManager)
@@ -71,5 +87,34 @@ public class KillCountViewerPlugin extends Plugin
 	public void onGameTick(final GameTick event)
 	{
 		killcountOverlay.gameTick();
+
+		// Send update message to the player if the plugin was updated (wait a few ticks so not up the top)
+		if (showUpdateMessage > 0)
+		{
+			if (--showUpdateMessage == 0)
+			{
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>Kill Count Viewer:</col> Plugin updated to v" + PLUGIN_VERSION, null);
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Added support for levels within guilds and certain areas.", null);
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Added support for boss/level icons or rank icons.", null);
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Added Yama.", null);
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Fixed Kalphite Queen, King Black Dragon and Lunar Chest zones.", null);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == net.runelite.api.GameState.LOGGED_IN)
+		{
+			// Check if plugin was updated
+			String lastSeenVersion = config.lastSeenVersion();
+			if (!PLUGIN_VERSION.equals(lastSeenVersion))
+			{
+				log.info("Kill Count Viewer plugin updated to version: " + PLUGIN_VERSION);
+				showUpdateMessage = 5; // Reset message counter to show update messages
+				configManager.setConfiguration("killcountviewer", "lastSeenVersion", PLUGIN_VERSION);
+			}
+		}
 	}
 }
