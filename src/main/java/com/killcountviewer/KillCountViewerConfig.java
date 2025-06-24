@@ -167,45 +167,25 @@ public interface KillCountViewerConfig extends Config
 		ENABLED,
 	}
 
-	@ConfigItem(
-		position = 0,
-		keyName = "bossSoulWarsZeal",
-		name = "Soul Wars Zeal",
-		description = "Configures whether kill count is displayed within Soul Wars Zeal.",
-		section = ACTIVITY_SECTION
-	)
-	default HighlightAlwaysSetting bossEnabledSoulWarsZeal()
-	{
-		return HighlightAlwaysSetting.LOBBY;
-	}
+	/*
+	 * Boss options
+	 */
 
 	@ConfigItem(
 		position = 0,
-		keyName = "bossLastManStanding",
-		name = "Last Man Standing",
-		description = "Configures whether kill count is displayed within Last Man Standing.",
-		section = ACTIVITY_SECTION
+		keyName = "bossEnabled",
+		name = "BOSSES ENABLED",
+		description = "Configures whether raids are enabled or disabled.",
+		section = BOSS_SECTION
 	)
-	default HighlightAlwaysSetting bossEnabledLastManStanding()
+	default boolean bossEnabled()
 	{
-		return HighlightAlwaysSetting.LOBBY;
-	}
-
-	@ConfigItem(
-		position = 0,
-		keyName = "bossGuardiansoftheRift",
-		name = "Guardians of the Rift",
-		description = "Configures whether kill count is displayed within Guardian of the Guardians of the Rift.",
-		section = ACTIVITY_SECTION
-	)
-	default HighlightAlwaysSetting bossEnabledRiftsClosed()
-	{
-		return HighlightAlwaysSetting.LOBBY;
+		return true;
 	}
 
 	@ConfigItem(
 		hidden = true,
-		position = 0,
+		position = 1,
 		keyName = "bossPhosanisNightmare",
 		name = "Phosani's Nightmare",
 		description = "Configures whether kill count is displayed within Phosani's Nightmare.",
@@ -217,7 +197,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossScurrius",
 		name = "Scurrius",
 		description = "Configures whether kill count is displayed within Scurrius.",
@@ -229,7 +209,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossCorruptedGauntlet",
 		name = "Corrupted Gauntlet",
 		description = "Configures whether kill count is displayed within the Corrupted Gauntlet.",
@@ -241,7 +221,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossRoyalTitans",
 		name = "Royal Titans",
 		description = "Configures whether kill count is displayed within Royal Titans.",
@@ -253,7 +233,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossTzKalZuk",
 		name = "TzKal-Zuk",
 		description = "Configures whether kill count is displayed within TzKal-Zuk.",
@@ -265,7 +245,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossTzTokJad",
 		name = "TzTok-Jad",
 		description = "Configures whether kill count is displayed within TzTok-Jad.",
@@ -277,7 +257,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossVardorvis",
 		name = "Vardorvis",
 		description = "Configures whether kill count is displayed within Vardorvis.",
@@ -289,7 +269,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossVorkath",
 		name = "Vorkath",
 		description = "Configures whether kill count is displayed within Vorkath.",
@@ -301,7 +281,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossWintertodt",
 		name = "Wintertodt",
 		description = "Configures whether kill count is displayed within Wintertodt.",
@@ -313,7 +293,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossYama",
 		name = "Yama",
 		description = "Configures whether kill count is displayed within Yama.",
@@ -325,7 +305,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossZalcano",
 		name = "Zalcano",
 		description = "Configures whether kill count is displayed within Zalcano.",
@@ -337,7 +317,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossZulrah",
 		name = "Zulrah",
 		description = "Configures whether kill count is displayed within Zulrah.",
@@ -349,7 +329,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossAbyssalSire",
 		name = "Abyssal Sire",
 		description = "Configures whether kill count is displayed within Abyssal Sire.",
@@ -361,7 +341,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossAlchemicalHydra",
 		name = "Alchemical Hydra",
 		description = "Configures whether kill count is displayed within Alchemical Hydra.",
@@ -373,7 +353,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossAmoxliatl",
 		name = "Amoxliatl",
 		description = "Configures whether kill count is displayed within Amoxliatl.",
@@ -385,7 +365,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossAraxxor",
 		name = "Araxxor",
 		description = "Configures whether kill count is displayed within Araxxor.",
@@ -397,7 +377,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossArtio",
 		name = "Artio",
 		description = "Configures whether kill count is displayed within Artio.",
@@ -409,7 +389,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossBarrowsChests",
 		name = "Barrows Chests",
 		description = "Configures whether kill count is displayed within Barrows Chests.",
@@ -421,7 +401,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossBryophyta",
 		name = "Bryophyta",
 		description = "Configures whether kill count is displayed within Bryophyta.",
@@ -433,7 +413,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossCallisto",
 		name = "Callisto",
 		description = "Configures whether kill count is displayed within Callisto.",
@@ -445,7 +425,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossCalvarion",
 		name = "Calvarion",
 		description = "Configures whether kill count is displayed within Calvarion.",
@@ -457,7 +437,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossCerberus",
 		name = "Cerberus",
 		description = "Configures whether kill count is displayed within Cerberus.",
@@ -469,19 +449,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
-		keyName = "bossChambersOfXeric",
-		name = "Chambers of Xeric",
-		description = "Configures whether kill count is displayed within Chambers of Xeric.",
-		section = RAID_SECTION
-	)
-	default HighlightRaidSetting bossEnabledChambersOfXeric()
-	{
-		return HighlightRaidSetting.NORMAL;
-	}
-
-	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossChaosElemental",
 		name = "Chaos Elemental",
 		description = "Configures whether kill count is displayed within Chaos Elemental.",
@@ -493,7 +461,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossChaosFanatic",
 		name = "Chaos Fanatic",
 		description = "Configures whether kill count is displayed within Chaos Fanatic.",
@@ -505,7 +473,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossCommanderZilyana",
 		name = "Commander Zilyana",
 		description = "Configures whether kill count is displayed within Commander Zilyana.",
@@ -517,7 +485,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossCorporealBeast",
 		name = "Corporeal Beast",
 		description = "Configures whether kill count is displayed within Corporeal Beast.",
@@ -529,7 +497,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossCrazyArchaeologist",
 		name = "Crazy Archaeologist",
 		description = "Configures whether kill count is displayed within Crazy Archaeologist.",
@@ -542,7 +510,7 @@ public interface KillCountViewerConfig extends Config
 
 	@ConfigItem(
 		hidden = true,
-		position = 0,
+		position = 1,
 		keyName = "bossDagannothPrime",
 		name = "Dagannoth Prime",
 		description = "Configures whether kill count is displayed within Dagannoth Prime.",
@@ -555,7 +523,7 @@ public interface KillCountViewerConfig extends Config
 
 	@ConfigItem(
 		hidden = true,
-		position = 0,
+		position = 1,
 		keyName = "bossDagannothRex",
 		name = "Dagannoth Rex",
 		description = "Configures whether kill count is displayed within Dagannoth Rex.",
@@ -568,7 +536,7 @@ public interface KillCountViewerConfig extends Config
 
 	@ConfigItem(
 		hidden = true,
-		position = 0,
+		position = 1,
 		keyName = "bossDagannothSupreme",
 		name = "Dagannoth Supreme",
 		description = "Configures whether kill count is displayed within Dagannoth Supreme.",
@@ -580,7 +548,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossDerangedArchaeologist",
 		name = "Deranged Archaeologist",
 		description = "Configures whether kill count is displayed within Deranged Archaeologist.",
@@ -593,7 +561,7 @@ public interface KillCountViewerConfig extends Config
 
 	@ConfigItem(
 		hidden = true,
-		position = 0,
+		position = 1,
 		keyName = "bossDukeSucellus",
 		name = "Duke Sucellus",
 		description = "Configures whether kill count is displayed within Duke Sucellus.",
@@ -605,7 +573,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossGeneralGraardor",
 		name = "General Graardor",
 		description = "Configures whether kill count is displayed within General Graardor.",
@@ -617,7 +585,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossGiantMole",
 		name = "Giant Mole",
 		description = "Configures whether kill count is displayed within Giant Mole.",
@@ -629,7 +597,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossGrotesqueGuardians",
 		name = "Grotesque Guardians",
 		description = "Configures whether kill count is displayed within Grotesque Guardians.",
@@ -641,7 +609,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossHespori",
 		name = "Hespori",
 		description = "Configures whether kill count is displayed within Hespori.",
@@ -653,7 +621,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossKalphiteQueen",
 		name = "Kalphite Queen",
 		description = "Configures whether kill count is displayed within Kalphite Queen.",
@@ -665,7 +633,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossKingBlackDragon",
 		name = "King Black Dragon",
 		description = "Configures whether kill count is displayed within King Black Dragon.",
@@ -677,7 +645,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossKraken",
 		name = "Kraken",
 		description = "Configures whether kill count is displayed within Kraken.",
@@ -689,7 +657,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossKreeArra",
 		name = "Kree'arra",
 		description = "Configures whether kill count is displayed within Kree'arra.",
@@ -701,7 +669,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossKrilTsutsaroth",
 		name = "K'ril Tsutsaroth",
 		description = "Configures whether kill count is displayed within K'ril Tsutsaroth.",
@@ -713,7 +681,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossLunarChests",
 		name = "Lunar Chests",
 		description = "Configures whether kill count is displayed within Lunar Chests.",
@@ -725,7 +693,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossMimic",
 		name = "Mimic",
 		description = "Configures whether kill count is displayed within Mimic.",
@@ -738,7 +706,7 @@ public interface KillCountViewerConfig extends Config
 
 	@ConfigItem(
 		hidden = true,
-		position = 0,
+		position = 1,
 		keyName = "bossNex",
 		name = "Nex",
 		description = "Configures whether kill count is displayed within Nex.",
@@ -750,7 +718,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossNightmare",
 		name = "Nightmare",
 		description = "Configures whether kill count is displayed within Nightmare.",
@@ -762,7 +730,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossObor",
 		name = "Obor",
 		description = "Configures whether kill count is displayed within Obor.",
@@ -774,7 +742,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossPhantomMuspah",
 		name = "Phantom Muspah",
 		description = "Configures whether kill count is displayed within Phantom Muspah.",
@@ -786,7 +754,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossSarachnis",
 		name = "Sarachnis",
 		description = "Configures whether kill count is displayed within Sarachnis.",
@@ -798,7 +766,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossScorpia",
 		name = "Scorpia",
 		description = "Configures whether kill count is displayed within Scorpia.",
@@ -810,7 +778,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossSkotizo",
 		name = "Skotizo",
 		description = "Configures whether kill count is displayed within Skotizo.",
@@ -822,7 +790,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossSolHeredit",
 		name = "Sol Heredit",
 		description = "Configures whether kill count is displayed within Sol Heredit.",
@@ -834,7 +802,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossSpindel",
 		name = "Spindel",
 		description = "Configures whether kill count is displayed within Spindel.",
@@ -846,7 +814,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossTempoross",
 		name = "Tempoross",
 		description = "Configures whether kill count is displayed within Tempoross.",
@@ -858,7 +826,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossTheHueycoatl",
 		name = "Hueycoatl",
 		description = "Configures whether kill count is displayed within The Hueycoatl.",
@@ -871,7 +839,7 @@ public interface KillCountViewerConfig extends Config
 
 	@ConfigItem(
 		hidden = true,
-		position = 0,
+		position = 1,
 		keyName = "bossTheLeviathan",
 		name = "Leviathan",
 		description = "Configures whether kill count is displayed within The Leviathan.",
@@ -884,7 +852,7 @@ public interface KillCountViewerConfig extends Config
 
 	@ConfigItem(
 		hidden = true,
-		position = 0,
+		position = 1,
 		keyName = "bossTheWhisperer",
 		name = "Whisperer",
 		description = "Configures whether kill count is displayed within The Whisperer.",
@@ -896,20 +864,8 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
-		keyName = "bossTheatreOfBlood",
-		name = "Theatre of Blood",
-		description = "Configures whether kill count is displayed within Theatre of Blood.",
-		section = RAID_SECTION
-	)
-	default HighlightRaidSetting bossEnabledTheatreOfBlood()
-	{
-		return HighlightRaidSetting.NORMAL;
-	}
-
-	@ConfigItem(
 		hidden = true,
-		position = 0,
+		position = 1,
 		keyName = "bossThermonuclearSmokeDevil",
 		name = "Thermonuclear Smoke Devil",
 		description = "Configures whether kill count is displayed within Thermonuclear Smoke Devil.",
@@ -921,19 +877,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
-		keyName = "bossTombsOfAmascut",
-		name = "Tombs of Amascut",
-		description = "Configures whether kill count is displayed within Tombs of Amascut.",
-		section = RAID_SECTION
-	)
-	default HighlightRaidSetting bossEnabledTombsOfAmascut()
-	{
-		return HighlightRaidSetting.NORMAL;
-	}
-
-	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossVenenatis",
 		name = "Venenatis",
 		description = "Configures whether kill count is displayed within Venenatis.",
@@ -945,7 +889,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "bossVetion",
 		name = "Vet'ion",
 		description = "Configures whether kill count is displayed within Vet'ion.",
@@ -956,8 +900,128 @@ public interface KillCountViewerConfig extends Config
 		return HighlightAlwaysSetting.LOBBY;
 	}
 
+	/*
+	 * Activity options
+	 */
+
 	@ConfigItem(
 		position = 0,
+		keyName = "activityEnabled",
+		name = "ACTIVITIES ENABLED",
+		description = "Configures whether raids are enabled or disabled.",
+		section = ACTIVITY_SECTION
+	)
+	default boolean activityEnabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "bossGuardiansoftheRift",
+		name = "Guardians of the Rift",
+		description = "Configures whether kill count is displayed within Guardian of the Guardians of the Rift.",
+		section = ACTIVITY_SECTION
+	)
+	default HighlightAlwaysSetting bossEnabledRiftsClosed()
+	{
+		return HighlightAlwaysSetting.LOBBY;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "bossLastManStanding",
+		name = "Last Man Standing",
+		description = "Configures whether kill count is displayed within Last Man Standing.",
+		section = ACTIVITY_SECTION
+	)
+	default HighlightAlwaysSetting bossEnabledLastManStanding()
+	{
+		return HighlightAlwaysSetting.LOBBY;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "bossSoulWarsZeal",
+		name = "Soul Wars Zeal",
+		description = "Configures whether kill count is displayed within Soul Wars Zeal.",
+		section = ACTIVITY_SECTION
+	)
+	default HighlightAlwaysSetting bossEnabledSoulWarsZeal()
+	{
+		return HighlightAlwaysSetting.LOBBY;
+	}
+
+	/*
+	 * Raid options
+	 */
+
+	@ConfigItem(
+		position = 0,
+		keyName = "raidsEnabled",
+		name = "RAIDS ENABLED",
+		description = "Configures whether raids are enabled or disabled.",
+		section = RAID_SECTION
+	)
+	default boolean raidsEnabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "bossChambersOfXeric",
+		name = "Chambers of Xeric",
+		description = "Configures whether kill count is displayed within Chambers of Xeric.",
+		section = RAID_SECTION
+	)
+	default HighlightRaidSetting bossEnabledChambersOfXeric()
+	{
+		return HighlightRaidSetting.NORMAL;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "bossTheatreOfBlood",
+		name = "Theatre of Blood",
+		description = "Configures whether kill count is displayed within Theatre of Blood.",
+		section = RAID_SECTION
+	)
+	default HighlightRaidSetting bossEnabledTheatreOfBlood()
+	{
+		return HighlightRaidSetting.NORMAL;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "bossTombsOfAmascut",
+		name = "Tombs of Amascut",
+		description = "Configures whether kill count is displayed within Tombs of Amascut.",
+		section = RAID_SECTION
+	)
+	default HighlightRaidSetting bossEnabledTombsOfAmascut()
+	{
+		return HighlightRaidSetting.NORMAL;
+	}
+
+	/*
+	 * Skill options
+	 */
+
+	@ConfigItem(
+		position = 0,
+		keyName = "skillingEnabled",
+		name = "SKILLS ENABLED",
+		description = "Configures whether skills are enabled or disabled.",
+		section = SKILL_SECTION
+	)
+	default boolean skillingEnabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 1,
 		keyName = "skillingWoodcutting",
 		name = "Woodcutting",
 		description = "Configures whether woodcutting level is displayed within Woodcutting Guild.",
@@ -969,7 +1033,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "skillingFishing",
 		name = "Fishing",
 		description = "Configures whether fishing level is displayed within Fishing Guild.",
@@ -981,7 +1045,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "skillingRanged",
 		name = "Ranged",
 		description = "Configures whether ranged level is displayed within Ranging Guild.",
@@ -993,7 +1057,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "skillingMining",
 		name = "Mining",
 		description = "Configures whether mining level is displayed within Mining Guild and Motherlode mine.",
@@ -1005,7 +1069,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "skillingCrafting",
 		name = "Crafting",
 		description = "Configures whether crafting level is displayed within Crafting Guild.",
@@ -1017,7 +1081,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "skillingCooking",
 		name = "Cooking",
 		description = "Configures whether cooking level is displayed within Cooking Guild.",
@@ -1029,7 +1093,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "skillingFarming",
 		name = "Farming",
 		description = "Configures whether farming level is displayed within Farming Guild.",
@@ -1041,7 +1105,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "skillingHunter",
 		name = "Hunter",
 		description = "Configures whether hunter level is displayed within Hunter Guild.",
@@ -1053,7 +1117,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "skillingMagic",
 		name = "Magic",
 		description = "Configures whether magic level is displayed within Wizards Guild and MTA.",
@@ -1065,7 +1129,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "skillingSmithing",
 		name = "Smithing",
 		description = "Configures whether smithing level is displayed within Blast Furnace ans Giants Foundry.",
@@ -1077,7 +1141,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "skillingHerblore",
 		name = "Herblore",
 		description = "Configures whether herblore level is displayed within Mastering Mixology.",
@@ -1089,7 +1153,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "skillingSlayer",
 		name = "Slayer",
 		description = "Configures whether slayer level is displayed while near slayer masters.",
@@ -1101,7 +1165,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "skillingAgility",
 		name = "Agility",
 		description = "Configures whether agility level is displayed on some rooftops, sepulchre lobby and brimhaven agility arena.",
@@ -1113,7 +1177,7 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 0,
+		position = 1,
 		keyName = "skillingConstruction",
 		name = "Construction",
 		description = "Configures whether construction level is displayed within Player-Owned House.",
