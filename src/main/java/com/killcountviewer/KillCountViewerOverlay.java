@@ -323,6 +323,8 @@ public class KillCountViewerOverlay extends Overlay
 			final int textHeight = graphics.getFontMetrics().getHeight() - graphics.getFontMetrics().getMaxDescent();
 			final int textWidth = graphics.getFontMetrics().stringWidth(killCountText);
 			final int imageMargin = 5;
+
+			// If we only have a left icon, center the whole text block
 			if (rightIcon == null)
 			{
 				textLocation = new Point(textLocation.getX() + (imageMargin + leftIcon.getWidth(null)) / 2, textLocation.getY());
