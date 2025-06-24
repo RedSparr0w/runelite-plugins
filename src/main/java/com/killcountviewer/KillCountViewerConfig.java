@@ -60,19 +60,38 @@ public interface KillCountViewerConfig extends Config
 		return Color.RED;
 	}
 
-	@ConfigItem(
-		position = 2,
-		keyName = "killcountRankIcon",
-		name = "Show rank icon",
-		description = "Show rank icon next to kill count."
-	)
-	default boolean killcountRankIcon()
+	enum IconSetting
 	{
-		return true;
+		DISABLED,
+		RANK,
+		ICON,
+		BOTH
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 2,
+		keyName = "bossRankIcon",
+		name = "Boss kill count icon",
+		description = "Show rank or boss icon next to kill count."
+	)
+	default IconSetting bossRankIcon()
+	{
+		return IconSetting.RANK;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "levelRankIcon",
+		name = "Level icon",
+		description = "Show rank or skill icon next to kill count."
+	)
+	default IconSetting levelRankIcon()
+	{
+		return IconSetting.RANK;
+	}
+
+	@ConfigItem(
+		position = 4,
 		keyName = "lookupCooldown",
 		name = "Killcount lookup cooldown",
 		description = "Ticks between each kill count lookup request, to avoid spamming API."

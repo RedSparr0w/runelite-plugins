@@ -26,9 +26,12 @@
 package com.killcountviewer;
 
 import net.runelite.api.FriendsChatRank;
+import net.runelite.api.IconID;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.Skill;
 import net.runelite.client.game.ChatIconManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -51,8 +54,12 @@ import javax.inject.Singleton;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.nio.Buffer;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.killcountviewer.KillCountViewerConfig.IconSetting;
 
 @Singleton
 public class KillCountViewerOverlay extends Overlay
@@ -68,6 +75,7 @@ public class KillCountViewerOverlay extends Overlay
 	private final KillCountViewerService killcountService;
 	private final KillCountViewerConfig config;
 	private final ChatIconManager chatIconManager;
+	private final SpriteManager spriteManager;
 	private final Map<String, CachedKC> kcCache = new ConcurrentHashMap<>();
 	private final ExecutorService executor = Executors.newSingleThreadExecutor();
 	private final Queue<String> kcLookupQueue = new ConcurrentLinkedQueue<>();
@@ -174,11 +182,12 @@ public class KillCountViewerOverlay extends Overlay
 	}
 
 	@Inject
-	private KillCountViewerOverlay(KillCountViewerConfig config, KillCountViewerService killCountService, ChatIconManager chatIconManager)
+	private KillCountViewerOverlay(KillCountViewerConfig config, KillCountViewerService killCountService, ChatIconManager chatIconManager, SpriteManager spriteManager)
 	{
 		this.config = config;
 		this.killcountService = killCountService;
 		this.chatIconManager = chatIconManager;
+		this.spriteManager = spriteManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_MED);
 		// Log any missing activities/bosses from the SCORES array
@@ -264,8 +273,6 @@ public class KillCountViewerOverlay extends Overlay
 			kcLookupQueue.offer(playerName);
 		}
 
-		// Caclulate our rank image if enabled
-		BufferedImage rankImage = config.killcountRankIcon() ? this.calculateRankImage(boss, kc) : null;
 
 		// Draw the kill count
 		final int zOffset;
@@ -278,7 +285,6 @@ public class KillCountViewerOverlay extends Overlay
 			default:
 				zOffset = player.getLogicalHeight() + ACTOR_OVERHEAD_TEXT_MARGIN;
 		}
-
 		String killCountText = kc == 0 ? "..." : kc + "";
 		Point textLocation = player.getCanvasTextLocation(graphics, killCountText, zOffset);
 
@@ -299,29 +305,43 @@ public class KillCountViewerOverlay extends Overlay
 			return;
 		}
 
-		if (rankImage != null && kc > 0)
-		{
-			final int imageWidth = rankImage.getWidth();
-			final int imageTextMargin;
-			final int imageNegativeMargin;
+		// Should we be using the skill or boss settings for the icon
+		IconSetting configIconSetting = boss.getType() == HiscoreSkillType.SKILL ? config.levelRankIcon() : config.bossRankIcon();
+		// If the icon setting is disabled, we don't need to draw anything
+		Image rankIcon = configIconSetting == IconSetting.BOTH || configIconSetting == IconSetting.RANK ? this.calculateRankImage(boss, kc) : null;
+		Image skillIcon = configIconSetting == IconSetting.BOTH || configIconSetting == IconSetting.ICON ? getSkillIcon(boss) : null;
 
-			if (drawPlayerNamesConfig == com.killcountviewer.PlayerNameLocation.MODEL_RIGHT)
-			{
-				imageTextMargin = imageWidth;
-				imageNegativeMargin = 0;
-			}
-			else
-			{
-				imageTextMargin = imageWidth / 2;
-				imageNegativeMargin = imageWidth / 2;
-			}
+		// If we have a skill icon it should be on the left, otherwise rank icon, or none
+		Image leftIcon = skillIcon != null ? skillIcon : rankIcon != null ? rankIcon : null;
+		// If we have a skill icon and rank icon, the rank icon should be on the right, otherwise none
+		Image rightIcon = skillIcon != null && rankIcon != null ? rankIcon : null;
+
+
+		if (leftIcon != null && kc > 0)
+		{
 
 			final int textHeight = graphics.getFontMetrics().getHeight() - graphics.getFontMetrics().getMaxDescent();
-			final Point imageLocation = new Point(textLocation.getX() - imageNegativeMargin - 1, textLocation.getY() - textHeight / 2 - rankImage.getHeight() / 2);
-			OverlayUtil.renderImageLocation(graphics, imageLocation, rankImage);
+			final int textWidth = graphics.getFontMetrics().stringWidth(killCountText);
+			final int imageMargin = 5;
 
-			// move text
-			textLocation = new Point(textLocation.getX() + imageTextMargin, textLocation.getY());
+			if (leftIcon != null)
+			{
+				Point iconLoc = new Point(
+					textLocation.getX() - imageMargin - leftIcon.getWidth(null),
+					textLocation.getY() - textHeight / 2 - leftIcon.getHeight(null) / 2
+				);
+				graphics.drawImage(leftIcon, iconLoc.getX(), iconLoc.getY(), null);
+			}
+
+			if (rightIcon != null)
+			{
+
+				Point iconLoc = new Point(
+					textLocation.getX() + textWidth + imageMargin,
+					textLocation.getY() - textHeight / 2 - rightIcon.getHeight(null) / 2
+				);
+				graphics.drawImage(rightIcon, iconLoc.getX(), iconLoc.getY(), null);
+			}
 		}
 
 		OverlayUtil.renderTextLocation(graphics, textLocation, killCountText, color);
@@ -329,7 +349,7 @@ public class KillCountViewerOverlay extends Overlay
 
 	private BufferedImage calculateRankImage(HiscoreSkill skill, int kc)
 	{
-		FriendsChatRank rank = FriendsChatRank.RECRUIT;
+		FriendsChatRank rank = FriendsChatRank.UNRANKED;
 		if (skill.getType() == HiscoreSkillType.SKILL) {
 			if (kc >= 99) {
 				rank = FriendsChatRank.JMOD;
@@ -364,6 +384,23 @@ public class KillCountViewerOverlay extends Overlay
 			}
 		}
 		return chatIconManager.getRankImage(rank);
+	}
+
+	private Image getSkillIcon(HiscoreSkill boss)
+	{
+			BufferedImage skillIcon = spriteManager.getSprite(boss.getSpriteId(), 0);
+
+
+			if (skillIcon != null)
+			{
+				// How much we want to scale down the icon
+				final int scalePercent = 55;
+				int scaledWidth = skillIcon.getWidth() * scalePercent / 100;
+				int scaledHeight = skillIcon.getHeight() * scalePercent / 100;
+
+				return skillIcon.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+			}
+			return null;
 	}
 
 	private Map<HiscoreSkill, Integer> fetchPlayerKC(String playerName)
