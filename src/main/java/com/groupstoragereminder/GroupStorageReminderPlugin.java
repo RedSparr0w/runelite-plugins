@@ -506,50 +506,53 @@ public class GroupStorageReminderPlugin extends Plugin
           int itemID = -1;
           int spriteID = -1;
           switch (plugin.config.iconDisplayType()) {
-            case IconOptions.TIMER:
+            case TIMER:
               spriteID = 4593;
               ICON_SIZE = 14;
               break;
-            case IconOptions.WHITE_BAG:
+            case WHITE_BAG:
               spriteID = 4865;
               ICON_SIZE = 15;
               break;
-            case IconOptions.GROUP_IRON_MAN:
+            case GROUP_IRON_MAN:
               spriteID = 3561;
               ICON_SIZE = 14;
               break;
-            case IconOptions.HARDCORE_GROUP_IRON_MAN:
+            case HARDCORE_GROUP_IRON_MAN:
               spriteID = 3562;
               ICON_SIZE = 14;
               break;
-            case IconOptions.UNRANKED_GROUP_IRON_MAN:
+            case UNRANKED_GROUP_IRON_MAN:
               spriteID = 3565;
               ICON_SIZE = 14;
               break;
-            case IconOptions.SILVER_LOCK:
+            case SILVER_LOCK:
               itemID = 25451;
               ICON_SIZE = 20;
               break;
-            case IconOptions.STEEL_LOCK:
+            case STEEL_LOCK:
               itemID = 25445;
               ICON_SIZE = 20;
               break;
-            case IconOptions.BLACK_LOCK:
+            case BLACK_LOCK:
               itemID = 25448;
               ICON_SIZE = 20;
               break;
-            case IconOptions.BRONZE_LOCK:
+            case BRONZE_LOCK:
               itemID = 25442;
               ICON_SIZE = 20;
               break;
-            case IconOptions.GOLD_LOCK:
+            case GOLD_LOCK:
             default:
               itemID = 25454;
               ICON_SIZE = 20;
               break;
           }
 
-          BufferedImage icon = itemID >= 0 ? plugin.itemManager.getImage(itemID) : spriteManager.getSprite(spriteID, 0);
+          BufferedImage icon = null;
+          if (itemID >= 0 ) icon = plugin.itemManager.getImage(itemID)
+          else if (spriteID >= 0) spriteManager.getSprite(spriteID, 0);
+          else return;
           
           int originalWidth = icon.getWidth();
           int originalHeight = icon.getHeight();
