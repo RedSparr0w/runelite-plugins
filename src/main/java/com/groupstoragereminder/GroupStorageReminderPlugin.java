@@ -550,7 +550,7 @@ public class GroupStorageReminderPlugin extends Plugin
           }
 
           BufferedImage icon = null;
-          if (itemID >= 0 ) icon = plugin.itemManager.getImage(itemID)
+          if (itemID >= 0 ) icon = plugin.itemManager.getImage(itemID);
           else if (spriteID >= 0) spriteManager.getSprite(spriteID, 0);
           else return;
           
