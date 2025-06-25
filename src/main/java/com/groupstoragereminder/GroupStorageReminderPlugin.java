@@ -190,7 +190,6 @@ public class GroupStorageReminderPlugin extends Plugin
   @Subscribe
   public void onItemContainerChanged(ItemContainerChanged event)
   {
-    log.info("container changed: {}", event.getContainerId());
     if (event.getContainerId() == InventoryID.BANK)
     {
       checkBankContainsItems();
@@ -282,12 +281,12 @@ public class GroupStorageReminderPlugin extends Plugin
   {
     itemsOnPlayer.clear();
     ItemContainer inventory = client.getItemContainer(InventoryID.INV);
-    ItemContainer group_inventory_temp = client.getItemContainer(InventoryID.INV_PLAYER_TEMP);
+    ItemContainer groupInventoryTemp = client.getItemContainer(InventoryID.INV_PLAYER_TEMP);
     ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
     List<Item> allItems = new ArrayList<>();
     if (equipment != null) allItems.addAll(List.of(equipment.getItems()));
-    if (inventory != null) allItems.addAll(List.of(inventory.getItems()));
-    if (group_inventory_temp != null) allItems.addAll(List.of(group_inventory_temp.getItems()));
+    if (inventory != null && groupInventoryTemp == null) allItems.addAll(List.of(inventory.getItems()));
+    if (groupInventoryTemp != null) allItems.addAll(List.of(groupInventoryTemp.getItems()));
     for (Item item : allItems)
     {
       int itemId = item.getId();
@@ -300,6 +299,7 @@ public class GroupStorageReminderPlugin extends Plugin
         if (WildcardMatcher.matches(targetName, itemName)) itemsOnPlayer.add(itemName);
       }
     }
+    log.info("Items on player: {}", itemsOnPlayer);
     saveItems();
   }
 
@@ -474,7 +474,7 @@ public class GroupStorageReminderPlugin extends Plugin
     private IconOptions overlayImageItemID = null;
     private final SpriteManager spriteManager;
     private final GroupStorageReminderPlugin plugin;
-    private int ICON_SIZE = 20; // Size of the icon
+    private int iconSize = 20; // Size of the icon
 
       @Inject
       public ItemIconOverlay(Client client, GroupStorageReminderPlugin plugin, SpriteManager spriteManager)
@@ -495,7 +495,7 @@ public class GroupStorageReminderPlugin extends Plugin
         if (shouldShowImage(itemId))
         {
           // Draw the overlay image at the bottom right corner of the item
-          graphics.drawImage(overlayImage, (int) item.getCanvasBounds().getMaxX() - ICON_SIZE, (int) item.getCanvasBounds().getMaxY() - ICON_SIZE, null);
+          graphics.drawImage(overlayImage, (int) item.getCanvasBounds().getMaxX() - iconSize, (int) item.getCanvasBounds().getMaxY() - iconSize, null);
         }
       }
 
@@ -508,57 +508,57 @@ public class GroupStorageReminderPlugin extends Plugin
           switch (plugin.config.iconDisplayType()) {
             case TIMER:
               spriteID = 4593;
-              ICON_SIZE = 14;
+              iconSize = 14;
               break;
             case WHITE_BAG:
               spriteID = 4865;
-              ICON_SIZE = 15;
+              iconSize = 15;
               break;
             case GROUP_IRON_MAN:
               spriteID = 3561;
-              ICON_SIZE = 14;
+              iconSize = 14;
               break;
             case HARDCORE_GROUP_IRON_MAN:
               spriteID = 3562;
-              ICON_SIZE = 14;
+              iconSize = 14;
               break;
             case UNRANKED_GROUP_IRON_MAN:
               spriteID = 3565;
-              ICON_SIZE = 14;
+              iconSize = 14;
               break;
             case SILVER_LOCK:
               itemID = 25451;
-              ICON_SIZE = 20;
+              iconSize = 20;
               break;
             case STEEL_LOCK:
               itemID = 25445;
-              ICON_SIZE = 20;
+              iconSize = 20;
               break;
             case BLACK_LOCK:
               itemID = 25448;
-              ICON_SIZE = 20;
+              iconSize = 20;
               break;
             case BRONZE_LOCK:
               itemID = 25442;
-              ICON_SIZE = 20;
+              iconSize = 20;
               break;
             case GOLD_LOCK:
             default:
               itemID = 25454;
-              ICON_SIZE = 20;
+              iconSize = 20;
               break;
           }
 
           BufferedImage icon = null;
           if (itemID >= 0 ) icon = plugin.itemManager.getImage(itemID);
-          else if (spriteID >= 0) spriteManager.getSprite(spriteID, 0);
+          else if (spriteID >= 0) icon = spriteManager.getSprite(spriteID, 0);
           else return;
           
           int originalWidth = icon.getWidth();
           int originalHeight = icon.getHeight();
 
           // Calculate scale factor to ensure largest side = ICON_SIZE
-          double scale = (double) ICON_SIZE / Math.max(originalWidth, originalHeight);
+          double scale = (double) iconSize / Math.max(originalWidth, originalHeight);
 
           // Calculate new dimensions preserving aspect ratio
           int scaledWidth = (int) (originalWidth * scale);
@@ -586,7 +586,7 @@ public class GroupStorageReminderPlugin extends Plugin
         }
         ItemComposition comp = plugin.itemManager.getItemComposition(itemId);
         String itemName = comp.getName();
-        return plugin.itemsInBank.contains(itemName) || plugin.itemsInGroup.contains(itemName) || plugin.itemsOnPlayer.contains(itemName);
+        return (plugin.bankIsOpen && plugin.itemsInBank.contains(itemName)) || (plugin.groupStorageIsOpen && plugin.itemsInGroup.contains(itemName)) || plugin.itemsOnPlayer.contains(itemName);
       }
   }
 }
