@@ -1,4 +1,3 @@
-
 package com.groupstoragereminder;
 
 import net.runelite.client.config.Config;
@@ -66,6 +65,13 @@ public interface GroupStorageReminderConfig extends Config
   {
     return "Dragon warhammer\nTwisted bow\nBandos god sword"; // Default items, can be overridden in the config
   }
+
+  @ConfigItem(
+    keyName = "itemList",
+    name = "",
+    description = ""
+  )
+  void setItemList(String items);
 
 
   /*

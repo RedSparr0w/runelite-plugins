@@ -27,12 +27,21 @@ import net.runelite.client.util.WildcardMatcher;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.MenuAction;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -66,6 +75,9 @@ public class GroupStorageReminderPlugin extends Plugin
   boolean logoutSwitcherOpen = false;
   List<String> itemsOnPlayer = new ArrayList<>();
   List<String> itemsInBank = new ArrayList<>();
+
+  private static final String ADD_TO_REMINDER = "Add to Group Storage Reminder";
+  private static final String REMOVE_FROM_REMINDER = "Remove from Group Storage Reminder";
 
   @Provides
   GroupStorageReminderConfig provideConfig(ConfigManager configManager)
@@ -170,7 +182,6 @@ public class GroupStorageReminderPlugin extends Plugin
   @Subscribe
   public void onItemContainerChanged(ItemContainerChanged event)
   {
-
     if (event.getContainerId() == InventoryID.BANK)
     {
       checkBankContainsItems();
@@ -183,6 +194,64 @@ public class GroupStorageReminderPlugin extends Plugin
     {
       checkItemsOnPlayer();
     }
+  }
+
+  @Subscribe
+  public void onMenuEntryAdded(MenuEntryAdded event)
+  {
+    // Only add menu entries if group storage is open
+    if (!groupStorageIsOpen)
+      return;
+
+    // Get the item id
+    if (event.getItemId() <= 0 || (event.getOption() != null && !event.getOption().equalsIgnoreCase("Examine")))
+      return;
+
+    String itemName = Text.removeTags(itemManager.getItemComposition(event.getItemId()).getName());
+    Set<String> itemSet = getItemListSet();
+
+    boolean inList = itemSet.stream().anyMatch(s -> s.equalsIgnoreCase(itemName));
+    String option = "<col=" + (inList ? "e74c3c" : "2ecc71") + ">" + (inList ? REMOVE_FROM_REMINDER : ADD_TO_REMINDER) + "</col>";
+
+    client.createMenuEntry(-1)
+      .setOption(option)
+      .setTarget("")
+      .setType(MenuAction.RUNELITE)
+      .onClick(e -> handleReminderMenuClick(itemName, inList));
+  }
+
+  private void handleReminderMenuClick(String itemName, boolean inList)
+  {
+    Set<String> itemSet = getItemListSet();
+    if (inList)
+    {
+      // Remove (case-insensitive)
+      itemSet.removeIf(s -> s.equalsIgnoreCase(itemName));
+    }
+    else
+    {
+      itemSet.add(itemName);
+    }
+    saveItemListSet(itemSet);
+  }
+
+  private Set<String> getItemListSet()
+  {
+    String[] items = config.itemList().split("\n");
+    Set<String> set = new LinkedHashSet<>();
+    for (String s : items)
+    {
+      String trimmed = s.trim();
+      if (!trimmed.isEmpty())
+        set.add(trimmed);
+    }
+    return set;
+  }
+
+  private void saveItemListSet(Set<String> set)
+  {
+    String joined = String.join("\n", set);
+    config.setItemList(joined);
   }
 
   private void checkItemsOnPlayer()
@@ -200,7 +269,7 @@ public class GroupStorageReminderPlugin extends Plugin
 
       ItemComposition comp = itemManager.getItemComposition(itemId);
       String itemName = Text.removeTags(comp.getName());
-      for (String targetName : config.itemList().split("\n"))
+      for (String targetName : getItemListSet())
       {
         if (WildcardMatcher.matches(targetName, itemName)) itemsOnPlayer.add(itemName);
       }
@@ -226,7 +295,7 @@ public class GroupStorageReminderPlugin extends Plugin
         if (comp.getPlaceholderTemplateId() != -1) continue;
 
         String itemName = Text.removeTags(comp.getName());
-        for (String targetName : config.itemList().split("\n"))
+        for (String targetName : getItemListSet())
         {
           if (WildcardMatcher.matches(targetName, itemName)) itemsInBank.add(itemName);
         }
