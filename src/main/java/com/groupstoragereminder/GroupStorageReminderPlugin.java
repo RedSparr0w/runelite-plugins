@@ -299,7 +299,6 @@ public class GroupStorageReminderPlugin extends Plugin
         if (WildcardMatcher.matches(targetName, itemName)) itemsOnPlayer.add(itemName);
       }
     }
-    log.info("Items on player: {}", itemsOnPlayer);
     saveItems();
   }
 
