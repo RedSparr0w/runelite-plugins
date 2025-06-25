@@ -55,6 +55,49 @@ public interface GroupStorageReminderConfig extends Config
     return 10;
   }
 
+  enum IconDisplaySetting
+  {
+    DISABLED,
+    WHILE_BANK_OPEN,
+    ALWAYS,
+  }
+
+  @ConfigItem(
+    keyName = "showIconOnItems",
+    name = "Show icon on matched items",
+    description = "Show an icon on items that match your filters.",
+    position = 6
+  )
+  default IconDisplaySetting showIconOnItems()
+  {
+    return IconDisplaySetting.ALWAYS;
+  }
+
+  enum IconOptions
+  {
+    GROUP_IRON_MAN,
+    HARDCORE_GROUP_IRON_MAN,
+    UNRANKED_GROUP_IRON_MAN,
+    TIMER,
+    WHITE_BAG,
+    GOLD_LOCK,
+    SILVER_LOCK,
+    STEEL_LOCK,
+    BLACK_LOCK,
+    BRONZE_LOCK,
+  }
+
+  @ConfigItem(
+    keyName = "iconDisplayType",
+    name = "Remind on bank close",
+    description = "Icon type to display on matched items.",
+    position = 7
+  )
+  default IconOptions iconDisplayType()
+  {
+    return IconOptions.GROUP_IRON_MAN;
+  }
+
   @ConfigItem(
     keyName = "itemList",
     name = "Items List",
