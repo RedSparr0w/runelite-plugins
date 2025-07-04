@@ -615,7 +615,7 @@ class KillCountViewerService
 
 	private boolean isAraxxor(Player player, int region)
 	{
-		return region == 14745 && enabledLobby(config.bossEnabledAraxxor());
+		return enabledLobby(config.bossEnabledAraxxor()) && (region == 14745 || isInArea(player, 3653, 3408, 3662, 3400));
 	}
 
 	private boolean isArtio(Player player, int region)
