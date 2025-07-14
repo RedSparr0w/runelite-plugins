@@ -200,7 +200,7 @@ public class TormentedDemonsPlugin extends Plugin
 			style = AttackStyle.RANGED;
 		}
 
-		if (style != null) {
+		if (style != null && style != AttackStyle.NONE) {
 			int npcIndex = npc.getIndex();
 			ticksSinceNoInteraction = 0;
 
