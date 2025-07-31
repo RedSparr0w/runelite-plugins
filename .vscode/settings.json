@@ -1,0 +1,6 @@
+{
+  "java.gradle.buildServer.enabled": "off",
+  "java.debug.logLevel": "info",
+  "java.debug.settings.hotCodeReplace": "auto",
+  "java.configuration.updateBuildConfiguration": "interactive"
+}
