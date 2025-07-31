@@ -882,7 +882,8 @@ class KillCountViewerService
 
 	private boolean isThermonuclearSmokeDevil(Player player, int region)
 	{
-		return false;
+		return ((isInArea(player, 2377, 9469, 2430, 9412) || isInArea(player, 2409, 3064, 2416, 3054)) && enabledLobby(config.bossEnabledThermonuclearSmokeDevil())) ||
+			(isInArea(player, 2377, 9460, 2348, 9436) && enabledAlways(config.bossEnabledThermonuclearSmokeDevil()));
 	}
 
 	private boolean isTombsOfAmascut(Player player, int region)

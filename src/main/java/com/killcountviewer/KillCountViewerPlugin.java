@@ -46,7 +46,7 @@ import javax.inject.Inject;
 @Slf4j
 public class KillCountViewerPlugin extends Plugin
 {
-	private static final String PLUGIN_VERSION = "1.1.0";
+	private static final String PLUGIN_VERSION = "1.1.1";
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -94,10 +94,7 @@ public class KillCountViewerPlugin extends Plugin
 			if (--showUpdateMessage == 0)
 			{
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>Kill Count Viewer:</col> Plugin updated to v" + PLUGIN_VERSION, null);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Added support for levels within guilds and certain areas.", null);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Added support for boss/level icons or rank icons.", null);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Added Yama.", null);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Fixed Kalphite Queen, King Black Dragon and Lunar Chest zones.", null);
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Added Thermonuclear Smoke Devil.", null);
 			}
 		}
 	}
