@@ -43,7 +43,7 @@ public interface KillCountViewerConfig extends Config
 		description = "Internal use for update notifications",
 		hidden = true
 	)
-	default String lastSeenVersion() { return ""; }
+	default String lastSeenVersion() { return "1.1.1"; }
 
 	@ConfigItem(
 		position = 0,
@@ -864,16 +864,15 @@ public interface KillCountViewerConfig extends Config
 	}
 
 	@ConfigItem(
-		hidden = true,
 		position = 1,
 		keyName = "bossThermonuclearSmokeDevil",
 		name = "Thermonuclear Smoke Devil",
 		description = "Configures whether kill count is displayed within Thermonuclear Smoke Devil.",
 		section = BOSS_SECTION
 	)
-	default HighlightSetting bossEnabledThermonuclearSmokeDevil()
+	default HighlightAlwaysSetting bossEnabledThermonuclearSmokeDevil()
 	{
-		return HighlightSetting.LOBBY;
+		return HighlightAlwaysSetting.LOBBY;
 	}
 
 	@ConfigItem(
