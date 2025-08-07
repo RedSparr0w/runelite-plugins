@@ -1146,7 +1146,7 @@ public interface KillCountViewerConfig extends Config
 		position = 1,
 		keyName = "skillingSmithing",
 		name = "Smithing",
-		description = "Configures whether smithing level is displayed within Blast Furnace ans Giants Foundry.",
+		description = "Configures whether smithing level is displayed within Blast Furnace and Giants Foundry.",
 		section = SKILL_SECTION
 	)
 	default HighlightSkillSetting skillEnabledSmithing()
