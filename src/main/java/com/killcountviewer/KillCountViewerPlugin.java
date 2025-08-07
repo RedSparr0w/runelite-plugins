@@ -80,6 +80,7 @@ public class KillCountViewerPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		killcountOverlay.clearCache();
 		overlayManager.remove(killcountOverlay);
 	}
 
@@ -94,6 +95,7 @@ public class KillCountViewerPlugin extends Plugin
 			if (--showUpdateMessage == 0)
 			{
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>Kill Count Viewer:</col> Plugin updated to v" + PLUGIN_VERSION, null);
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Added option for cache duration.", null);
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Added Thermonuclear Smoke Devil.", null);
 			}
 		}
