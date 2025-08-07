@@ -501,15 +501,27 @@ public class KillCountViewerOverlay extends Overlay
 
 	}
 
+	private int localKc = 0;
+	private int lastTick = 0;
+
 	private int getLocalPlayerKc(HiscoreSkill boss)
 	{
+		// Return cached value if we are on the same tick
+		if (lastTick == client.getTickCount())
+		{
+			return localKc;
+		}
+		// Update last tick
+		lastTick = client.getTickCount();
+
 		// If it's a skill, return the real skill level
 		if (boss.getType() == HiscoreSkillType.SKILL)
 		{
 			int skillLevel = client.getRealSkillLevel(Skill.valueOf(boss.name()));
 			if (skillLevel > 0)
 			{
-				return skillLevel;
+				localKc = skillLevel;
+				return localKc;
 			}
 		}
 		
@@ -520,14 +532,16 @@ public class KillCountViewerOverlay extends Overlay
 			Integer killCount = configManager.getRSProfileConfiguration("killcount", bossNameFormatted.toLowerCase(), int.class);
 			if (killCount != null && killCount >= 0)
 			{
-				return killCount;
+				localKc = killCount;
+				return localKc;
 			}
 		}
 
 		// If we couldn't find the kill count, use highscore value if available
 		CachedKC cached = kcCache.get(client.getLocalPlayer().getName());
 		if (cached != null && cached.kcMap != null && cached.kcMap.containsKey(boss)) {
-			return cached.kcMap.get(boss);
+			localKc = cached.kcMap.get(boss);
+			return localKc;
 		}
 
 		return 0;
