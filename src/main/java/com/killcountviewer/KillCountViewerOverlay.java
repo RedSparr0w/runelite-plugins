@@ -104,6 +104,11 @@ public class KillCountViewerOverlay extends Overlay
 		HiscoreSkill.SLAYER,                           // Done
 		HiscoreSkill.AGILITY,                          // Done (probably some rooftops and courses missing)
 		HiscoreSkill.CONSTRUCTION,                     // Done
+		HiscoreSkill.STRENGTH,                         // Done
+		HiscoreSkill.PRAYER,                           // Done
+		HiscoreSkill.FLETCHING,                        // Done
+		HiscoreSkill.THIEVING,                         // Done
+		HiscoreSkill.RUNECRAFT,                        // Done
 		// Activities
 		HiscoreSkill.SOUL_WARS_ZEAL,                    // Done (test in matchmaking)
 		HiscoreSkill.LAST_MAN_STANDING,                 // Done (not in matchmaking)

@@ -217,6 +217,11 @@ class KillCountViewerService
 		if (checkCurrentBoss(HiscoreSkill.AGILITY) && isAgility(player, region)) return HiscoreSkill.AGILITY;
 		if (checkCurrentBoss(HiscoreSkill.HERBLORE) && isHerblore(player, region)) return HiscoreSkill.HERBLORE;
 		if (checkCurrentBoss(HiscoreSkill.CONSTRUCTION) && isConstruction(player, region)) return HiscoreSkill.CONSTRUCTION;
+		if (checkCurrentBoss(HiscoreSkill.STRENGTH) && isStrength(player, region)) return HiscoreSkill.STRENGTH;
+		if (checkCurrentBoss(HiscoreSkill.PRAYER) && isPrayer(player, region)) return HiscoreSkill.PRAYER;
+		if (checkCurrentBoss(HiscoreSkill.FLETCHING) && isFletching(player, region)) return HiscoreSkill.FLETCHING;
+		if (checkCurrentBoss(HiscoreSkill.THIEVING) && isThieving(player, region)) return HiscoreSkill.THIEVING;
+		if (checkCurrentBoss(HiscoreSkill.RUNECRAFT) && isRunecrafting(player, region)) return HiscoreSkill.RUNECRAFT;
 		return null;
 	}
 
@@ -549,7 +554,15 @@ class KillCountViewerService
 				isInArea(player, 2469, 3439, 2490, 3415, -1) ||
 				// Canifis Rooftop
 				isInArea(player, 3471, 3509, 3517, 3467, 2) ||
-				isInArea(player, 3471, 3509, 3517, 3467, 3)
+				isInArea(player, 3471, 3509, 3517, 3467, 3) ||
+				// Agility Pyramid
+				isInArea(player, 2690, 3466, 2703, 3459, -1) ||
+				// Wilderness Agility Course
+				isInArea(player, 2988, 3966, 3009, 3913) ||
+				// Colossal Wyrm Agility Course
+				isInArea(player, 1622, 2935, 1657, 2903, -1) ||
+				// Ape Atoll Agility Course
+				isInArea(player, 2769, 2752, 2741, 2726, -1)
 			);
 	}
 
@@ -565,6 +578,101 @@ class KillCountViewerService
 				region == 8026 ||
 				region == 8025 ||
 				region == 7257
+			);
+	}
+
+	private boolean isStrength(Player player, int region)
+	{
+		return enabledSkill(config.skillEnabledStrength()) &&
+			(
+				isInArea(player, 2837, 3556, 2876, 3536, -1) ||
+				isInArea(player, 2848, 3535, 2860, 3533, -1)
+			);
+	}
+
+	private boolean isPrayer(Player player, int region)
+	{
+		return enabledSkill(config.skillEnabledPrayer()) &&
+			(
+				// Edgeville Monastery
+				isInArea(player, 3040, 3509, 3062, 3479, -1) ||
+				// Lumbridge Church
+				isInArea(player, 3239, 3215, 3247, 3204) ||
+				// Ardougne Monastery
+				isInArea(player, 2621, 3203, 2591, 3223, -1) ||
+				// Nardah Altar
+				isInArea(player, 3420, 2931, 3433, 2922) ||
+				// Varrock Church
+				isInArea(player, 3259, 3488, 3249, 3471, -1) ||
+				// Seers Village Church
+				isInArea(player, 2690, 3466, 2703, 3459)
+			);
+	}
+
+	private boolean isFletching(Player player, int region)
+	{
+		List<Point> totemAreaPolygon = Arrays.asList(
+			new Point(1360, 3384),
+			new Point(1395, 3403),
+			new Point(1489, 3365),
+			new Point(1485, 3312),
+			new Point(1382, 3254),
+			new Point(1344, 3282),
+			new Point(1327, 3331)
+		);
+
+		return enabledSkill(config.skillEnabledFletching()) &&
+			(
+				// Fletching Guild
+				isInPolygon(player, totemAreaPolygon)
+			);
+	}
+
+	private boolean isThieving(Player player, int region)
+	{
+		return enabledSkill(config.skillEnabledThieving()) &&
+			(
+				// Rogue's Den
+				isInArea(player, 2905, 3543, 2915, 3536) ||
+				region == 12109 || region == 12110 || region == 12111 || region == 11854 || region == 11855 ||
+				// Ardougne Market
+				isInArea(player, 2667, 3319, 2675, 3315) ||
+				isInArea(player, 2672, 3314, 2667, 3301) ||
+				// Ardougne Bank
+				isInArea(player, 2649, 3287, 2655, 3280) ||
+				// Varlamor Bazaar
+				isInArea(player, 1692, 3095, 1669, 3118) ||
+				// Pyramid Plunder
+				region == 7749
+			);
+	}
+
+	private boolean isRunecrafting(Player player, int region)
+	{
+		return enabledSkill(config.skillEnabledRunecrafting()) &&
+			(
+				// Abyss
+				region == 12107 ||
+				// Runecrafting altars
+				region == 8267 ||
+				region == 8523 ||
+				region == 8779 ||
+				region == 9035 ||
+				region == 9291 ||
+				region == 9547 ||
+				region == 9803 ||
+				region == 10059 ||
+				region == 10315 ||
+				region == 10571 ||
+				region == 10827 ||
+				region == 11083 ||
+				region == 11339 ||
+				region == 11595 ||
+				region == 12875 ||
+				// Overworld runecrafting altars
+				isInArea(player, 2141, 3875, 2168, 3846) || // Lunar isle
+				isInArea(player, 1702, 3839, 1742, 3818) || region == 6972 || region == 7228 || // Soul/Blood altars
+				region == 12119 // Ourania Altar
 			);
 	}
 

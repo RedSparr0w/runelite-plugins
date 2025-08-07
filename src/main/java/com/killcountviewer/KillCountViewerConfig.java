@@ -56,7 +56,6 @@ public interface KillCountViewerConfig extends Config
 		return PlayerNameLocation.ABOVE_HEAD;
 	}
 
-
 	@ConfigItem(
 			position = 1,
 			keyName = "killcountColor",
@@ -1198,6 +1197,66 @@ public interface KillCountViewerConfig extends Config
 		section = SKILL_SECTION
 	)
 	default HighlightSkillSetting skillEnabledConstruction()
+	{
+		return HighlightSkillSetting.ENABLED;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "skillingStrength",
+		name = "Strength",
+		description = "Configures whether strength level is displayed within Warriors Guild.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledStrength()
+	{
+		return HighlightSkillSetting.ENABLED;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "skillingPrayer",
+		name = "Prayer",
+		description = "Configures whether prayer level is displayed within certain monasteries and churches/altars.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledPrayer()
+	{
+		return HighlightSkillSetting.ENABLED;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "skillingFletching",
+		name = "Fletching",
+		description = "Configures whether fletching level is displayed within Auburnvale.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledFletching()
+	{
+		return HighlightSkillSetting.ENABLED;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "skillingThieving",
+		name = "Thieving",
+		description = "Configures whether thieving level is displayed within various thieving locations.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledThieving()
+	{
+		return HighlightSkillSetting.ENABLED;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "skillingRunecrafting",
+		name = "Runecrafting",
+		description = "Configures whether runecrafting level is displayed within the Runecrafting altars.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledRunecrafting()
 	{
 		return HighlightSkillSetting.ENABLED;
 	}
