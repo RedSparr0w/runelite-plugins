@@ -97,6 +97,7 @@ public class KillCountViewerPlugin extends Plugin
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>Kill Count Viewer:</col> Plugin updated to v" + PLUGIN_VERSION, null);
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Added option for cache duration.", null);
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Added Thermonuclear Smoke Devil.", null);
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Use local player kill count instead of high score.", null);
 			}
 		}
 	}
