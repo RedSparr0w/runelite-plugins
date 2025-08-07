@@ -127,6 +127,28 @@ public interface KillCountViewerConfig extends Config
 		return 30;
 	}
 
+	@ConfigItem(
+		position = 6,
+		keyName = "showLocalPlayerKc",
+		name = "Show own kill count",
+		description = "Configures whether to show the player's own kill count."
+	)
+	default boolean showLocalPlayerKc()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "showOtherPlayerKc",
+		name = "Show others kill count",
+		description = "Configures whether to show other players' kill count."
+	)
+	default boolean showOtherPlayerKc()
+	{
+		return true;
+	}
+
 	@ConfigSection(
 		name = "Boss options",
 		description = "Toggle which bosses to show kill count for (Always will not show everywhere in game, just while in the boss fight as well as the lobby).",

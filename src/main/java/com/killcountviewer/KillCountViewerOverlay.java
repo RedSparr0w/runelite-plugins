@@ -277,6 +277,14 @@ public class KillCountViewerOverlay extends Overlay
 
 		String playerName = Text.removeTags(player.getName());
 
+		if (playerName.equalsIgnoreCase(client.getLocalPlayer().getName()) && !config.showLocalPlayerKc()) {
+			return; // Don't show local player kill count if the config is set to not show it
+		}
+
+		if (!playerName.equalsIgnoreCase(client.getLocalPlayer().getName()) && !config.showOtherPlayerKc()) {
+			return; // Don't show other player kill count if the config is set to not show it
+		}
+
 		CachedKC cached = kcCache.get(playerName);
 		HiscoreSkill boss = killcountService.currentBoss;
 		int kc = cached != null && cached.kcMap != null && cached.kcMap.containsKey(boss) ? cached.kcMap.get(boss) : 0;
