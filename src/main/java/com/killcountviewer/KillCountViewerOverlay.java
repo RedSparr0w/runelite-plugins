@@ -25,11 +25,13 @@
  */
 package com.killcountviewer;
 
+import net.runelite.api.Client;
 import net.runelite.api.FriendsChatRank;
 import net.runelite.api.IconID;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Skill;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ChatIconManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -67,7 +69,13 @@ public class KillCountViewerOverlay extends Overlay
 	private static final Logger log = LoggerFactory.getLogger(KillCountViewerOverlay.class);
 
 	@Inject
+	private Client client;
+
+	@Inject
 	private HiscoreClient hiscoreClient;
+
+	@Inject
+	private ConfigManager configManager;
 
 	private static final int ACTOR_OVERHEAD_TEXT_MARGIN = 25;
 	private static final int ACTOR_HORIZONTAL_TEXT_MARGIN = 10;
@@ -279,6 +287,9 @@ public class KillCountViewerOverlay extends Overlay
 			kcLookupQueue.offer(playerName);
 		}
 
+		if (playerName.equalsIgnoreCase(client.getLocalPlayer().getName())) {
+			kc = getLocalPlayerKc(killcountService.currentBoss);
+		}
 
 		// Draw the kill count
 		final int zOffset;
@@ -429,8 +440,7 @@ public class KillCountViewerOverlay extends Overlay
 	{
 		Map<HiscoreSkill, Integer> results = new HashMap<>();
 
-		try
-		{
+		try {
 			HiscoreResult result = hiscoreClient.lookup(playerName);
 			for (HiscoreSkill boss : SCORES)
 			{
@@ -445,5 +455,81 @@ public class KillCountViewerOverlay extends Overlay
 			log.warn("Failed to fetch kill count for {}", playerName);
 		}
 		return results;
+	}
+
+	private String getBossString(HiscoreSkill boss) {
+		switch (boss) {
+			case CALVARION:
+				return "Calvar'ion";
+			case KREEARRA:
+				return "Kree'arra";
+			case KRIL_TSUTSAROTH:
+				return "K'ril Tsutsaroth";
+			case PHOSANIS_NIGHTMARE:
+				return "Phosani's Nightmare";
+			case THE_CORRUPTED_GAUNTLET:
+				return "Corrupted Gauntlet";
+			case THE_HUEYCOATL:
+				return "Hueycoatl";
+			case THE_LEVIATHAN:
+				return "Leviathan";
+			case THE_ROYAL_TITANS:
+				return "Royal Titans";
+			case THE_WHISPERER:
+				return "Whisperer";
+			case TZKAL_ZUK:
+				return "TzKal-Zuk";
+			case TZTOK_JAD:
+				return "TzTok-Jad";
+			case VETION:
+				return "Vet'ion";
+			case CHAMBERS_OF_XERIC:
+				return "Chambers of Xeric";
+			case CHAMBERS_OF_XERIC_CHALLENGE_MODE:
+				return "Chambers of Xeric Challenge Mode";
+			case THEATRE_OF_BLOOD:
+				return "Theatre of Blood";
+			case THEATRE_OF_BLOOD_HARD_MODE:
+				return "Theatre of Blood Hard Mode";
+			case TOMBS_OF_AMASCUT:
+				return "Tombs of Amascut";
+			case TOMBS_OF_AMASCUT_EXPERT:
+				return "Tombs of Amascut Expert Mode";
+			default:
+				return Text.titleCase(boss);
+		}
+
+	}
+
+	private int getLocalPlayerKc(HiscoreSkill boss)
+	{
+		// If it's a skill, return the real skill level
+		if (boss.getType() == HiscoreSkillType.SKILL)
+		{
+			int skillLevel = client.getRealSkillLevel(Skill.valueOf(boss.name()));
+			if (skillLevel > 0)
+			{
+				return skillLevel;
+			}
+		}
+		
+		// If it's a boss, check the config for the kill count
+		if (boss.getType() == HiscoreSkillType.BOSS)
+		{
+			String bossNameFormatted = getBossString(boss);
+			Integer killCount = configManager.getRSProfileConfiguration("killcount", bossNameFormatted.toLowerCase(), int.class);
+			if (killCount != null && killCount >= 0)
+			{
+				return killCount;
+			}
+		}
+
+		// If we couldn't find the kill count, use highscore value if available
+		CachedKC cached = kcCache.get(client.getLocalPlayer().getName());
+		if (cached != null && cached.kcMap != null && cached.kcMap.containsKey(boss)) {
+			return cached.kcMap.get(boss);
+		}
+
+		return 0;
 	}
 }
