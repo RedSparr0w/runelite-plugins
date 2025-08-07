@@ -225,12 +225,18 @@ public class KillCountViewerOverlay extends Overlay
 
 		String playerName = kcLookupQueue.poll();
 		Map<HiscoreSkill, Integer> data = kcCache.get(playerName) != null ? kcCache.get(playerName).kcMap : null;
+		// Update the cache with current time so we don't re-add players that we are currently fetching
 		kcCache.put(playerName, new CachedKC(data, Instant.now()));
 
 		executor.submit(() ->
 		{
 			Map<HiscoreSkill, Integer> kcMap = fetchPlayerKC(playerName);
-			kcCache.put(playerName, new CachedKC(kcMap, Instant.now()));
+			// If the lookup failed, use the previous data and set the fetchedAt to 2 minutes less than our cache duration
+			if (kcMap.isEmpty()) {
+				kcCache.put(playerName, new CachedKC(data, Instant.now().minus(Duration.ofMinutes((long)config.cacheDuration() - 2))));
+			} else {
+				kcCache.put(playerName, new CachedKC(kcMap, Instant.now()));
+			}
 		});
 	}
 
@@ -267,8 +273,8 @@ public class KillCountViewerOverlay extends Overlay
 			return;
 		}
 
-		// Re-fetch if it's been more than 30 minutes and not already in the queue or never fetched
-		if (!kcLookupQueue.contains(playerName) && (cached == null || Duration.between(cached.fetchedAt, Instant.now()).toMinutes() > 30))
+		// Re-fetch if it's been more than x minutes and not already in the queue or never fetched
+		if (!kcLookupQueue.contains(playerName) && (cached == null || Duration.between(cached.fetchedAt, Instant.now()).toMinutes() >= config.cacheDuration()))
 		{
 			kcLookupQueue.offer(playerName);
 		}
@@ -285,7 +291,11 @@ public class KillCountViewerOverlay extends Overlay
 			default:
 				zOffset = player.getLogicalHeight() + ACTOR_OVERHEAD_TEXT_MARGIN;
 		}
-		String killCountText = kc == 0 ? "..." : kc + "";
+		String killCountText = kc == 0 ? "" : kc + "";
+		if (killCountText == "" && !kcLookupQueue.contains(playerName))
+		{
+			killCountText = "...";
+		}
 		Point textLocation = player.getCanvasTextLocation(graphics, killCountText, zOffset);
 
 		if (drawPlayerNamesConfig == PlayerNameLocation.MODEL_RIGHT)
@@ -407,6 +417,12 @@ public class KillCountViewerOverlay extends Overlay
 				return skillIcon.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
 			}
 			return null;
+	}
+
+	public void clearCache()
+	{
+		kcCache.clear();
+		kcLookupQueue.clear();
 	}
 
 	private Map<HiscoreSkill, Integer> fetchPlayerKC(String playerName)

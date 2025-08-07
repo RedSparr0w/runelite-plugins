@@ -101,7 +101,7 @@ public interface KillCountViewerConfig extends Config
 	@ConfigItem(
 		position = 4,
 		keyName = "lookupCooldown",
-		name = "Killcount lookup cooldown",
+		name = "Lookup cooldown",
 		description = "Ticks between each kill count lookup request, to avoid spamming API."
 	)
 	@Range(
@@ -111,6 +111,21 @@ public interface KillCountViewerConfig extends Config
 	default int lookupCooldown()
 	{
 		return 10;
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "cacheDuration",
+		name = "Cache duration",
+		description = "Duration in minutes to cache kill count data."
+	)
+	@Range(
+		min = 10,
+		max = 360
+	)
+	default int cacheDuration()
+	{
+		return 30;
 	}
 
 	@ConfigSection(
