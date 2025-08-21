@@ -295,18 +295,24 @@ public class CerberusPlugin extends Plugin
 		}
 	}
 
+	private final List<String> seenProjectileIds = new ArrayList<>();
 	@Subscribe
 	private void onProjectileMoved(ProjectileMoved event) 
 	{
-
 		final Projectile projectile = event.getProjectile();
+
 		// Only continue if this is the first cycle of the projectile so we don't count incorrectly
 		boolean isFirst = (projectile.getStartCycle() + projectile.getRemainingCycles() == projectile.getEndCycle());
-		
-		if (cerberus == null || !isFirst)
+		String projectileId = projectile.toString();
+		if (cerberus == null) {
+			seenProjectileIds.clear();
+			return;
+		}
+		if (!isFirst || seenProjectileIds.contains(projectileId))
 		{
 			return;
 		}
+		seenProjectileIds.add(projectileId);
 
 		final int hp = cerberus.getHp();
 
