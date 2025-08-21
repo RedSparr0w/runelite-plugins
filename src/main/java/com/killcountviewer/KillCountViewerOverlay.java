@@ -104,6 +104,11 @@ public class KillCountViewerOverlay extends Overlay
 		HiscoreSkill.SLAYER,                           // Done
 		HiscoreSkill.AGILITY,                          // Done (probably some rooftops and courses missing)
 		HiscoreSkill.CONSTRUCTION,                     // Done
+		HiscoreSkill.STRENGTH,                         // Done
+		HiscoreSkill.PRAYER,                           // Done
+		HiscoreSkill.FLETCHING,                        // Done
+		HiscoreSkill.THIEVING,                         // Done
+		HiscoreSkill.RUNECRAFT,                        // Done
 		// Activities
 		HiscoreSkill.SOUL_WARS_ZEAL,                    // Done (test in matchmaking)
 		HiscoreSkill.LAST_MAN_STANDING,                 // Done (not in matchmaking)
@@ -271,6 +276,14 @@ public class KillCountViewerOverlay extends Overlay
 		}
 
 		String playerName = Text.removeTags(player.getName());
+
+		if (playerName.equalsIgnoreCase(client.getLocalPlayer().getName()) && !config.showLocalPlayerKc()) {
+			return; // Don't show local player kill count if the config is set to not show it
+		}
+
+		if (!playerName.equalsIgnoreCase(client.getLocalPlayer().getName()) && !config.showOtherPlayerKc()) {
+			return; // Don't show other player kill count if the config is set to not show it
+		}
 
 		CachedKC cached = kcCache.get(playerName);
 		HiscoreSkill boss = killcountService.currentBoss;

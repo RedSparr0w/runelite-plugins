@@ -1,6 +1,6 @@
 # Kill Count Viewer
 
-A plugin to display players kill counts at various bosses throughout the game
+A plugin to display players kill counts/levels at various bosses and skilling activities throughout the game
 
 ![image](https://github.com/user-attachments/assets/cd6a91d3-714d-43b3-a224-35069e0d3c93)
 
