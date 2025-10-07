@@ -361,7 +361,9 @@ class KillCountViewerService
 				// Mining Guild
 				isInArea(player, 2999, 9756, 3061, 9698) ||
 				// Motherlode Mine
-				region == 14936
+				region == 14936 ||
+				// Tombs of Amascut Mining Puzzle
+				region == 14674
 			);
 	}
 
