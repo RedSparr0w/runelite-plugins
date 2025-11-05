@@ -3,7 +3,6 @@ package com.example;
 import com.alchemicalhydra.AlchemicalHydraPlugin;
 import com.basiliskknights.BasiliskKnights;
 import com.cerberus.CerberusPlugin;
-import com.hunllefswitcher.HunllefSwitcherPlugin;
 import com.groupstoragereminder.GroupStorageReminderPlugin;
 import com.killcountviewer.KillCountViewerPlugin;
 import com.misc.Misc;
@@ -21,11 +20,11 @@ public class ExamplePluginTest
 		ExternalPluginManager.loadBuiltin(
 			ZulrahPlugin.class,
 			CerberusPlugin.class,
-			// PlayerAttackTimerPlugin.class,
+			PlayerAttackTimerPlugin.class,
 			TormentedDemonsPlugin.class,
-			// KillCountViewerPlugin.class,
+			KillCountViewerPlugin.class,
 			BasiliskKnights.class,
-			// GroupStorageReminderPlugin.class,
+			GroupStorageReminderPlugin.class,
 			AlchemicalHydraPlugin.class,
 			Misc.class
 		);
