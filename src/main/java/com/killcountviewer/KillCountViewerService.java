@@ -222,6 +222,7 @@ class KillCountViewerService
 		if (checkCurrentBoss(HiscoreSkill.FLETCHING) && isFletching(player, region)) return HiscoreSkill.FLETCHING;
 		if (checkCurrentBoss(HiscoreSkill.THIEVING) && isThieving(player, region)) return HiscoreSkill.THIEVING;
 		if (checkCurrentBoss(HiscoreSkill.RUNECRAFT) && isRunecrafting(player, region)) return HiscoreSkill.RUNECRAFT;
+		if (checkCurrentBoss(HiscoreSkill.SAILING) && isSailing(player, region)) return HiscoreSkill.SAILING;
 		return null;
 	}
 
@@ -678,6 +679,17 @@ class KillCountViewerService
 			);
 	}
 
+	private boolean isSailing(Player player, int region)
+	{
+		return enabledSkill(config.skillEnabledSailing()) &&
+			(
+				// Pandemonium
+				region == 12078
+				// Boat customisation area
+				|| region == 8234
+			);
+	}
+
 	private boolean isHerblore(Player player, int region)
 	{
 		return enabledSkill(config.skillEnabledHerblore()) &&
@@ -960,7 +972,7 @@ class KillCountViewerService
 	private boolean isTempoross(Player player, int region)
 	{
 		return ((region == 12588 || region == 12332) && enabledLobby(config.bossEnabledTempoross())) ||
-			(region == 12078 && enabledAlways(config.bossEnabledTempoross()));
+			(region == 12076 && enabledAlways(config.bossEnabledTempoross()));
 	}
 
 	private boolean isTheHueycoatl(Player player, int region)

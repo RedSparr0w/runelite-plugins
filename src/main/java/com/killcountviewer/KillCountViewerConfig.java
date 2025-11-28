@@ -1282,4 +1282,16 @@ public interface KillCountViewerConfig extends Config
 	{
 		return HighlightSkillSetting.ENABLED;
 	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "skillingSailing",
+		name = "Sailing",
+		description = "Configures whether sailing level is displayed within the Pandemonium.",
+		section = SKILL_SECTION
+	)
+	default HighlightSkillSetting skillEnabledSailing()
+	{
+		return HighlightSkillSetting.ENABLED;
+	}
 }
