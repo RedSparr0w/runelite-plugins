@@ -83,7 +83,7 @@ public interface KillCountViewerConfig extends Config
 	)
 	default IconSetting bossRankIcon()
 	{
-		return IconSetting.RANK;
+		return IconSetting.BOTH;
 	}
 
 	@ConfigItem(
@@ -94,7 +94,7 @@ public interface KillCountViewerConfig extends Config
 	)
 	default IconSetting levelRankIcon()
 	{
-		return IconSetting.RANK;
+		return IconSetting.BOTH;
 	}
 
 	@ConfigItem(
