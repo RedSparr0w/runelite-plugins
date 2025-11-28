@@ -275,6 +275,7 @@ class KillCountViewerService
 		if (checkCurrentBoss(HiscoreSkill.SARACHNIS) && isSarachnis(player, region)) return HiscoreSkill.SARACHNIS;
 		if (checkCurrentBoss(HiscoreSkill.SCORPIA) && isScorpia(player, region)) return HiscoreSkill.SCORPIA;
 		if (checkCurrentBoss(HiscoreSkill.SCURRIUS) && isScurrius(player, region)) return HiscoreSkill.SCURRIUS;
+		if (checkCurrentBoss(HiscoreSkill.SHELLBANE_GRYPHON) && isShellbaneGryphon(player, region)) return HiscoreSkill.SHELLBANE_GRYPHON;
 		if (checkCurrentBoss(HiscoreSkill.SKOTIZO) && isSkotizo(player, region)) return HiscoreSkill.SKOTIZO;
 		if (checkCurrentBoss(HiscoreSkill.SOL_HEREDIT) && isSolHeredit(player, region)) return HiscoreSkill.SOL_HEREDIT;
 		if (checkCurrentBoss(HiscoreSkill.SPINDEL) && isSpindel(player, region)) return HiscoreSkill.SPINDEL;
@@ -951,6 +952,11 @@ class KillCountViewerService
 		return
 			(isInArea(player, 3264, 9878, 3282, 9864) && enabledLobby(config.bossEnabledScurrius())) ||
 			(isInArea(player, 3308, 9858, 3289, 9877) && enabledAlways(config.bossEnabledScurrius()));
+	}
+
+	private boolean isShellbaneGryphon(Player player, int region)
+	{
+		return isInArea(player, 3164, 2487, 3183, 2465) && enabledLobby(config.bossEnabledShellbaneGryphon());
 	}
 
 	private boolean isSkotizo(Player player, int region)

@@ -46,7 +46,7 @@ import javax.inject.Inject;
 @Slf4j
 public class KillCountViewerPlugin extends Plugin
 {
-	private static final String PLUGIN_VERSION = "1.1.1";
+	private static final String PLUGIN_VERSION = "1.1.2";
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -95,11 +95,9 @@ public class KillCountViewerPlugin extends Plugin
 			if (--showUpdateMessage == 0)
 			{
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>Kill Count Viewer:</col> Plugin updated to v" + PLUGIN_VERSION, null);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Added option for cache duration.", null);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Added option for own/other players shown.", null);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Added Thermonuclear Smoke Devil.", null);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Added more skills and locations.", null);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Use local storage kill count instead of high score.", null);
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Added Sailing skill.", null);
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Added Shellbane Gryphon.", null);
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Fixed Tempoross zone.", null);
 			}
 		}
 	}

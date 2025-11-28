@@ -43,7 +43,7 @@ public interface KillCountViewerConfig extends Config
 		description = "Internal use for update notifications",
 		hidden = true
 	)
-	default String lastSeenVersion() { return "1.1.1"; }
+	default String lastSeenVersion() { return "1.1.2"; }
 
 	@ConfigItem(
 		position = 0,
@@ -817,10 +817,22 @@ public interface KillCountViewerConfig extends Config
 		position = 1,
 		keyName = "bossSkotizo",
 		name = "Skotizo",
-		description = "Configures whether kill count is displayed within Skotizo.",
+		description = "Configures whether kill count is displayed near Skotizo.",
 		section = BOSS_SECTION
 	)
 	default HighlightSetting bossEnabledSkotizo()
+	{
+		return HighlightSetting.LOBBY;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "bossShellbaneGryphon",
+		name = "Shellbane Gryphon",
+		description = "Configures whether kill count is displayed near Shellbane Gryphon.",
+		section = BOSS_SECTION
+	)
+	default HighlightSetting bossEnabledShellbaneGryphon()
 	{
 		return HighlightSetting.LOBBY;
 	}

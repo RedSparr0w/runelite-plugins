@@ -109,6 +109,7 @@ public class KillCountViewerOverlay extends Overlay
 		HiscoreSkill.FLETCHING,                        // Done
 		HiscoreSkill.THIEVING,                         // Done
 		HiscoreSkill.RUNECRAFT,                        // Done
+		HiscoreSkill.SAILING,                          // Done
 		// Activities
 		HiscoreSkill.SOUL_WARS_ZEAL,                    // Done (test in matchmaking)
 		HiscoreSkill.LAST_MAN_STANDING,                 // Done (not in matchmaking)
@@ -153,6 +154,7 @@ public class KillCountViewerOverlay extends Overlay
 		HiscoreSkill.SARACHNIS,                         // Done
 		HiscoreSkill.SCORPIA,                           // Done
 		HiscoreSkill.SCURRIUS,                          // Done
+		HiscoreSkill.SHELLBANE_GRYPHON,                 // Done
 		HiscoreSkill.SKOTIZO,                           // Done
 		HiscoreSkill.SOL_HEREDIT,                       // Done
 		HiscoreSkill.SPINDEL,                           // Done
