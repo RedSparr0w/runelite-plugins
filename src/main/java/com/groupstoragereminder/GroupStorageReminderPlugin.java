@@ -36,7 +36,6 @@ import net.runelite.api.widgets.WidgetItem;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.MenuAction;
-import net.runelite.api.Player;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -118,10 +117,10 @@ public class GroupStorageReminderPlugin extends Plugin
      * Check if the logout/world switcher tab is open.
      * ============================
      */
-    Widget logoutWorldSwitcherTab = client.getWidget(InterfaceID.WORLDSWITCHER, 0);
-    if (logoutWorldSwitcherTab == null) logoutWorldSwitcherTab = client.getWidget(InterfaceID.LOGOUT, 0);
+      Widget logoutWorldSwitcherTab = client.getWidget(InterfaceID.WORLDSWITCHER, 0);
+    if (isWidgetClosed(logoutWorldSwitcherTab)) logoutWorldSwitcherTab = client.getWidget(InterfaceID.LOGOUT, 0);
 
-    if (logoutWorldSwitcherTab != null && !logoutWorldSwitcherTab.isHidden())
+    if (!isWidgetClosed(logoutWorldSwitcherTab))
     {
       logoutSwitcherOpen = true;
     }
@@ -135,7 +134,7 @@ public class GroupStorageReminderPlugin extends Plugin
      * Check if the bank was open and if the bank is now closed
      * ============================
      */
-    if (bankIsOpen && client.getWidget(InterfaceID.BANKMAIN, 0) == null)
+    if (bankIsOpen && isWidgetClosed(client.getWidget(InterfaceID.BANKMAIN, 0)))
     {
       bankIsOpen = closeInterface();
     }
@@ -145,7 +144,7 @@ public class GroupStorageReminderPlugin extends Plugin
      * Check if the group storage was open and if the group storage is now closed
      * ============================
      */
-    if (groupStorageIsOpen && client.getWidget(InterfaceID.SHARED_BANK, 0) == null)
+    if (groupStorageIsOpen && isWidgetClosed(client.getWidget(InterfaceID.SHARED_BANK, 0)))
     {
       groupStorageIsOpen = closeInterface();
     }
@@ -160,6 +159,11 @@ public class GroupStorageReminderPlugin extends Plugin
     {
       reminderTimerActive = reminderTimer-- > 0;
     }
+  }
+
+  private static boolean isWidgetClosed(Widget widget)
+  {
+    return widget == null || widget.isHidden();
   }
 
   public boolean closeInterface()
