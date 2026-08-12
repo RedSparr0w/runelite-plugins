@@ -561,8 +561,6 @@ class KillCountViewerService
 				isInArea(player, 3471, 3509, 3517, 3467, 3) ||
 				// Agility Pyramid
 				isInArea(player, 2690, 3466, 2703, 3459, -1) ||
-				// Wilderness Agility Course
-				isInArea(player, 2988, 3966, 3009, 3913) ||
 				// Colossal Wyrm Agility Course
 				isInArea(player, 1622, 2935, 1657, 2903, -1) ||
 				// Ape Atoll Agility Course
