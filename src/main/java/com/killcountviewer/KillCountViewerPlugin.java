@@ -46,7 +46,7 @@ import javax.inject.Inject;
 @Slf4j
 public class KillCountViewerPlugin extends Plugin
 {
-	private static final String PLUGIN_VERSION = "1.1.2";
+	private static final String PLUGIN_VERSION = "1.1.3";
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -95,9 +95,7 @@ public class KillCountViewerPlugin extends Plugin
 			if (--showUpdateMessage == 0)
 			{
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>Kill Count Viewer:</col> Plugin updated to v" + PLUGIN_VERSION, null);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Added Sailing skill.", null);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Added Shellbane Gryphon.", null);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Fixed Tempoross zone.", null);
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "<col=c0392b>-</col> Removed wilderness agility detection.", null);
 			}
 		}
 	}
